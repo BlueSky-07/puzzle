@@ -1,0 +1,9 @@
+{
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/admin/workspace/code-server/workspace/puzzle",
+      "binaryPath": "/home/admin/workspace/code-server/workspace/puzzle/a.out",
+      "binaryArgs": []
+    }
+  ]
+}
