@@ -3,14 +3,15 @@
 
 #include "position.h"
 
-#define PIECE_ROW 4
-#define PIECE_COL 4
+#define PIECE_X 4
+#define PIECE_Y 4
+#define PIECE_MAX_POSITION 5
 
-typedef struct Piece {
+typedef struct _Piece {
   char name;
-  Position position[PIECE_ROW * PIECE_COL];
+  Position position[PIECE_MAX_POSITION];
   int position_count;
-  int puzzle[PIECE_ROW + 1][PIECE_COL + 1];
+  int puzzle[PIECE_X + 1][PIECE_Y + 1];
 } Piece;
 
 extern Piece PIECE_A;
@@ -26,8 +27,19 @@ extern Piece PIECE_J;
 
 extern Piece* ALL_PIECES[10];
 
-void print_piece_mirror(Piece piece, int mirror);
+typedef int ROTATE_DIRECTION;
+#define ROTATE_DIRECTION_0          1
+#define ROTATE_DIRECTION_90         2
+#define ROTATE_DIRECTION_180        3
+#define ROTATE_DIRECTION_270        4
+#define ROTATE_DIRECTION_MIRROR_0   -1
+#define ROTATE_DIRECTION_MIRROR_90  -2
+#define ROTATE_DIRECTION_MIRROR_180 -3
+#define ROTATE_DIRECTION_MIRROR_270 -4
+
+void init_piece_puzzle(Piece* piece);
+Piece rotate_piece(Piece piece, ROTATE_DIRECTION direction);
+Piece fix_piece(Piece piece);
 void print_piece(Piece piece);
-void print_all_pieces();
 
 #endif

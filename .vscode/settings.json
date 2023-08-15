@@ -5,5 +5,19 @@
       "binaryPath": "/home/admin/workspace/code-server/workspace/puzzle/a.out",
       "binaryArgs": []
     }
-  ]
+  ],
+  "files.associations": {
+    "piece.h": "c",
+    "system_error": "c",
+    "array": "c",
+    "functional": "c",
+    "tuple": "c",
+    "type_traits": "c",
+    "utility": "c",
+    "typeinfo": "c",
+    "puzzle.h": "c",
+    "stdio.h": "c",
+    "cstddef": "c",
+    "random": "c"
+  }
 }

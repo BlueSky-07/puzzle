@@ -3,30 +3,24 @@
 #include <string.h>
 
 Position MONTH[12] = {
-    {0b10000000, 0b1000000}, {0b10000000, 0b0100000}, {0b10000000, 0b0010000},
-    {0b10000000, 0b0001000}, {0b10000000, 0b0000100}, {0b10000000, 0b0000010},
-    {0b01000000, 0b1000000}, {0b01000000, 0b0100000}, {0b01000000, 0b0010000},
-    {0b01000000, 0b0001000}, {0b01000000, 0b0000100}, {0b01000000, 0b0000010}};
+  {1, 8}, {2, 8}, {3, 8}, {4, 8}, {5, 8}, {6, 8},
+  {1, 7}, {2, 7}, {3, 7}, {4, 7}, {5, 7}, {6, 7},
+};
 int MONTH_LEN = (int)sizeof(MONTH) / (int)sizeof(Position);
 
 Position DATE[31] = {
-    {0b00100000, 0b1000000}, {0b00100000, 0b0100000}, {0b00100000, 0b0010000},
-    {0b00100000, 0b0001000}, {0b00100000, 0b0000100}, {0b00100000, 0b0000010},
-    {0b00100000, 0b0000001}, {0b00010000, 0b1000000}, {0b00010000, 0b0100000},
-    {0b00010000, 0b0010000}, {0b00010000, 0b0001000}, {0b00010000, 0b0000100},
-    {0b00010000, 0b0000010}, {0b00010000, 0b0000001}, {0b00001000, 0b1000000},
-    {0b00001000, 0b0100000}, {0b00001000, 0b0010000}, {0b00001000, 0b0001000},
-    {0b00001000, 0b0000100}, {0b00001000, 0b0000010}, {0b00001000, 0b0000001},
-    {0b00000100, 0b1000000}, {0b00000100, 0b0100000}, {0b00000100, 0b0010000},
-    {0b00000100, 0b0001000}, {0b00000100, 0b0000100}, {0b00000100, 0b0000010},
-    {0b00000100, 0b0000001}, {0b00000010, 0b1000000}, {0b00000010, 0b0100000},
-    {0b00000010, 0b0010000}};
+  {1, 6}, {2, 6}, {3, 6}, {4, 6}, {5, 6}, {6, 6}, {7, 6},
+  {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5}, {6, 5}, {7, 5},
+  {1, 4}, {2, 4}, {3, 4}, {4, 4}, {5, 4}, {6, 4}, {7, 4},
+  {1, 3}, {2, 3}, {3, 3}, {4, 3}, {5, 3}, {6, 3}, {7, 3},
+  {1, 2}, {2, 2}, {3, 2},
+};
 int DATE_LEN = (int)sizeof(DATE) / (int)sizeof(Position);
 
-Position WEEK[7] = {{0b00000010, 0b0001000}, {0b00000010, 0b0000100},
-                    {0b00000010, 0b0000010}, {0b00000010, 0b0000001},
-                    {0b00000001, 0b0000100}, {0b00000001, 0b0000010},
-                    {0b00000001, 0b0000001}};
+Position WEEK[7] = {
+  {4, 2}, {5, 2}, {6, 2}, {7, 2},
+          {5, 1}, {6, 1}, {7, 1},
+};
 int WEEK_LEN = (int)sizeof(WEEK) / (int)sizeof(Position);
 
 char* MONTH_TEXT[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -39,53 +33,53 @@ char* DATE_TEXT[31] = {"001", "002", "003", "004", "005", "006", "007", "008",
 
 char* WEEK_TEXT[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
-int puzzle[ROW + 1][COL + 1];
-char pretty_puzzle[ROW + 1][COL + 1][4];
+int puzzle[PUZZLE_X + 1][PUZZLE_Y + 1];
+char pretty_puzzle[PUZZLE_X + 1][PUZZLE_Y + 1][4];
 
-void init_puzzle(Position T[], int t, int len) {
+void init_puzzle(Position positions[], int t, int len) {
   for (int i = 0; i < len; i++) {
-    Position p = get_index_position(T[i], ROW, COL);
-    puzzle[p.row][p.col] = t;
+    Position p = positions[i];
+    puzzle[p.x][p.y] = t;
   }
 }
 
 void init_pretty_puzzle_array() {
-  for (int r = 1; r <= ROW; r++) {
-    for (int c = 1; c <= COL; c++) {
-      strcpy(pretty_puzzle[r][c], "   ");
+  for (int x = 1; x <= PUZZLE_X; x++) {
+    for (int y = 1; y <= PUZZLE_Y; y++) {
+      strcpy(pretty_puzzle[x][y], "   ");
     }
   }
 }
 
-void init_pretty_puzzle(Position T[], char** texts, int len) {
+void init_pretty_puzzle(Position positions[], char** texts, int len) {
   for (int i = 0; i < len; i++) {
-    Position p = get_index_position(T[i], ROW, COL);
-    strcpy(pretty_puzzle[p.row][p.col], texts[i]);
+    Position p = positions[i];
+    strcpy(pretty_puzzle[p.x][p.y], texts[i]);
   }
 }
 
 void print_puzzle() {
-  printf("  | 1 2 3 4 5 6 7\n");
-  printf("--+-------------\n");
-  for (int r = 1; r <= ROW; r++) {
-    printf("%d | ", r);
-    for (int c = 1; c <= COL; c++) {
-      printf("%d ", puzzle[r][c]);
+  for (int y = PUZZLE_Y; y >= 1; y--) {
+    printf("%d | ", y);
+    for (int x = 1; x <= PUZZLE_X; x++) {
+      printf("%d ", puzzle[x][y]);
     }
     printf("\n");
   }
+  printf("--+--------------\n");
+  printf("P | 1 2 3 4 5 6 7\n");
 }
 
 void pretty_print_puzzle() {
-  printf("  |  1   2   3   4   5   6   7\n");
-  printf("--+----------------------------\n");
-  for (int r = 1; r <= ROW; r++) {
-    printf("%d | ", r);
-    for (int c = 1; c <= COL; c++) {
-      printf("%s ", pretty_puzzle[r][c]);
+  for (int y = PUZZLE_Y; y >= 1; y--) {
+    printf("%d | ", y);
+    for (int x = 1; x <= PUZZLE_X; x++) {
+      printf("%s ", pretty_puzzle[x][y]);
     }
     printf("\n");
   }
+  printf("--+----------------------------\n");
+  printf("P |  1   2   3   4   5   6   7\n");
 }
 
 void init_all_puzzle() {
