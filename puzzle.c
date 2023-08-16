@@ -21,58 +21,68 @@ Position WEEK[7] = {
 };
 int WEEK_LEN = (int)sizeof(WEEK) / (int)sizeof(Position);
 
-char* MONTH_TEXT[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+char* MONTH_TEXTS[12] = {
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+};
 
-char* DATE_TEXT[31] = {"001", "002", "003", "004", "005", "006", "007", "008",
-                       "009", "010", "011", "012", "013", "014", "015", "016",
-                       "017", "018", "019", "020", "021", "022", "023", "024",
-                       "025", "026", "027", "028", "029", "030", "031"};
+char* DATE_TEXTS[31]  = {
+  "001", "002", "003", "004", "005", "006", "007",
+  "008", "009", "010", "011", "012", "013", "014",
+  "015", "016", "017", "018", "019", "020", "021",
+  "022", "023", "024", "025", "026", "027", "028",
+  "029", "030", "031",
+};
 
-char* WEEK_TEXT[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+char* WEEK_TEXTS[7] = {
+                       "Sun", "Mon", "Tue", "Wed",
+                              "Thu", "Fri", "Sat",
+};
 
-unsigned int puzzle[PUZZLE_X + 1][PUZZLE_Y + 1];
-char pretty_puzzle[PUZZLE_X + 1][PUZZLE_Y + 1][4];
+Puzzle make_puzzle() {
+  Puzzle puzzle = malloc(sizeof(unsigned int) * PUZZLE_TOTAL);
+  memset(puzzle, '0', PUZZLE_TOTAL);
+  return puzzle;
+}
 
-void init_puzzle(Position positions[], unsigned int v, unsigned int len) {
+PuzzleText make_puzzle_text() {
+  PuzzleText puzzle_text = malloc(sizeof(char) * PUZZLE_TOTAL * 4);
+  memset(puzzle_text, ' ', PUZZLE_TOTAL);
+  for (int i = 3; i < PUZZLE_TOTAL * 4; i += 4) puzzle_text[i] = '\0';
+  return puzzle_text;
+}
+
+void puzzle_fill(Puzzle puzzle, Position positions[], unsigned int len, char v) {
   for (int i = 0; i < len; i++) {
-    Position p = positions[i];
-    puzzle[p.x][p.y] = v;
+    Position pos = positions[i];
+    puzzle[pos.y * PUZZLE_X + pos.x] = v;
   }
 }
 
-void init_pretty_puzzle_array() {
-  for (int x = 1; x <= PUZZLE_X; x++) {
-    for (int y = 1; y <= PUZZLE_Y; y++) {
-      strcpy(pretty_puzzle[x][y], "   ");
-    }
-  }
-}
-
-void init_pretty_puzzle(Position positions[], char** texts, unsigned int len) {
+void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int len, char** texts) {
   for (int i = 0; i < len; i++) {
-    Position p = positions[i];
-    strcpy(pretty_puzzle[p.x][p.y], texts[i]);
+    Position pos = positions[i];
+    strcpy(puzzle_text + (pos.y * PUZZLE_X + pos.x) * 4, texts[i]);
   }
 }
 
-void print_puzzle() {
+void print_puzzle(Puzzle puzzle) {
   for (int y = PUZZLE_Y; y >= 1; y--) {
     printf("%d | ", y);
     for (int x = 1; x <= PUZZLE_X; x++) {
-      printf("%d ", puzzle[x][y]);
+      printf("%c ", puzzle[y * PUZZLE_X + x]);
     }
     printf("\n");
   }
   printf("--+--------------\n");
-  printf("P | 1 2 3 4 5 6 7\n");
+  printf("p | 1 2 3 4 5 6 7\n");
 }
 
-void pretty_print_puzzle() {
+void print_puzzle_text(PuzzleText puzzle_text) {
   for (int y = PUZZLE_Y; y >= 1; y--) {
     printf("%d | ", y);
     for (int x = 1; x <= PUZZLE_X; x++) {
-      printf("%s ", pretty_puzzle[x][y]);
+      printf("%s ", puzzle_text + (y * PUZZLE_X + x) * 4);
     }
     printf("\n");
   }
@@ -80,12 +90,18 @@ void pretty_print_puzzle() {
   printf("P |  1   2   3   4   5   6   7\n");
 }
 
-void init_all_puzzle() {
-  init_puzzle(MONTH, 1, MONTH_LEN);
-  init_puzzle(DATE, 2, DATE_LEN);
-  init_puzzle(WEEK, 3, WEEK_LEN);
-  init_pretty_puzzle_array();
-  init_pretty_puzzle(MONTH, MONTH_TEXT, MONTH_LEN);
-  init_pretty_puzzle(DATE, DATE_TEXT, DATE_LEN);
-  init_pretty_puzzle(WEEK, WEEK_TEXT, WEEK_LEN);
+void puzzle_data_test() {
+  Puzzle puzzle = make_puzzle();
+  puzzle_fill(puzzle, MONTH, MONTH_LEN, '1');
+  puzzle_fill(puzzle, DATE, DATE_LEN, '2');
+  puzzle_fill(puzzle, WEEK, WEEK_LEN, '3');
+  print_puzzle(puzzle);
+  free(puzzle);
+
+  PuzzleText puzzle_text = make_puzzle_text();
+  puzzle_text_fill(puzzle_text, MONTH, MONTH_LEN, MONTH_TEXTS);
+  puzzle_text_fill(puzzle_text, DATE, DATE_LEN, DATE_TEXTS);
+  puzzle_text_fill(puzzle_text, WEEK, WEEK_LEN, WEEK_TEXTS);
+  print_puzzle_text(puzzle_text);
+  free(puzzle_text);
 }

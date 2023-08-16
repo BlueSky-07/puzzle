@@ -13,9 +13,7 @@ int main() {
   // logger_success("success");
   // logger_debug("debug");
 
-  // init_all_puzzle();
-  // print_puzzle();
-  // pretty_print_puzzle();
+  puzzle_data_test();
 
   // print_matrix(&ROTATE_MATRIX_0);
   // print_matrix(&(Matrix){
@@ -40,6 +38,6 @@ int main() {
   // print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_180));
   // print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_270));
 
-  printf("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
+  // printf("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
   return 0;
 }
