@@ -21,6 +21,9 @@
     "random": "c",
     "position.h": "c",
     "binary.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "logger.h": "c",
+    "string.h": "c",
+    "stdarg.h": "c"
   }
 }

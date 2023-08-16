@@ -2,10 +2,18 @@
 #include "matrix.h"
 #include "puzzle.h"
 #include "binary.h"
+#include "logger.h"
 #include <stdio.h>
 
 int main() {
-  init_all_puzzle();
+  set_logger_global_from_env();
+  // logger_info("info");
+  // logger_error("error");
+  // logger_verbose("verbose");
+  // logger_success("success");
+  // logger_debug("debug");
+
+  // init_all_puzzle();
   // print_puzzle();
   // pretty_print_puzzle();
 
@@ -32,6 +40,6 @@ int main() {
   // print_piece(rotate_piece(PIECE_C, ROTATE_DIRECTION_MIRROR_180));
   // print_piece(rotate_piece(PIECE_C, ROTATE_DIRECTION_MIRROR_270));
 
-  printf("A: %s\n", binary_to_string(positions_to_binary(PIECE_A.position, PIECE_A.position_count)));
+  // printf("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
   return 0;
 }

@@ -1,6 +1,9 @@
 #ifndef _PIECE_H_
 #define _PIECE_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "logger.h"
 #include "position.h"
 #include "matrix.h"
 
@@ -28,7 +31,7 @@ extern Piece PIECE_J;
 
 extern Piece* ALL_PIECES[10];
 
-typedef int ROTATE_DIRECTION;
+typedef int RotateDirection;
 #define ROTATE_DIRECTION_0          1
 #define ROTATE_DIRECTION_90         2
 #define ROTATE_DIRECTION_180        3
@@ -39,7 +42,7 @@ typedef int ROTATE_DIRECTION;
 #define ROTATE_DIRECTION_MIRROR_270 -4
 
 void init_piece_puzzle(Piece* piece);
-Piece rotate_piece(Piece piece, ROTATE_DIRECTION direction);
+Piece rotate_piece(Piece piece, RotateDirection direction);
 Piece fix_piece(Piece piece);
 void print_piece(Piece piece);
 

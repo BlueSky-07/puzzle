@@ -1,6 +1,4 @@
 #include "piece.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
  * y
@@ -210,7 +208,7 @@ void init_piece_puzzle(Piece* piece) {
   }
 }
 
-unsigned int fix_negative(int number, unsigned int max) {
+unsigned int _fix_negative(int number, unsigned int max) {
   if (number == 0) return 0;
   int result = number;
   while (result < 0) {
@@ -218,11 +216,11 @@ unsigned int fix_negative(int number, unsigned int max) {
   }
   result = result % max;
   result = result ? result : max;
-  // printf("fix(%d) = %d\n", number, result);
+  logger_debug("_fix_negative: %d => %d", number, result);
   return result;
 }
 
-Piece rotate_piece(Piece piece, ROTATE_DIRECTION direction) {
+Piece rotate_piece(Piece piece, RotateDirection direction) {
   Piece* result = malloc(sizeof(Piece));
   Matrix matrix;
   int mirror = direction > 0 ? 1 : -1;
@@ -249,25 +247,26 @@ Piece rotate_piece(Piece piece, ROTATE_DIRECTION direction) {
   result->name = piece.name;
   result->position_count = piece.position_count;
 
-  // printf("direction: %d, mirror: %d\n", direction, mirror);
-  // print_matrix(matrix);
+  logger_debug("rotate_piece, direction: %d, mirror: %d, matrix:", direction, mirror);
+  if (logger_level_is_debug_ok()) print_matrix(matrix);
+
   for (int i = 0; i < piece.position_count; i ++) {
     Position p = piece.position[i];
     Position* ip = &result->position[i];
 
-    ip->x = fix_negative(
+    ip->x = _fix_negative(
       matrix.value[0][0] * p.x + matrix.value[0][1] * p.y,
       PIECE_X
     );
 
-    ip->y = fix_negative(
+    ip->y = _fix_negative(
       matrix.value[1][0] * p.x + matrix.value[1][1] * p.y,
       PIECE_Y
     );
 
-    ip->y = fix_negative(ip->y * mirror, PIECE_Y);
+    ip->y = _fix_negative(ip->y * mirror, PIECE_Y);
 
-    // printf("%d, %d => %d, %d\n", p.x, p.y, ip->x, ip->y);
+    logger_debug("rotate_piece, loop: %d, %d => %d, %d", p.x, p.y, ip->x, ip->y);
   }
 
   return fix_piece(*result);

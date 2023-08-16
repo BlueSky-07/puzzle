@@ -1,10 +1,8 @@
 #include "binary.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 Binary position_to_binary(Position position) {
   Binary result = 1 << (PUZZLE_Y * (position.y - 1)) << (position.x - 1);
-  // printf("position_to_binary: %d, %d => %lu / %s\n", position.x, position.y, result, binary_to_string(result));
+  logger_debug("position_to_binary: %d, %d => %lu / %s", position.x, position.y, result, binary_to_string(result));
   return result;
 }
 
@@ -13,7 +11,7 @@ Binary positions_to_binary(Position positions[], int total) {
   for (int i = 0; i < total; i ++) {
     result += position_to_binary(positions[i]);
   }
-  // printf("positions_to_binary: %lu / %s\n", result, binary_to_string(result));
+  logger_debug("positions_to_binary: %lu / %s", result, binary_to_string(result));
   return result;
 }
 
@@ -27,4 +25,8 @@ char* binary_to_string(Binary bin) {
   result[PUZZLE_TOTAL] = '\0';
 
   return result;
+}
+
+char* positions_to_binary_string(Position positions[], int total) {
+  return binary_to_string(positions_to_binary(positions, total));
 }

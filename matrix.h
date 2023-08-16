@@ -1,6 +1,8 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 
+#include <stdio.h>
+
 #define MAX_MATRIX_X 2
 #define MAX_MATRIX_Y 2
 

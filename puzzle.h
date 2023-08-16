@@ -1,6 +1,8 @@
 #ifndef _PUZZLE_H_
 #define _PUZZLE_H_
 
+#include <stdio.h>
+#include <string.h>
 #include "position.h"
 
 #define PUZZLE_X 7
