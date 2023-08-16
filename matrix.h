@@ -17,6 +17,6 @@ extern Matrix ROTATE_MATRIX_90;
 extern Matrix ROTATE_MATRIX_180;
 extern Matrix ROTATE_MATRIX_270;
 
-void print_matrix(Matrix matrix);
+void print_matrix(Matrix* matrix);
 
 #endif

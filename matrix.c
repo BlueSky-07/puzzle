@@ -40,23 +40,24 @@ Matrix ROTATE_MATRIX_270 = {
   2, 2
 };
 
-void print_matrix(Matrix matrix) {
+void print_matrix(Matrix* matrix) {
+  Matrix m = *matrix;
   printf("M |");
-  for (int x = 1; x <= matrix.x; x++) {
+  for (int x = 1; x <= m.x; x++) {
     printf(" %d", x);
   }
   printf("\n");
 
   printf("--+");
-  for (int x = 1; x <= matrix.x; x++) {
+  for (int x = 1; x <= m.x; x++) {
     printf("--");
   }
 
   printf("\n");
-  for (int y = 0; y < matrix.y; y ++) {
+  for (int y = 0; y < m.y; y ++) {
     printf("%d | ", y + 1);
-    for (int x = 0; x < matrix.x; x++) {
-      printf("%d ", matrix.value[y][x]);
+    for (int x = 0; x < m.x; x++) {
+      printf("%d ", m.value[y][x]);
     }
     printf("\n");
   }

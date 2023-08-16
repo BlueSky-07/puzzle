@@ -9,9 +9,9 @@
 
 typedef unsigned long Binary;
 
-Binary position_to_binary(Position position);
+Binary position_to_binary(Position* position);
 Binary positions_to_binary(Position positions[], int total);
-char* binary_to_string(Binary bin);
+char* binary_to_string(Binary binary);
 char* positions_to_binary_string(Position positions[], int total);
 
 #endif

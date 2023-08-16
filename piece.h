@@ -41,9 +41,9 @@ typedef int RotateDirection;
 #define ROTATE_DIRECTION_MIRROR_180 -3
 #define ROTATE_DIRECTION_MIRROR_270 -4
 
-void init_piece_puzzle(Piece* piece);
-Piece rotate_piece(Piece piece, RotateDirection direction);
-Piece fix_piece(Piece piece);
-void print_piece(Piece piece);
+void piece_init_puzzle(Piece* piece);
+Piece* rotate_piece(Piece* piece, RotateDirection direction);
+Piece* fix_piece(Piece* piece);
+void print_piece(Piece* piece);
 
 #endif

@@ -201,7 +201,7 @@ Piece PIECE_J = {
 Piece* ALL_PIECES[10] = {&PIECE_A, &PIECE_B, &PIECE_C, &PIECE_D, &PIECE_E,
                          &PIECE_F, &PIECE_G, &PIECE_H, &PIECE_I, &PIECE_J};
 
-void init_piece_puzzle(Piece* piece) {
+void piece_init_puzzle(Piece* piece) {
   for (int i = 0; i < piece->position_count; i++) {
     Position p = piece->position[i];
     piece->puzzle[p.x][p.y] = 1;
@@ -220,7 +220,8 @@ unsigned int _fix_negative(int number, unsigned int max) {
   return result;
 }
 
-Piece rotate_piece(Piece piece, RotateDirection direction) {
+Piece* rotate_piece(Piece* piece, RotateDirection direction) {
+  Piece p = *piece;
   Piece* result = malloc(sizeof(Piece));
   Matrix matrix;
   int mirror = direction > 0 ? 1 : -1;
@@ -244,66 +245,70 @@ Piece rotate_piece(Piece piece, RotateDirection direction) {
       break;
   }
 
-  result->name = piece.name;
-  result->position_count = piece.position_count;
+  result->name = p.name;
+  result->position_count = p.position_count;
 
   logger_debug("rotate_piece, direction: %d, mirror: %d, matrix:", direction, mirror);
-  if (logger_level_is_debug_ok()) print_matrix(matrix);
+  if (logger_level_is_debug_ok()) print_matrix(&matrix);
 
-  for (int i = 0; i < piece.position_count; i ++) {
-    Position p = piece.position[i];
+  for (int i = 0; i < p.position_count; i ++) {
+    Position pos = p.position[i];
     Position* ip = &result->position[i];
 
     ip->x = _fix_negative(
-      matrix.value[0][0] * p.x + matrix.value[0][1] * p.y,
+      matrix.value[0][0] * pos.x + matrix.value[0][1] * pos.y,
       PIECE_X
     );
 
     ip->y = _fix_negative(
-      matrix.value[1][0] * p.x + matrix.value[1][1] * p.y,
+      matrix.value[1][0] * pos.x + matrix.value[1][1] * pos.y,
       PIECE_Y
     );
 
     ip->y = _fix_negative(ip->y * mirror, PIECE_Y);
 
-    logger_debug("rotate_piece, loop: %d, %d => %d, %d", p.x, p.y, ip->x, ip->y);
+    logger_debug("rotate_piece, loop: %d, %d => %d, %d", pos.x, pos.y, ip->x, ip->y);
   }
 
-  return fix_piece(*result);
+  Piece* fixed_result = fix_piece(result);
+  free(result);
+  return fixed_result;
 }
 
-Piece fix_piece(Piece piece) {
+Piece* fix_piece(Piece* piece) {
+  Piece p = *piece;
   Piece* result = malloc(sizeof(Piece));
-  result->name = piece.name;
-  result->position_count = piece.position_count;
-  int min_x = piece.position[0].x, min_y = piece.position[0].y;
-  for (int i = 1; i < piece.position_count; i ++) {
-    Position p = piece.position[i];
-    if (p.x < min_x) min_x = p.x;
-    if (p.y < min_y) min_y = p.y;
+  result->name = p.name;
+  result->position_count = p.position_count;
+  int min_x = p.position[0].x, min_y = p.position[0].y;
+  for (int i = 1; i < p.position_count; i ++) {
+    Position pos = p.position[i];
+    if (pos.x < min_x) min_x = pos.x;
+    if (pos.y < min_y) min_y = pos.y;
   }
-  for (int i = 0; i < piece.position_count; i ++) {
-    Position p = piece.position[i];
+  for (int i = 0; i < p.position_count; i ++) {
+    Position pos = p.position[i];
     Position* ip = &result->position[i];
-    ip->x = p.x - min_x + 1;
-    ip->y = p.y - min_y + 1;
+    ip->x = pos.x - min_x + 1;
+    ip->y = pos.y - min_y + 1;
   }
 
-  return *result;
+  return result;
 }
 
-void print_piece(Piece piece) {
-  init_piece_puzzle(&piece);
+void print_piece(Piece* piece) {
+  piece_init_puzzle(piece);
+  Piece p = *piece;
 
   for (int y = PIECE_Y; y >= 1; y--) {
     printf("%d | ", y);
     for (int x = 1; x <= PIECE_X; x ++) {
-      printf("%c ", piece.puzzle[x][y]
+      printf("%c ", p.puzzle[x][y]
                  ? '*'
                  : ' ');
     }
     printf("\n");
   }
   printf("--+--------\n");
-  printf("%c | 1 2 3 4\n", piece.name);
+  printf("%c | 1 2 3 4\n", p.name);
 }
