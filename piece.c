@@ -1,5 +1,4 @@
 #include "piece.h"
-#include "matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -211,7 +210,7 @@ void init_piece_puzzle(Piece* piece) {
   }
 }
 
-int fix_negative(int number, int max) {
+unsigned int fix_negative(int number, unsigned int max) {
   if (number == 0) return 0;
   int result = number;
   while (result < 0) {

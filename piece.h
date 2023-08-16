@@ -2,6 +2,7 @@
 #define _PIECE_H_
 
 #include "position.h"
+#include "matrix.h"
 
 #define PIECE_X 4
 #define PIECE_Y 4
@@ -10,8 +11,8 @@
 typedef struct _Piece {
   char name;
   Position position[PIECE_MAX_POSITION];
-  int position_count;
-  int puzzle[PIECE_X + 1][PIECE_Y + 1];
+  unsigned position_count;
+  unsigned int puzzle[PIECE_X + 1][PIECE_Y + 1];
 } Piece;
 
 extern Piece PIECE_A;

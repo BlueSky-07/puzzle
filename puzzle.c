@@ -18,8 +18,8 @@ Position DATE[31] = {
 int DATE_LEN = (int)sizeof(DATE) / (int)sizeof(Position);
 
 Position WEEK[7] = {
-  {4, 2}, {5, 2}, {6, 2}, {7, 2},
-          {5, 1}, {6, 1}, {7, 1},
+                          {4, 2}, {5, 2}, {6, 2}, {7, 2},
+                                  {5, 1}, {6, 1}, {7, 1},
 };
 int WEEK_LEN = (int)sizeof(WEEK) / (int)sizeof(Position);
 
@@ -33,13 +33,13 @@ char* DATE_TEXT[31] = {"001", "002", "003", "004", "005", "006", "007", "008",
 
 char* WEEK_TEXT[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
-int puzzle[PUZZLE_X + 1][PUZZLE_Y + 1];
+unsigned int puzzle[PUZZLE_X + 1][PUZZLE_Y + 1];
 char pretty_puzzle[PUZZLE_X + 1][PUZZLE_Y + 1][4];
 
-void init_puzzle(Position positions[], int t, int len) {
+void init_puzzle(Position positions[], unsigned int v, unsigned int len) {
   for (int i = 0; i < len; i++) {
     Position p = positions[i];
-    puzzle[p.x][p.y] = t;
+    puzzle[p.x][p.y] = v;
   }
 }
 
@@ -51,7 +51,7 @@ void init_pretty_puzzle_array() {
   }
 }
 
-void init_pretty_puzzle(Position positions[], char** texts, int len) {
+void init_pretty_puzzle(Position positions[], char** texts, unsigned int len) {
   for (int i = 0; i < len; i++) {
     Position p = positions[i];
     strcpy(pretty_puzzle[p.x][p.y], texts[i]);

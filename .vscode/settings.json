@@ -18,6 +18,9 @@
     "puzzle.h": "c",
     "stdio.h": "c",
     "cstddef": "c",
-    "random": "c"
+    "random": "c",
+    "position.h": "c",
+    "binary.h": "c",
+    "stdlib.h": "c"
   }
 }

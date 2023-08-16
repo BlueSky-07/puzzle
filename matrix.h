@@ -6,8 +6,8 @@
 
 typedef struct _Matrix {
   int value[MAX_MATRIX_Y][MAX_MATRIX_X];
-  int x;
-  int y;
+  unsigned int x;
+  unsigned int y;
 } Matrix;
 
 extern Matrix ROTATE_MATRIX_0;

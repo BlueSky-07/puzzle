@@ -2,8 +2,8 @@
 #define _POSITION_H_
 
 typedef struct _Position {
-  int x;
-  int y;
+  unsigned int x;
+  unsigned int y;
 } Position;
 
 #endif
