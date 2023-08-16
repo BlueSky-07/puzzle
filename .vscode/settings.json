@@ -24,6 +24,8 @@
     "stdlib.h": "c",
     "logger.h": "c",
     "string.h": "c",
-    "stdarg.h": "c"
+    "stdarg.h": "c",
+    "game.h": "c",
+    "matrix.h": "c"
   }
 }
