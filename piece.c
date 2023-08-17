@@ -203,7 +203,7 @@ Piece* ALL_PIECES[10] = {&PIECE_A, &PIECE_B, &PIECE_C, &PIECE_D, &PIECE_E,
 
 void piece_init_puzzle(Piece* piece) {
   for (int i = 0; i < piece->position_count; i++) {
-    Position p = piece->position[i];
+    Position p = piece->positions[i];
     piece->puzzle[p.x][p.y] = 1;
   }
 }
@@ -240,8 +240,8 @@ Piece* rotate_piece(Piece* piece, RotateDirection direction) {
   if (logger_level_is_debug_ok()) print_matrix(&matrix);
 
   for (int i = 0; i < p.position_count; i ++) {
-    Position pos = p.position[i];
-    Position* ip = &result->position[i];
+    Position pos = p.positions[i];
+    Position* ip = &result->positions[i];
 
     ip->x = calc_negative_to_positive(
       matrix.value[0][0] * pos.x + matrix.value[0][1] * pos.y,
@@ -268,15 +268,15 @@ Piece* fix_piece(Piece* piece) {
   Piece* result = malloc(sizeof(Piece));
   result->name = p.name;
   result->position_count = p.position_count;
-  int min_x = p.position[0].x, min_y = p.position[0].y;
+  int min_x = p.positions[0].x, min_y = p.positions[0].y;
   for (int i = 1; i < p.position_count; i ++) {
-    Position pos = p.position[i];
+    Position pos = p.positions[i];
     if (pos.x < min_x) min_x = pos.x;
     if (pos.y < min_y) min_y = pos.y;
   }
   for (int i = 0; i < p.position_count; i ++) {
-    Position pos = p.position[i];
-    Position* ip = &result->position[i];
+    Position pos = p.positions[i];
+    Position* ip = &result->positions[i];
     ip->x = pos.x - min_x + 1;
     ip->y = pos.y - min_y + 1;
   }

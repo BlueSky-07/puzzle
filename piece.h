@@ -11,7 +11,7 @@
 
 typedef struct _Piece {
   char name;
-  Position position[PIECE_MAX_POSITION];
+  Position positions[PIECE_MAX_POSITION];
   unsigned position_count;
   unsigned int puzzle[PIECE_X + 1][PIECE_Y + 1];
 } Piece;

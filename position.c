@@ -26,26 +26,45 @@ PositionCount* make_position_count(PositionListItem* list) {
   return pc;
 }
 
-Position* position_move(Position* position, CoordinateMove x, CoordinateMove y, PositionMoveAction action) {
+Position* position_move(Position* position, Position* move, PositionMoveAction action) {
   Position p = *position;
+  logger_debug("position_move: from %d, %d move %d, %d %p", p.x, p.y, (move ? move->x : 0), (move ? move->y : 0), move);
+  return position_move_by_coordinate(position, move ? move->x : 0, move ? move->y : 0, action);
+}
+
+Position* position_move_by_coordinate(Position* position, CoordinateMove x, CoordinateMove y, PositionMoveAction action) {
+  Position p = *position;
+  Position* result = position;
   switch (action) {
     case POSITION_MOVE_NEW:
-      return make_position(
-        coordinate_move(p.x, x, MAX_COORDINATE_X),
-        coordinate_move(p.y, y, MAX_COORDINATE_Y)
+      result = make_position(
+        coordinate_move_x(p.x, x),
+        coordinate_move_y(p.y, y)
       );
+      break;
     case POSITION_MOVE_ITSELF:
     default:
-      p.x = coordinate_move(p.x, x, MAX_COORDINATE_X);
-      p.y = coordinate_move(p.y, y, MAX_COORDINATE_Y);
-      return position;
+      p.x = coordinate_move_x(p.x, x);
+      p.y = coordinate_move_y(p.y, y);
+      break;
   }
+  logger_debug("position_move_by_coordinate: %d + %d, %d + %d => %d, %d", p.x, x, p.y ,y, result->x, result->y);
+  return result;
 }
 
 Coordinate coordinate_move(Coordinate original, CoordinateMove move, Coordinate max) {
   if (move >= 0 && original + move > max) return 0;
   else if (move < 0 && -move > original) return 0;
   else return original + move;
+
+}
+
+Coordinate coordinate_move_x(Coordinate original, CoordinateMove move) {
+  return coordinate_move(original, move, MAX_COORDINATE_X);
+}
+
+Coordinate coordinate_move_y(Coordinate original, CoordinateMove move) {
+  return coordinate_move(original, move, MAX_COORDINATE_Y);
 }
 
 Bool position_list_push(PositionListItem* list, Position* position) {
@@ -80,10 +99,14 @@ void position_count_free(PositionCount* pc, Bool include_position) {
   free(pc);
 }
 
-int is_position(Position* position) {
+Bool coordinate_is_ok(Coordinate x, Coordinate y) {
+  return x > 0 && x <= MAX_COORDINATE_X
+      && y > 0 && y <= MAX_COORDINATE_Y;
+}
+
+Bool position_is_ok(Position* position) {
   Position p = *position;
-  return p.x > 0 && p.x <= MAX_COORDINATE_X
-      && p.y > 0 && p.y <= MAX_COORDINATE_Y;
+  return coordinate_is_ok(p.x, p.y);
 }
 
 void print_position(Position* position) {

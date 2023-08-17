@@ -67,17 +67,17 @@ PuzzleText make_puzzle_text() {
 
 void puzzle_fill(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move) {
   for (int i = 0; i < len; i++) {
-    Position pos = positions[i];
-    int x = pos.x + ((move != NULL) ? move->x : 0), y = pos.y + ((move != NULL) ? move->y : 0);
-    puzzle[y * PUZZLE_X + x] = v;
+    Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);
+    puzzle[pos->y * PUZZLE_X + pos->x] = v;
+    free(pos);
   }
 }
 
 void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int len, const char** texts, Position* move) {
   for (int i = 0; i < len; i++) {
-    Position pos = positions[i];
-    int x = pos.x + ((move != NULL) ? move->x : 0), y = pos.y + ((move != NULL) ? move->y : 0);
-    strcpy(puzzle_text + (y * PUZZLE_X + x) * 4, texts[i]);
+    Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);
+    strcpy(puzzle_text + (pos->y * PUZZLE_X + pos->x) * 4, texts[i]);
+    free(pos);
   }
 }
 
@@ -124,10 +124,10 @@ void puzzle_data_test() {
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move) {
   int result = 0;
   for (int i = 0; i < len; i ++) {
-    Position pos = positions[i];
-    int x = pos.x + ((move != NULL) ? move->x : 0), y = pos.y + ((move != NULL) ? move->y : 0);
-    if (x > PUZZLE_X || x < 1 || y > PUZZLE_Y || y < 1) result += 0;
-    else result += puzzle[y * PUZZLE_X + x] == PUZZLE_POSITION_EMPTY ? 1 : 0;
+    Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);
+    if (!coordinate_is_ok(pos->x, pos->y)) result += 0;
+    else result += puzzle[pos->y * PUZZLE_X + pos->x] == PUZZLE_POSITION_EMPTY ? 1 : 0;
+    free(pos);
   }
   return result;
 }
@@ -135,10 +135,10 @@ int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigne
 int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], unsigned int len, Position* move) {
   int result = 0;
   for (int i = 0; i < len; i ++) {
-    Position pos = positions[i];
-    int x = pos.x + ((move != NULL) ? move->x : 0), y = pos.y + ((move != NULL) ? move->y : 0);
-    if (x > PUZZLE_X || x < 1 || y > PUZZLE_Y || y < 1) result += 1;
-    else result += puzzle[y * PUZZLE_X + x] == PUZZLE_POSITION_UNAVAILABLE ? 0 : 1;
+    Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);
+    if (!coordinate_is_ok(pos->x, pos->y)) result += 1;
+    else result += puzzle[pos->y * PUZZLE_X + pos->x] == PUZZLE_POSITION_UNAVAILABLE ? 0 : 1;
+    free(pos);
   }
   return result;
 }
@@ -182,4 +182,9 @@ PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_nam
     }
   }
   return make_position_count(list);
+}
+
+void puzzle_clear(Puzzle puzzle) {
+  memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
+  puzzle_fill(puzzle, UNAVAILABLE, UNAVAILABLE_LEN, PUZZLE_POSITION_UNAVAILABLE, NULL);
 }

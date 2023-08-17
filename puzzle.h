@@ -23,7 +23,7 @@ extern const char* MONTH_TEXTS[12];
 extern const char* DATE_TEXTS[31];
 extern const char* WEEK_TEXTS[7];
 
-typedef unsigned char* Puzzle;
+typedef char* Puzzle;
 typedef char* PuzzleText;
 
 Puzzle make_puzzle();
@@ -44,5 +44,6 @@ int puzzle_count_of_empty(Puzzle puzzle);
 PositionCount* puzzle_find(Puzzle puzzle, char name);
 PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name);
 PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name);
+void puzzle_clear(Puzzle puzzle);
 
 #endif

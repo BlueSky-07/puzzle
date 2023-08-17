@@ -6,6 +6,7 @@
 #include "piece.h"
 #include "puzzle.h"
 #include "position.h"
+#include "binary.h"
 
 typedef int GameActionResult;
 #define GAME_ACTION_SUCCESS                0
@@ -19,6 +20,7 @@ const char* game_action_result_string(GameActionResult result);
 
 GameActionResult put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Position* move);
 GameActionResult remove_piece_from_puzzle(Puzzle puzzle, char name);
+GameActionResult put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* piece, Position* move);
 
 Bool game_is_end(Puzzle puzzle);
 

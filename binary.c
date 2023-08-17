@@ -1,16 +1,18 @@
 #include "binary.h"
 
-Binary position_to_binary(Position* position) {
+Binary position_to_binary(Position* position, Position* move) {
   Position p = *position;
-  Binary result = 1 << (PUZZLE_Y * (p.y - 1)) << (p.x - 1);
-  logger_debug("position_to_binary: %d, %d => %lu / %s", p.x, p.y, result, binary_to_string(result));
+  Position* pos = position_move(position, move, POSITION_MOVE_NEW);
+  Binary result = 1 << (PUZZLE_Y * ((pos->y) - 1)) << ((pos->x) - 1);
+  logger_debug("position_to_binary: %d, %d => %d, %d => %lu / %s", p.x, p.y, pos->x, pos->y, result, binary_to_string(result));
+  free(pos);
   return result;
 }
 
-Binary positions_to_binary(Position positions[], int total) {
+Binary positions_to_binary(Position positions[], int total, Position* move) {
   Binary result = 0;
   for (int i = 0; i < total; i ++) {
-    result += position_to_binary(&positions[i]);
+    result += position_to_binary(&positions[i], move);
   }
   logger_debug("positions_to_binary: %lu / %s", result, binary_to_string(result));
   return result;
@@ -23,13 +25,13 @@ String binary_to_string(Binary binary) {
     int v = binary >> i & 1;
     result[i] = v ? '1' : '0';
   }
-  result[PUZZLE_TOTAL] = '\0';
-
+  result[BINARY_TOTAL] = '\0';
+  logger_debug("binary_to_string: %lu => %s", binary, result);
   return result;
 }
 
 String positions_to_binary_string(Position positions[], int total) {
-  return binary_to_string(positions_to_binary(positions, total));
+  return binary_to_string(positions_to_binary(positions, total, NULL));
 }
 
 PositionCount* binary_to_positions(Binary binary) {
@@ -61,4 +63,35 @@ Binary string_to_binary(String string) {
 
 PositionCount* binary_string_to_positions(String string) {
   return binary_to_positions(string_to_binary(string));
+}
+
+Binary puzzle_to_binary(Puzzle puzzle) {
+  Binary result = 0;
+  for (int y = PUZZLE_Y; y >= 1; y--) {
+    for (int x = PUZZLE_X; x >= 1; x--) {
+      result <<= 1;
+      result += puzzle[y * PUZZLE_X + x] == PUZZLE_POSITION_EMPTY ? 0 : 1;
+    }
+  }
+  return result;
+}
+
+Binary binary_reverse(Binary binary) {
+  return ~binary;
+}
+
+Bool binary_test_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary) {
+  return (binary_reverse(puzzle_binary) & piece_binary) == piece_binary;
+}
+
+Bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b) {
+  return (piece_binary_a | piece_binary_b) == (piece_binary_a + piece_binary_b);
+}
+
+Binary binary_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary) {
+  return puzzle_binary | piece_binary;
+}
+
+Binary binary_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b) {
+  return piece_binary_a | piece_binary_b; // same as piece_binary_a + piece_binary_b
 }
