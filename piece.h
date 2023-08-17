@@ -3,13 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "const.h"
 #include "logger.h"
+#include "calc.h"
 #include "position.h"
 #include "matrix.h"
-
-#define PIECE_X 4
-#define PIECE_Y 4
-#define PIECE_MAX_POSITION 5
 
 typedef struct _Piece {
   char name;

@@ -4,12 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "const.h"
+#include "bool.h"
+#include "logger.h"
 #include "position.h"
 #include "piece.h"
-
-#define PUZZLE_X 7
-#define PUZZLE_Y 8
-#define PUZZLE_TOTAL (PUZZLE_X + 1) * (PUZZLE_Y + 1)
 
 #define PUZZLE_POSITION_UNAVAILABLE 'x'
 #define PUZZLE_POSITION_EMPTY       '0'
@@ -40,7 +39,10 @@ void puzzle_data_test();
 
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move);
 int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], unsigned int len, Position* move);
-int puzzle_positions_count_of_piece(Puzzle puzzle, Piece* piece, Position* move);
-int puzzle_has_piece(Puzzle puzzle, char name);
+int puzzle_count_of_empty(Puzzle puzzle);
+
+PositionCount* puzzle_find(Puzzle puzzle, char name);
+PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name);
+PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name);
 
 #endif

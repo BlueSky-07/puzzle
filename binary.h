@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "logger.h"
+#include "const.h"
 #include "position.h"
-#include "puzzle.h"
 
 typedef unsigned long Binary;
 

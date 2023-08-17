@@ -208,18 +208,6 @@ void piece_init_puzzle(Piece* piece) {
   }
 }
 
-unsigned int _fix_negative(int number, unsigned int max) {
-  if (number == 0) return 0;
-  int result = number;
-  while (result < 0) {
-    result = result + max + 1;
-  }
-  result = result % max;
-  result = result ? result : max;
-  logger_debug("_fix_negative: %d => %d", number, result);
-  return result;
-}
-
 Piece* rotate_piece(Piece* piece, RotateDirection direction) {
   Piece p = *piece;
   Piece* result = malloc(sizeof(Piece));
@@ -255,17 +243,17 @@ Piece* rotate_piece(Piece* piece, RotateDirection direction) {
     Position pos = p.position[i];
     Position* ip = &result->position[i];
 
-    ip->x = _fix_negative(
+    ip->x = calc_negative_to_positive(
       matrix.value[0][0] * pos.x + matrix.value[0][1] * pos.y,
       PIECE_X
     );
 
-    ip->y = _fix_negative(
+    ip->y = calc_negative_to_positive(
       matrix.value[1][0] * pos.x + matrix.value[1][1] * pos.y,
       PIECE_Y
     );
 
-    ip->y = _fix_negative(ip->y * mirror, PIECE_Y);
+    ip->y = calc_negative_to_positive(ip->y * mirror, PIECE_Y);
 
     logger_debug("rotate_piece, loop: %d, %d => %d, %d", pos.x, pos.y, ip->x, ip->y);
   }

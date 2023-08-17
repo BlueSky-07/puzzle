@@ -143,23 +143,43 @@ int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], uns
   return result;
 }
 
-int puzzle_positions_count_of_piece(Puzzle puzzle, Piece* piece, Position* move) {
+int puzzle_count_of_empty(Puzzle puzzle) {
   int result = 0;
-  Piece p = *piece;
-  for (int i = 0; i < p.position_count; i ++) {
-    Position pos = p.position[i];
-    int x = pos.x + ((move != NULL) ? move->x : 0), y = pos.y + ((move != NULL) ? move->y : 0);
-    if (x > PUZZLE_X || x < 1 || y > PUZZLE_Y || y < 1) result += 0;
-    else result += puzzle[y * PUZZLE_X + x] == p.name ? 1 : 0;
+  for (int i = 0; i < PUZZLE_TOTAL; i ++) {
+    result += puzzle[i] == PUZZLE_POSITION_EMPTY ? 1 : 0;
   }
   return result;
 }
 
-int puzzle_has_piece(Puzzle puzzle, char name) {
+PositionCount* puzzle_find(Puzzle puzzle, char name) {
+  PositionListItem* list = make_position_list_item(NULL);
+  logger_debug("puzzle_find: %c", name);
   for (int y = PUZZLE_Y; y >= 1; y--) {
     for (int x = 1; x <= PUZZLE_X; x++) {
-      if (puzzle[y * PUZZLE_X + x] == name) return 1;
+      char c = puzzle[y * PUZZLE_X + x];
+      Bool found = c == name;
+      if (found) {
+        logger_debug("puzzle_find, loop: %d, %d = %c => %d", x, y, c, found);
+        position_list_push(list, make_position(x, y));
+      }
     }
   }
-  return 0;
+  return make_position_count(list);
+}
+
+PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name) {
+  return puzzle_find_and_fill(puzzle, name, PUZZLE_POSITION_EMPTY);
+}
+
+PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name) {
+  PositionListItem* list = make_position_list_item(NULL);
+  for (int y = PUZZLE_Y; y >= 1; y--) {
+    for (int x = 1; x <= PUZZLE_X; x++) {
+      if (puzzle[y * PUZZLE_X + x] == find_name) {
+        position_list_push(list, make_position(x, y));
+        puzzle[y * PUZZLE_X + x] = fill_name;
+      }
+    }
+  }
+  return make_position_count(list);
 }

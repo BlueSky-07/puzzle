@@ -6,7 +6,7 @@
 #include "game.h"
 #include <stdio.h>
 
-void base() {
+void base_test() {
   logger_info("info");
   logger_error("error");
   logger_verbose("verbose");
@@ -38,26 +38,35 @@ void base() {
   print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_180));
   print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_270));
 
-  printf("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
+  logger_info("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
 }
 
-int put(Puzzle puzzle, Piece* piece, Position* move) {
+void put_test(Puzzle puzzle, Piece* piece, Position* move) {
   int failure = put_piece_into_puzzle(puzzle, piece, move);
-  logger_info("%s", game_action_result_string(failure));
+  logger_info("put: %s", game_action_result_string(failure));
+  if (!failure) print_puzzle(puzzle);
+}
+
+void remove_test(Puzzle puzzle, char name) {
+  int failure = remove_piece_from_puzzle(puzzle, name);
+  logger_info("remove: %s", game_action_result_string(failure));
   if (!failure) print_puzzle(puzzle);
 }
 
 int main() {
   set_logger_global_from_env();
 
-  // base();
+  // base_test();
 
   Puzzle puzzle = make_puzzle();
-  put(puzzle, &PIECE_A, &(Position){0, 1});
-  put(puzzle, &PIECE_A, &(Position){1, 2});
-  put(puzzle, &PIECE_B, NULL);
-  put(puzzle, &PIECE_B, &(Position){1, 1});
-  put(puzzle, &PIECE_C, &(Position){1, 2});
+  put_test(puzzle, &PIECE_A, make_position(0, 1));
+  put_test(puzzle, &PIECE_A, make_position(1, 2));
+  put_test(puzzle, &PIECE_B, NULL);
+  remove_test(puzzle, PIECE_B.name);
+  put_test(puzzle, &PIECE_B, make_position(1, 1));
+  put_test(puzzle, &PIECE_C, make_position(1, 2));
+  remove_test(puzzle, PIECE_A.name);
+  logger_info("is end: %d", game_is_end(puzzle));
 
   return 0;
 }
