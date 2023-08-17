@@ -1,11 +1,4 @@
 {
-  "makefile.launchConfigurations": [
-    {
-      "cwd": "/home/admin/workspace/code-server/workspace/puzzle",
-      "binaryPath": "/home/admin/workspace/code-server/workspace/puzzle/a.out",
-      "binaryArgs": []
-    }
-  ],
   "files.associations": {
     "piece.h": "c",
     "system_error": "c",
@@ -26,7 +19,9 @@
     "string.h": "c",
     "stdarg.h": "c",
     "game.h": "c",
-    "matrix.h": "c"
+    "matrix.h": "c",
+    "const.h": "c",
+    "bool.h": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

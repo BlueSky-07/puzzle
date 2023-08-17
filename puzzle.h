@@ -13,15 +13,15 @@
 #define PUZZLE_POSITION_UNAVAILABLE 'x'
 #define PUZZLE_POSITION_EMPTY       '0'
 
-extern Position UNAVAILABLE[6];
-extern Position MONTH[12];
-extern Position DATE[31];
-extern Position WEEK[7];
+extern Position UNAVAILABLE[PUZZLE_UNAVAILABLE_COUNT];
+extern Position MONTH[PUZZLE_MONTH_COUNT];
+extern Position DATE[PUZZLE_DATE_COUNT];
+extern Position WEEK[PUZZLE_WEEK_COUNT];
 
-extern const char* UNAVAILABLE_TEXTS[6];
-extern const char* MONTH_TEXTS[12];
-extern const char* DATE_TEXTS[31];
-extern const char* WEEK_TEXTS[7];
+extern const char* UNAVAILABLE_TEXTS[PUZZLE_UNAVAILABLE_COUNT];
+extern const char* MONTH_TEXTS[PUZZLE_MONTH_COUNT];
+extern const char* DATE_TEXTS[PUZZLE_DATE_COUNT];
+extern const char* WEEK_TEXTS[PUZZLE_WEEK_COUNT];
 
 typedef char* Puzzle;
 typedef char* PuzzleText;
@@ -34,8 +34,6 @@ void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int
 
 void print_puzzle(Puzzle puzzle);
 void print_puzzle_text(PuzzleText puzzle_text);
-
-void puzzle_data_test();
 
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move);
 int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], unsigned int len, Position* move);

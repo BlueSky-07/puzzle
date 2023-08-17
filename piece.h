@@ -27,7 +27,7 @@ extern Piece PIECE_H;
 extern Piece PIECE_I;
 extern Piece PIECE_J;
 
-extern Piece* ALL_PIECES[10];
+extern Piece* ALL_PIECES[PIECE_COUNT];
 
 typedef int RotateDirection;
 #define ROTATE_DIRECTION_0          1

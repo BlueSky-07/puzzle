@@ -28,7 +28,8 @@ PositionCount* make_position_count(PositionListItem* list) {
 
 Position* position_move(Position* position, Position* move, PositionMoveAction action) {
   Position p = *position;
-  logger_debug("position_move: from %d, %d move %d, %d %p", p.x, p.y, (move ? move->x : 0), (move ? move->y : 0), move);
+  if (move && (move->x != 0 || move->y != 0))
+    logger_debug("position_move: from %d, %d move %d, %d", p.x, p.y, move->x, move->y);
   return position_move_by_coordinate(position, move ? move->x : 0, move ? move->y : 0, action);
 }
 
@@ -48,13 +49,15 @@ Position* position_move_by_coordinate(Position* position, CoordinateMove x, Coor
       p.y = coordinate_move_y(p.y, y);
       break;
   }
-  logger_debug("position_move_by_coordinate: %d + %d, %d + %d => %d, %d", p.x, x, p.y ,y, result->x, result->y);
+  if (x != 0 || y != 0)
+    logger_debug("position_move_by_coordinate: %d + %d, %d + %d => %d, %d", p.x, x, p.y ,y, result->x, result->y);
   return result;
 }
 
 Coordinate coordinate_move(Coordinate original, CoordinateMove move, Coordinate max) {
-  if (move >= 0 && original + move > max) return 0;
-  else if (move < 0 && -move > original) return 0;
+  if (move == 0) return original;
+  if (move > 0 && original + move > max) return COORDINATE_INVALID;
+  else if (move < 0 && -move > original) return COORDINATE_INVALID;
   else return original + move;
 
 }
@@ -86,9 +89,9 @@ PositionCount* position_list_find_and_remove(PositionListItem* list, Position* p
 }
 
 void position_list_free(PositionListItem* list, Bool include_position) {
-  if (list->next) {
+  if (list->next)
     position_list_free(list->next, include_position);
-  }
+
   if (include_position) free(list->position);
   free(list);
 }
@@ -100,8 +103,8 @@ void position_count_free(PositionCount* pc, Bool include_position) {
 }
 
 Bool coordinate_is_ok(Coordinate x, Coordinate y) {
-  return x > 0 && x <= MAX_COORDINATE_X
-      && y > 0 && y <= MAX_COORDINATE_Y;
+  return x >= 0 && x < MAX_COORDINATE_X
+      && y >= 0 && y < MAX_COORDINATE_Y;
 }
 
 Bool position_is_ok(Position* position) {

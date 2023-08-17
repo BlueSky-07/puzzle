@@ -2,117 +2,117 @@
 
 /**
  * y
- * 4
- * 3 *
+ * 3
  * 2 *
- * 1 * * *
- *   1 2 3 4 x
+ * 1 *
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_A = {
   'A',
   {
-    {1, 1},
-    {2, 1},
-    {3, 1},
-    {1, 2},
-    {1, 3},
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {0, 1},
+    {0, 2},
   },
   5,
 };
 
 /**
  * y
- * 4
  * 3
  * 2
- * 1 * * * *
- *   1 2 3 4 x
+ * 1
+ * 0 * * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_B = {
   'B',
   {
-    {1, 1},
-    {2, 1},
-    {3, 1},
-    {4, 1},
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {3, 0},
   },
   4,
 };
 
 /**
  * y
- * 4
  * 3
- * 2 *
- * 1 * * * *
- *   1 2 3 4 x
+ * 2
+ * 1 *
+ * 0 * * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_C = {
   'C',
   {
-    {1, 1},
-    {2, 1},
-    {3, 1},
-    {4, 1},
-    {1, 2},
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {3, 0},
+    {0, 1},
   },
   5,
 };
 
 /**
  * y
- * 4
- * 3   *
+ * 3
  * 2   *
- * 1 * * *
- *   1 2 3 4 x
+ * 1   *
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_D = {
   'D',
   {
+    {0, 0},
+    {1, 0},
+    {2, 0},
     {1, 1},
-    {2, 1},
-    {3, 1},
-    {2, 2},
-    {2, 3},
+    {1, 2},
   },
   5,
 };
 
 /**
  * y
- * 4
  * 3
- * 2 *
- * 1 * * *
- *   1 2 3 4 x
+ * 2
+ * 1 *
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_E = {
   'E',
   {
-    {1, 1},
-    {2, 1},
-    {3, 1},
-    {1, 2},
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {0, 1},
   },
   4,
 };
 
 /**
  * y
- * 4
  * 3
- * 2   * *
- * 1 * *
- *   1 2 3 4 x
+ * 2
+ * 1   * *
+ * 0 * *
+ *   0 1 2 3 x
  */
 Piece PIECE_F = {
   'F',
   {
+    {0, 0},
+    {1, 0},
     {1, 1},
     {2, 1},
-    {2, 2},
-    {3, 2},
   },
   4,
 };
@@ -120,40 +120,40 @@ Piece PIECE_F = {
 
 /**
  * y
- * 4
  * 3
- * 2   * * *
- * 1 * *
- *   1 2 3 4 x
+ * 2
+ * 1     * *
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_G = {
   'G',
   {
-    {1, 1},
+    {0, 0},
+    {1, 0},
+    {2, 0},
     {2, 1},
-    {2, 2},
-    {3, 2},
-    {4, 2},
+    {3, 1},
   },
   5,
 };
 
 /**
  * y
- * 4
- * 3   * *
- * 2   *
- * 1 * *
- *   1 2 3 4 x
+ * 3
+ * 2   * *
+ * 1   *
+ * 0 * *
+ *   0 1 2 3 x
  */
 Piece PIECE_H = {
   'H',
   {
+    {0, 0},
+    {1, 0},
     {1, 1},
-    {2, 1},
+    {1, 2},
     {2, 2},
-    {2, 3},
-    {3, 3},
   },
   5,
 };
@@ -161,45 +161,47 @@ Piece PIECE_H = {
 
 /**
  * y
- * 4
- * 3 *
- * 2 * *
+ * 3
+ * 2
  * 1 * *
- *   1 2 3 4 x
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_I = {
   'I',
   {
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {0, 1},
     {1, 1},
-    {2, 1},
-    {1, 2},
-    {2, 2},
-    {1, 3},
   },
   5,
 };
 
 /**
  * y
- * 4
  * 3
- * 2 *   *
- * 1 * * *
- *   1 2 3 4 x
+ * 2
+ * 1 *   *
+ * 0 * * *
+ *   0 1 2 3 x
  */
 Piece PIECE_J = {
   'J',
   {
-    {1, 1},
+    {0, 0},
+    {1, 0},
+    {2, 0},
+    {0, 1},
     {2, 1},
-    {3, 1},
-    {1, 2},
-    {3, 2},
   },
   5,
 };
-Piece* ALL_PIECES[10] = {&PIECE_A, &PIECE_B, &PIECE_C, &PIECE_D, &PIECE_E,
-                         &PIECE_F, &PIECE_G, &PIECE_H, &PIECE_I, &PIECE_J};
+Piece* ALL_PIECES[PIECE_COUNT] = {
+  &PIECE_A, &PIECE_B, &PIECE_C, &PIECE_D, &PIECE_E,
+  &PIECE_F, &PIECE_G, &PIECE_H, &PIECE_I, &PIECE_J,
+};
 
 void piece_init_puzzle(Piece* piece) {
   for (int i = 0; i < piece->position_count; i++) {
@@ -240,22 +242,31 @@ Piece* rotate_piece(Piece* piece, RotateDirection direction) {
   if (logger_level_is_debug_ok()) print_matrix(&matrix);
 
   for (int i = 0; i < p.position_count; i ++) {
-    Position pos = p.positions[i];
+    // move 1, 1 to use rotate matrix
+    int fix = 1;
+    Position pp = p.positions[i];
+    Position* pos_fixed = position_move_by_coordinate(&pp, fix, fix, POSITION_MOVE_NEW);
+    Position pf = *pos_fixed;
     Position* ip = &result->positions[i];
 
     ip->x = calc_negative_to_positive(
-      matrix.value[0][0] * pos.x + matrix.value[0][1] * pos.y,
-      PIECE_X
+      matrix.value[0][0] * pf.x + matrix.value[0][1] * pf.y,
+      PIECE_X + fix
     );
 
     ip->y = calc_negative_to_positive(
-      matrix.value[1][0] * pos.x + matrix.value[1][1] * pos.y,
-      PIECE_Y
+      matrix.value[1][0] * pf.x + matrix.value[1][1] * pf.y,
+      PIECE_Y + fix
     );
 
-    ip->y = calc_negative_to_positive(ip->y * mirror, PIECE_Y);
+    ip->y = calc_negative_to_positive(ip->y * mirror, PIECE_Y + fix);
 
-    logger_debug("rotate_piece, loop: %d, %d => %d, %d", pos.x, pos.y, ip->x, ip->y);
+    // revert fix
+    ip->x = ip->x - fix;
+    ip->y = ip->y - fix;
+
+    logger_debug("rotate_piece, loop: %d, %d => %d, %d", pp.x, pp.y, ip->x, ip->y);
+    free(pos_fixed);
   }
 
   Piece* fixed_result = fix_piece(result);
@@ -277,8 +288,8 @@ Piece* fix_piece(Piece* piece) {
   for (int i = 0; i < p.position_count; i ++) {
     Position pos = p.positions[i];
     Position* ip = &result->positions[i];
-    ip->x = pos.x - min_x + 1;
-    ip->y = pos.y - min_y + 1;
+    ip->x = pos.x - min_x;
+    ip->y = pos.y - min_y;
   }
 
   return result;
@@ -288,15 +299,12 @@ void print_piece(Piece* piece) {
   piece_init_puzzle(piece);
   Piece p = *piece;
 
-  for (int y = PIECE_Y; y >= 1; y--) {
+  for (int y = PIECE_Y - 1; y >= 0; y--) {
     printf("%d | ", y);
-    for (int x = 1; x <= PIECE_X; x ++) {
-      printf("%c ", p.puzzle[x][y]
-                 ? '*'
-                 : ' ');
-    }
+    for (int x = 0; x < PIECE_X; x ++)
+      printf("%c ", p.puzzle[x][y] ? '*' : ' ');
     printf("\n");
   }
   printf("--+--------\n");
-  printf("%c | 1 2 3 4\n", p.name);
+  printf("%c | 0 1 2 3\n", p.name);
 }
