@@ -27,11 +27,11 @@ extern LoggerLevel _logger_global_level;
 extern FILE* _logger_global_stream_out;
 extern FILE* _logger_global_stream_err;
 
-void set_logger_global_level(LoggerLevel level);
-void set_logger_global_level_from_env();
-void set_logger_global_is_enabled(LoggerIsEnabled enabled);
-void set_logger_global_is_enabled_from_env();
-void set_logger_global_from_env();
+void logger_global_set_level(LoggerLevel level);
+void logger_global_set_level_from_env();
+void logger_global_set_is_enabled(LoggerIsEnabled enabled);
+void logger_global_set_is_enabled_from_env();
+void logger_global_set_all_from_env();
 
 int logger_level_is_ok(LoggerLevel level);
 int logger_level_is_error_ok();

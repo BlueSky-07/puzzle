@@ -1,20 +1,20 @@
 #include "position.h"
 
-Position* make_position(Coordinate x, Coordinate y) {
+Position* position_make(Coordinate x, Coordinate y) {
   Position* p = malloc(sizeof(Position));
   p->x = x;
   p->y = y;
   return p;
 }
 
-PositionListItem* make_position_list_item(Position* position) {
+PositionListItem* position_list_item_make(Position* position) {
   PositionListItem* pl = malloc(sizeof(PositionListItem));
   pl->position = position;
   pl->next = NULL;
   return pl;
 }
 
-PositionCount* make_position_count(PositionListItem* list) {
+PositionCount* position_count_make(PositionListItem* list) {
   PositionCount* pc = malloc(sizeof(PositionCount));
   pc->positions = list;
   int count = 0;
@@ -38,7 +38,7 @@ Position* position_move_by_coordinate(Position* position, CoordinateMove x, Coor
   Position* result = position;
   switch (action) {
     case POSITION_MOVE_NEW:
-      result = make_position(
+      result = position_make(
         coordinate_move_x(p.x, x),
         coordinate_move_y(p.y, y)
       );
@@ -74,7 +74,7 @@ Bool position_list_push(PositionListItem* list, Position* position) {
   if (!list) return FALSE;
   while (list->next) list = list->next;
   if (!list->position) list->position = position;
-  else list->next = make_position_list_item(position);
+  else list->next = position_list_item_make(position);
   return TRUE;
 }
 
@@ -112,16 +112,16 @@ Bool position_is_ok(Position* position) {
   return coordinate_is_ok(p.x, p.y);
 }
 
-void print_position(Position* position) {
+void position_print(Position* position) {
   if (!position) return;
   Position p = *position;
   printf("%d, %d", p.x, p.y);
 }
 
-void print_position_list(PositionListItem* list) {
+void position_list_print(PositionListItem* list) {
   if (!list) return;
   while (list && list->position) {
-    print_position(list->position);
+    position_print(list->position);
     printf("\n");
     list = list->next;
   }

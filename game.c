@@ -40,8 +40,8 @@ GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* pi
   logger_debug("game_put_piece_into_puzzle_binary_mode");
   if (move && (move->x != 0 || move->y != 0))
     logger_debug("move: %d, %d", move->x, move->y);
-  Binary puzzle_binary = puzzle_to_binary(puzzle);
-  Binary piece_binary = positions_to_binary(p.positions, p.position_count, move);
+  Binary puzzle_binary = binary_from_puzzle(puzzle);
+  Binary piece_binary = binary_from_positions(p.positions, p.position_count, move);
   if (logger_level_is_debug_ok()) {
     logger_debug("puzzle: %s", binary_to_string(puzzle_binary));
     logger_debug("piece: %s", binary_to_string(piece_binary));

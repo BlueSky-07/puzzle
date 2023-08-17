@@ -2,10 +2,10 @@
 
 LoggerIsEnabled _logger_global_is_enabled = LOGGER_ENABLED;
 LoggerLevel _logger_global_level = LOGGER_LEVEL_INFO;
-FILE* _logger_global_stream_out = NULL;
-FILE* _logger_global_stream_err = NULL;
+FILE* _logger_global_stream_out = NULL; // todo
+FILE* _logger_global_stream_err = NULL; // todo
 
-void set_logger_global_level(LoggerLevel level) {
+void logger_global_set_level(LoggerLevel level) {
   _logger_global_level = level;
 }
 
@@ -32,14 +32,14 @@ int logger_level_from_string(char* level_string) {
   return result;
 }
 
-void set_logger_global_level_from_env() {
+void logger_global_set_level_from_env() {
   char* level_string = getenv("LOGGER_LEVEL");
   int level = logger_level_from_string(level_string);
   if (level < 0) return;
-  set_logger_global_level(level);
+  logger_global_set_level(level);
 }
 
-void set_logger_global_is_enabled(LoggerIsEnabled enabled) {
+void logger_global_set_is_enabled(LoggerIsEnabled enabled) {
   _logger_global_is_enabled = enabled;
 }
 
@@ -59,17 +59,17 @@ int _bool_from_string(char* string) {
   return result;
 }
 
-void set_logger_global_is_enabled_from_env() {
+void logger_global_set_is_enabled_from_env() {
   char* enabled_string = getenv("LOGGER");
 
   int enabled = _bool_from_string(enabled_string);
   if (enabled < 0) return;
-  set_logger_global_is_enabled(enabled);
+  logger_global_set_is_enabled(enabled);
 }
 
-void set_logger_global_from_env() {
-  set_logger_global_is_enabled_from_env();
-  set_logger_global_level_from_env();
+void logger_global_set_all_from_env() {
+  logger_global_set_is_enabled_from_env();
+  logger_global_set_level_from_env();
 }
 
 int logger_level_is_ok(LoggerLevel level) {

@@ -1,24 +1,24 @@
 #include "binary.h"
 
-Binary position_to_binary(Position* position, Position* move) {
+Binary binary_from_position(Position* position, Position* move) {
   Position p = *position;
   Position* pos = position_move(position, move, POSITION_MOVE_NEW);
   Binary result = 1 << (PUZZLE_Y * pos->y + pos->x);
 
   if (logger_level_is_debug_ok())
-    logger_debug("position_to_binary: %d, %d => %d, %d => %lu <=> %s", p.x, p.y, pos->x, pos->y, result, binary_to_string(result));
+    logger_debug("binary_from_position: %d, %d => %d, %d => %lu <=> %s", p.x, p.y, pos->x, pos->y, result, binary_to_string(result));
 
   free(pos);
   return result;
 }
 
-Binary positions_to_binary(Position positions[], int total, Position* move) {
+Binary binary_from_positions(Position positions[], int total, Position* move) {
   Binary result = 0;
   for (int i = 0; i < total; i ++)
-    result += position_to_binary(&positions[i], move);
+    result += binary_from_position(&positions[i], move);
 
   if (logger_level_is_debug_ok())
-    logger_debug("positions_to_binary: %lu <=> %s", result, binary_to_string(result));
+    logger_debug("binary_from_positions: %lu <=> %s", result, binary_to_string(result));
 
   return result;
 }
@@ -37,12 +37,12 @@ String binary_to_string(Binary binary) {
   return result;
 }
 
-String positions_to_binary_string(Position positions[], int total) {
-  return binary_to_string(positions_to_binary(positions, total, NULL));
+String binary_string_from_positions(Position positions[], int total) {
+  return binary_to_string(binary_from_positions(positions, total, NULL));
 }
 
 PositionCount* binary_to_positions(Binary binary) {
-  PositionListItem* list = make_position_list_item(NULL);
+  PositionListItem* list = position_list_item_make(NULL);
 
   if (logger_level_is_debug_ok())
     logger_debug("binary_to_positions: %lu / %s", binary, binary_to_string(binary));
@@ -53,15 +53,15 @@ PositionCount* binary_to_positions(Binary binary) {
     int x = i % PUZZLE_Y;
     int y = i / PUZZLE_Y;
     logger_debug("binary_to_positions: %d => %d, %d", i, x, y);
-    position_list_push(list, make_position(x, y));
+    position_list_push(list, position_make(x, y));
   }
 
-  PositionCount* pc = make_position_count(list);
-  if (logger_level_is_debug_ok()) print_position_list(pc->positions);
+  PositionCount* pc = position_count_make(list);
+  if (logger_level_is_debug_ok()) position_list_print(pc->positions);
   return pc;
 }
 
-Binary string_to_binary(String string) {
+Binary binary_from_string(String string) {
   Binary result = 0;
   for (int i = BINARY_TOTAL - 1; i >= 0; i --) {
     result <<= 1;
@@ -71,10 +71,10 @@ Binary string_to_binary(String string) {
 }
 
 PositionCount* binary_string_to_positions(String string) {
-  return binary_to_positions(string_to_binary(string));
+  return binary_to_positions(binary_from_string(string));
 }
 
-Binary puzzle_to_binary(Puzzle puzzle) {
+Binary binary_from_puzzle(Puzzle puzzle) {
   Binary result = 0;
   for (int y = PUZZLE_Y - 1; y >= 0; y--) {
     for (int x = PUZZLE_X - 1; x >= 0; x--) {

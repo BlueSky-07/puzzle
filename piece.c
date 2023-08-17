@@ -210,7 +210,7 @@ void piece_init_puzzle(Piece* piece) {
   }
 }
 
-Piece* rotate_piece(Piece* piece, RotateDirection direction) {
+Piece* piece_rotate(Piece* piece, RotateDirection direction) {
   Piece p = *piece;
   Piece* result = malloc(sizeof(Piece));
   Matrix matrix;
@@ -238,8 +238,8 @@ Piece* rotate_piece(Piece* piece, RotateDirection direction) {
   result->name = p.name;
   result->position_count = p.position_count;
 
-  logger_debug("rotate_piece, direction: %d, mirror: %d, matrix:", direction, mirror);
-  if (logger_level_is_debug_ok()) print_matrix(&matrix);
+  logger_debug("piece_rotate, direction: %d, mirror: %d, matrix:", direction, mirror);
+  if (logger_level_is_debug_ok()) matrix_print(&matrix);
 
   for (int i = 0; i < p.position_count; i ++) {
     // move 1, 1 to use rotate matrix
@@ -265,16 +265,16 @@ Piece* rotate_piece(Piece* piece, RotateDirection direction) {
     ip->x = ip->x - fix;
     ip->y = ip->y - fix;
 
-    logger_debug("rotate_piece, loop: %d, %d => %d, %d", pp.x, pp.y, ip->x, ip->y);
+    logger_debug("piece_rotate, loop: %d, %d => %d, %d", pp.x, pp.y, ip->x, ip->y);
     free(pos_fixed);
   }
 
-  Piece* fixed_result = fix_piece(result);
+  Piece* fixed_result = piece_fix(result);
   free(result);
   return fixed_result;
 }
 
-Piece* fix_piece(Piece* piece) {
+Piece* piece_fix(Piece* piece) {
   Piece p = *piece;
   Piece* result = malloc(sizeof(Piece));
   result->name = p.name;
@@ -295,7 +295,7 @@ Piece* fix_piece(Piece* piece) {
   return result;
 }
 
-void print_piece(Piece* piece) {
+void piece_print(Piece* piece) {
   piece_init_puzzle(piece);
   Piece p = *piece;
 

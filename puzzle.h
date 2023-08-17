@@ -26,8 +26,8 @@ extern const char* WEEK_TEXTS[PUZZLE_WEEK_COUNT];
 typedef char* Puzzle;
 typedef char* PuzzleText;
 
-Puzzle make_puzzle();
-PuzzleText make_puzzle_text();
+Puzzle puzzle_make();
+PuzzleText puzzle_text_make();
 
 void puzzle_fill(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move);
 void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int len, const char** texts, Position* move);

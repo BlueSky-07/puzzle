@@ -24,6 +24,6 @@ GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* pi
 
 Bool game_is_end(Puzzle puzzle);
 
-void put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
+void game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece); // todo
 
 #endif

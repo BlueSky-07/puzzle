@@ -46,14 +46,14 @@ const char* WEEK_TEXTS[PUZZLE_WEEK_COUNT] = {
                               "Thu", "Fri", "Sat",
 };
 
-Puzzle make_puzzle() {
+Puzzle puzzle_make() {
   Puzzle puzzle = malloc(sizeof(unsigned int) * PUZZLE_TOTAL);
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
   puzzle_fill(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
   return puzzle;
 }
 
-PuzzleText make_puzzle_text() {
+PuzzleText puzzle_text_make() {
   PuzzleText puzzle_text = malloc(sizeof(char) * PUZZLE_TOTAL * 4);
   memset(puzzle_text, ' ', PUZZLE_TOTAL);
   for (int i = 3; i < PUZZLE_TOTAL * 4; i += 4) puzzle_text[i] = '\0';
@@ -132,7 +132,7 @@ int puzzle_count_of_empty(Puzzle puzzle) {
 }
 
 PositionCount* puzzle_find(Puzzle puzzle, char name) {
-  PositionListItem* list = make_position_list_item(NULL);
+  PositionListItem* list = position_list_item_make(NULL);
   logger_debug("puzzle_find: %c", name);
   for (int y = 0; y < PUZZLE_Y; y++) {
     for (int x = 0; x < PUZZLE_X; x++) {
@@ -140,11 +140,11 @@ PositionCount* puzzle_find(Puzzle puzzle, char name) {
       Bool found = c == name;
       if (found) {
         logger_debug("puzzle_find, loop: %d, %d = %c => %d", x, y, c, found);
-        position_list_push(list, make_position(x, y));
+        position_list_push(list, position_make(x, y));
       }
     }
   }
-  return make_position_count(list);
+  return position_count_make(list);
 }
 
 PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name) {
@@ -152,16 +152,16 @@ PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name) {
 }
 
 PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name) {
-  PositionListItem* list = make_position_list_item(NULL);
+  PositionListItem* list = position_list_item_make(NULL);
   for (int y = 0; y < PUZZLE_Y; y++) {
     for (int x = 0; x < PUZZLE_X; x++) {
       if (puzzle[y * PUZZLE_X + x] == find_name) {
-        position_list_push(list, make_position(x, y));
+        position_list_push(list, position_make(x, y));
         puzzle[y * PUZZLE_X + x] = fill_name;
       }
     }
   }
-  return make_position_count(list);
+  return position_count_make(list);
 }
 
 void puzzle_clear(Puzzle puzzle) {

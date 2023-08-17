@@ -29,9 +29,9 @@ typedef Coordinate PositionMoveAction;
 #define POSITION_MOVE_ITSELF   1
 #define POSITION_MOVE_NEW      2
 
-Position* make_position(Coordinate x, Coordinate y);
-PositionListItem* make_position_list_item(Position* position);
-PositionCount* make_position_count(PositionListItem* list);
+Position* position_make(Coordinate x, Coordinate y);
+PositionListItem* position_list_item_make(Position* position);
+PositionCount* position_count_make(PositionListItem* list);
 
 Position* position_move(Position* position, Position* move, PositionMoveAction action);
 Position* position_move_by_coordinate(Position* position, CoordinateMove x, CoordinateMove y, PositionMoveAction action);
@@ -49,7 +49,7 @@ void position_count_free(PositionCount* pc, Bool include_position);
 Bool coordinate_is_ok(Coordinate x, Coordinate y);
 Bool position_is_ok(Position* position);
 
-void print_position(Position* position);
-void print_position_list(PositionListItem* list);
+void position_print(Position* position);
+void position_list_print(PositionListItem* list);
 
 #endif

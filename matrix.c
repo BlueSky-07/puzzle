@@ -40,7 +40,7 @@ Matrix ROTATE_MATRIX_270 = {
   2, 2
 };
 
-void print_matrix(Matrix* matrix) {
+void matrix_print(Matrix* matrix) {
   Matrix m = *matrix;
   printf("M |");
   for (int x = 1; x <= m.x; x++) {
