@@ -17,8 +17,8 @@ PositionListItem* make_position_list_item(Position* position) {
 PositionCount* make_position_count(PositionListItem* list) {
   PositionCount* pc = malloc(sizeof(PositionCount));
   pc->positions = list;
-  int count = list->position ? 1 : 0;
-  while (list->next) {
+  int count = 0;
+  while (list) {
     count += list->position ? 1 : 0;
     list = list->next;
   }
@@ -46,12 +46,6 @@ Coordinate coordinate_move(Coordinate original, CoordinateMove move, Coordinate 
   if (move >= 0 && original + move > max) return 0;
   else if (move < 0 && -move > original) return 0;
   else return original + move;
-}
-
-int is_position(Position* position) {
-  Position p = *position;
-  return p.x > 0 && p.x <= MAX_COORDINATE_X
-      && p.y > 0 && p.y <= MAX_COORDINATE_Y;
 }
 
 Bool position_list_push(PositionListItem* list, Position* position) {
@@ -84,4 +78,25 @@ void position_count_free(PositionCount* pc, Bool include_position) {
   if (!pc) return;
   position_list_free(pc->positions, include_position);
   free(pc);
+}
+
+int is_position(Position* position) {
+  Position p = *position;
+  return p.x > 0 && p.x <= MAX_COORDINATE_X
+      && p.y > 0 && p.y <= MAX_COORDINATE_Y;
+}
+
+void print_position(Position* position) {
+  if (!position) return;
+  Position p = *position;
+  printf("%d, %d", p.x, p.y);
+}
+
+void print_position_list(PositionListItem* list) {
+  if (!list) return;
+  while (list && list->position) {
+    print_position(list->position);
+    printf("\n");
+    list = list->next;
+  }
 }

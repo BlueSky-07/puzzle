@@ -22,4 +22,6 @@ GameActionResult remove_piece_from_puzzle(Puzzle puzzle, char name);
 
 Bool game_is_end(Puzzle puzzle);
 
+void put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
+
 #endif

@@ -45,4 +45,7 @@ void position_count_free(PositionCount* pc, Bool include_position);
 
 int is_position(Position* position);
 
+void print_position(Position* position);
+void print_position_list(PositionListItem* list);
+
 #endif

@@ -12,6 +12,8 @@
 #define PIECE_Y 4
 #define PIECE_MAX_POSITION 5
 
+#define BINARY_TOTAL PUZZLE_X * PUZZLE_Y
+
 #define END_GAME_COUNT 3
 
 #endif

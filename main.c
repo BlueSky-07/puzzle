@@ -37,8 +37,19 @@ void base_test() {
   print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_90));
   print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_180));
   print_piece(rotate_piece(&PIECE_C, ROTATE_DIRECTION_MIRROR_270));
+}
 
-  logger_info("A: %s\n", positions_to_binary_string(PIECE_A.position, PIECE_A.position_count));
+void binary_test() {
+  print_piece(&PIECE_A);
+  String a_string = positions_to_binary_string(PIECE_A.position, PIECE_A.position_count);
+  logger_info("stringify:");
+  logger_info("%s", a_string);
+  PositionCount* a_pc = binary_string_to_positions(a_string);
+  logger_info("parse:");
+  print_position_list(a_pc->positions);
+
+  free(a_string);
+  free(a_pc);
 }
 
 void put_test(Puzzle puzzle, Piece* piece, Position* move) {
@@ -57,6 +68,8 @@ int main() {
   set_logger_global_from_env();
 
   // base_test();
+  binary_test();
+  return 0;
 
   Puzzle puzzle = make_puzzle();
   put_test(puzzle, &PIECE_A, make_position(0, 1));
