@@ -110,3 +110,18 @@ BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece) {
   }
   return binary_count_make(list);
 }
+
+BinaryCount* game_put_piece_all_kinds_all_rotate_into_puzzle(Puzzle puzzle, Piece* piece) {
+  BinaryListItem* list = binary_list_item_make_empty();
+  BinaryCount* rotate_list = game_rotate_piece_all_kinds_unique(piece);
+  BinaryListItem* i = rotate_list->binaries;
+  while (i) {
+    Piece* new_piece = binary_to_piece(i->binary, piece->name);
+    BinaryCount* piece_list = game_put_piece_all_kinds_into_puzzle(puzzle, new_piece);
+    binary_list_push_list_unique(list, piece_list->binaries);
+    free(new_piece);
+    binary_count_free(piece_list);
+    i = i->next;
+  }
+  return binary_count_make(list);
+}

@@ -40,6 +40,16 @@ Bool binary_list_push_unique(BinaryListItem* list, Binary binary) {
   return TRUE;
 }
 
+Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition) {
+  if (!list) return FALSE;
+  BinaryListItem* i = addition;
+  while (i) {
+    binary_list_push_unique(list, i->binary);
+    i = i->next;
+  }
+  return TRUE;
+}
+
 Bool binary_list_find(BinaryListItem* list, Binary binary) {
   if (!list) return FALSE;
   while (list->next) list = list->next;

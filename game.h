@@ -26,5 +26,6 @@ Bool game_is_end(Puzzle puzzle);
 
 BinaryCount* game_rotate_piece_all_kinds_unique(Piece* piece);
 BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
+BinaryCount* game_put_piece_all_kinds_all_rotate_into_puzzle(Puzzle puzzle, Piece* piece);
 
 #endif

@@ -28,6 +28,7 @@ BinaryCount* binary_count_make(BinaryListItem* list);
 
 Bool binary_list_push(BinaryListItem* list, Binary binary);
 Bool binary_list_push_unique(BinaryListItem* list, Binary binary);
+Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition);
 Bool binary_list_find(BinaryListItem* list, Binary binary);
 
 void binary_list_free(BinaryListItem* list);
