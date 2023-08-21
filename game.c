@@ -63,6 +63,18 @@ Bool game_is_end(Puzzle puzzle) {
   return puzzle_count_of_empty(puzzle) == GAME_IS_END_REST_COUNT;
 }
 
+BinaryCount* game_rotate_piece_all_kinds_unique(Piece* piece) {
+  BinaryListItem* list = binary_list_item_make_empty();
+  for (int i = 0; i < PIECE_ROTATE_DIRECTION_COUNT; i ++) {
+    RotateDirection rotate = ALL_ROTATE_DIRECTIONS[i];
+    Piece* new_piece = piece_rotate(piece, rotate);
+    Binary new_piece_binary = binary_from_positions(new_piece->positions, new_piece->position_count, NULL);
+    binary_list_push_unique(list, new_piece_binary);
+    free(new_piece);
+  }
+  return binary_count_make(list);
+}
+
 BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece) {
   BinaryListItem* list = binary_list_item_make_empty();
   Binary binary_puzzle = binary_from_puzzle(puzzle);

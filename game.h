@@ -24,6 +24,7 @@ GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* pi
 
 Bool game_is_end(Puzzle puzzle);
 
+BinaryCount* game_rotate_piece_all_kinds_unique(Piece* piece);
 BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
 
 #endif

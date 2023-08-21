@@ -147,9 +147,34 @@ void game_test() {
   free(puzzle);
 }
 
-void game_piece_test() {
+void game_piece_rotate_all_kinds_unique_test() {
   logger_info("=======================================");
-  logger_info("game_piece_test:");
+  logger_info("game_piece_rotate_all_kinds_unique_test:");
+
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    Piece* piece = ALL_PIECES[i];
+    Piece p = *piece;
+    BinaryCount* bc = game_rotate_piece_all_kinds_unique(piece);
+    logger_info("%c has %d kinds", p.name, bc->count);
+    BinaryListItem* ii = bc->binaries;
+    while (ii) {
+      Binary binary = ii->binary;
+      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      PositionCount* pc = binary_to_positions(binary);
+      position_list_print(pc->positions);
+      free(pc);
+      Piece* pp = binary_to_piece(binary, p.name);
+      piece_print(pp);
+      free(pp);
+      ii = ii->next;
+    }
+    binary_count_free(bc);
+  }
+}
+
+void game_piece_put_all_kinds_test() {
+  logger_info("=======================================");
+  logger_info("game_piece_put_all_kinds_test:");
 
   Puzzle puzzle = puzzle_make();
   for (int i = 0; i < PIECE_COUNT; i ++) {
@@ -186,7 +211,8 @@ int main() {
   // piece_rotate_test();
   // binary_test();
   // game_test();
-  game_piece_test();
+  game_piece_rotate_all_kinds_unique_test();
+  // game_piece_put_all_kinds_test();
 
   logger_info("end puzzle test");
 

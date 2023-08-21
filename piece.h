@@ -38,6 +38,7 @@ typedef int RotateDirection;
 #define ROTATE_DIRECTION_MIRROR_90  -2
 #define ROTATE_DIRECTION_MIRROR_180 -3
 #define ROTATE_DIRECTION_MIRROR_270 -4
+extern RotateDirection ALL_ROTATE_DIRECTIONS[PIECE_ROTATE_DIRECTION_COUNT];
 
 Piece* piece_make(char name, unsigned int position_count, Position positions[PIECE_MAX_POSITION]);
 Piece* piece_make_from_position_list(char name, unsigned int position_count, PositionListItem* list);

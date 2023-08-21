@@ -198,9 +198,21 @@ Piece PIECE_J = {
   },
   5,
 };
+
 Piece* ALL_PIECES[PIECE_COUNT] = {
   &PIECE_A, &PIECE_B, &PIECE_C, &PIECE_D, &PIECE_E,
   &PIECE_F, &PIECE_G, &PIECE_H, &PIECE_I, &PIECE_J,
+};
+
+RotateDirection ALL_ROTATE_DIRECTIONS[PIECE_ROTATE_DIRECTION_COUNT] = {
+  ROTATE_DIRECTION_0,
+  ROTATE_DIRECTION_90,
+  ROTATE_DIRECTION_180,
+  ROTATE_DIRECTION_270,
+  ROTATE_DIRECTION_MIRROR_0,
+  ROTATE_DIRECTION_MIRROR_90,
+  ROTATE_DIRECTION_MIRROR_180,
+  ROTATE_DIRECTION_MIRROR_270,
 };
 
 Piece* piece_make(char name, unsigned int position_count, Position positions[PIECE_MAX_POSITION]) {
@@ -222,6 +234,7 @@ Piece* piece_make_from_position_list(char name, unsigned int position_count, Pos
     positions[i].x = list->position->x;
     positions[i].y = list->position->y;
     list = list ->next;
+    i++;
   }
   return piece_make(name, position_count, positions);
 }
