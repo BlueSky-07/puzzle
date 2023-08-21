@@ -8,7 +8,7 @@
 #include "position.h"
 #include "binary.h"
 
-typedef int GameActionResult;
+typedef unsigned int GameActionResult;
 #define GAME_ACTION_SUCCESS                0
 #define GAME_ACTION_FAILURE                1
 #define GAME_ACTION_FAILURE_HAS_PUT        2

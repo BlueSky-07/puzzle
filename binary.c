@@ -159,6 +159,7 @@ Piece* binary_list_to_piece(BinaryListItem* list, char name) {
 }
 
 Binary binary_from_puzzle(Puzzle puzzle) {
+  if (!puzzle) return BINARY_INVALID;
   Binary result = 0;
   for (int y = PUZZLE_Y - 1; y >= 0; y--) {
     for (int x = PUZZLE_X - 1; x >= 0; x--) {

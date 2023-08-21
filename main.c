@@ -5,6 +5,7 @@
 #include "puzzle.h"
 #include "binary.h"
 #include "game.h"
+#include "io.h"
 #include <stdio.h>
 
 void logger_test() {
@@ -216,6 +217,8 @@ void game_piece_rotate_and_put_test() {
     while (ii) {
       Binary binary = ii->binary;
       logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      ii = ii->next;
+      continue;
       PositionCount* pc = binary_to_positions(binary);
       position_list_print(pc->positions);
       Puzzle piece_into_puzzle = puzzle_make();
@@ -223,10 +226,42 @@ void game_piece_rotate_and_put_test() {
       puzzle_print(piece_into_puzzle);
       free(pc);
       free(piece_into_puzzle);
-      ii = ii->next;
     }
     binary_count_free(bc);
     break;
+  }
+}
+
+void io_write_piece_all_kinds_test() {
+  logger_info("=======================================");
+  logger_info("io_write_piece_all_kinds_test:");
+
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    Piece* piece = ALL_PIECES[i];
+    Piece p = *piece;
+    io_write_piece_all_kinds(piece, NULL);
+    logger_info("write %c done", p.name);
+  }
+}
+
+void io_read_piece_all_kinds_test() {
+  logger_info("=======================================");
+  logger_info("io_read_piece_all_kinds_test:");
+
+  BinaryListItem* list = binary_list_item_make_empty();
+  io_read_binary_list("data/A.piece.txt", list);
+  BinaryListItem* i = list;
+  while(i) {
+    Binary binary = i->binary;
+    logger_info("%lu <=> %s", binary, binary_to_string(binary));
+    i = i->next;
+    PositionCount* pc = binary_to_positions(binary);
+    position_list_print(pc->positions);
+    Puzzle piece_into_puzzle = puzzle_make();
+    puzzle_fill_position_count(piece_into_puzzle, pc, 'A', NULL);
+    puzzle_print(piece_into_puzzle);
+    free(pc);
+    free(piece_into_puzzle);
   }
 }
 
@@ -244,6 +279,8 @@ int main() {
   // game_piece_rotate_all_kinds_unique_test();
   // game_piece_put_all_kinds_test();
   game_piece_rotate_and_put_test();
+  io_write_piece_all_kinds_test();
+  io_read_piece_all_kinds_test();
 
   logger_info("end puzzle test");
 
