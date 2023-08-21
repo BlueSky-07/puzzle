@@ -149,17 +149,19 @@ void logger_print(LoggerLevel level, const char *format, ...) {
 void logger_vprint(LoggerLevel level, LoggerNewLine new_line, const char *format, va_list args) {
   if (!logger_level_is_ok(level)) return;
 
-  int len = strlen(format)      // original
-            + 4                 // prefix
-            + new_line          // \n
-            + 1;                // \0
+  unsigned int len = strlen(format)      // original
+                     + 4                 // prefix
+                     + new_line          // new line
+                     + 1;                // end
+
   char* new_format = malloc(sizeof(char) * len);
-  new_format[0] = '\0';         // init memory
-  strcat(new_format, logger_level_to_string(level, 1));
-  strcat(new_format, " ");
-  strcat(new_format, format);
-  if (new_line) strcat(new_format, "\n");
-  new_format[len - 1] = '\0';   // end
+  new_format[0] = '\0';  // init
+
+  strcat(new_format, logger_level_to_string(level, 1)); // prefix
+  strcat(new_format, " ");                              // prefix
+  strcat(new_format, format);                           // original
+  if (new_line) strcat(new_format, "\n");               // new line
+  new_format[len - 1] = '\0';                           // end
 
   // for (int i = 0; i < len; i ++)
   //   printf("%c", new_format[i]); // output format

@@ -49,7 +49,7 @@ const char* WEEK_TEXTS[PUZZLE_WEEK_COUNT] = {
 Puzzle puzzle_make() {
   Puzzle puzzle = malloc(sizeof(unsigned int) * PUZZLE_TOTAL);
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
-  puzzle_fill(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
+  puzzle_fill_positions(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
   return puzzle;
 }
 
@@ -61,11 +61,22 @@ PuzzleText puzzle_text_make() {
   return puzzle_text;
 }
 
-void puzzle_fill(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move) {
+void puzzle_fill_positions(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move) {
   for (int i = 0; i < len; i++) {
     Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);
     puzzle[pos->y * PUZZLE_X + pos->x] = v;
     free(pos);
+  }
+}
+
+void puzzle_fill_position_count(Puzzle puzzle, PositionCount* pc, char v, Position* move) {
+  if (!pc) return;
+  PositionListItem* i = pc->positions;
+  while (i) {
+    Position* pos = position_move(i->position, move, POSITION_MOVE_NEW);
+    puzzle[pos->y * PUZZLE_X + pos->x] = v;
+    free(pos);
+    i = i->next;
   }
 }
 
@@ -77,7 +88,7 @@ void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int
   }
 }
 
-void print_puzzle(Puzzle puzzle) {
+void puzzle_print(Puzzle puzzle) {
   for (int y = PUZZLE_Y - 1; y >= 0; y--) {
     printf("%d | ", y);
     for (int x = 0; x < PUZZLE_X; x++) {
@@ -89,7 +100,7 @@ void print_puzzle(Puzzle puzzle) {
   printf("p | 0 1 2 3 4 5 6\n");
 }
 
-void print_puzzle_text(PuzzleText puzzle_text) {
+void puzzle_text_print(PuzzleText puzzle_text) {
   for (int y = PUZZLE_Y - 1; y >= 0; y--) {
     printf("%d | ", y);
     for (int x = 0; x < PUZZLE_X; x++) {
@@ -132,7 +143,7 @@ int puzzle_count_of_empty(Puzzle puzzle) {
 }
 
 PositionCount* puzzle_find(Puzzle puzzle, char name) {
-  PositionListItem* list = position_list_item_make(NULL);
+  PositionListItem* list = position_list_item_make_empty();;
   logger_debug("puzzle_find: %c", name);
   for (int y = 0; y < PUZZLE_Y; y++) {
     for (int x = 0; x < PUZZLE_X; x++) {
@@ -152,7 +163,7 @@ PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name) {
 }
 
 PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name) {
-  PositionListItem* list = position_list_item_make(NULL);
+  PositionListItem* list = position_list_item_make_empty();;
   for (int y = 0; y < PUZZLE_Y; y++) {
     for (int x = 0; x < PUZZLE_X; x++) {
       if (puzzle[y * PUZZLE_X + x] == find_name) {
@@ -166,5 +177,5 @@ PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_nam
 
 void puzzle_clear(Puzzle puzzle) {
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
-  puzzle_fill(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
+  puzzle_fill_positions(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
 }

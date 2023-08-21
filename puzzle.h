@@ -29,11 +29,12 @@ typedef char* PuzzleText;
 Puzzle puzzle_make();
 PuzzleText puzzle_text_make();
 
-void puzzle_fill(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move);
+void puzzle_fill_positions(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move);
+void puzzle_fill_position_count(Puzzle puzzle, PositionCount* pc, char v, Position* move);
 void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int len, const char** texts, Position* move);
 
-void print_puzzle(Puzzle puzzle);
-void print_puzzle_text(PuzzleText puzzle_text);
+void puzzle_print(Puzzle puzzle);
+void puzzle_text_print(PuzzleText puzzle_text);
 
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move);
 int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], unsigned int len, Position* move);

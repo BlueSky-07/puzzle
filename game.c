@@ -29,7 +29,7 @@ GameActionResult game_put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Positio
   if (puzzle_positions_count_of_available(puzzle, p.positions, p.position_count, move) != p.position_count)
     return GAME_ACTION_FAILURE_NOT_AVAILABLE;
   if (puzzle_positions_count_of_empty(puzzle, p.positions, p.position_count, move) == p.position_count) {
-    puzzle_fill(puzzle, p.positions, p.position_count, p.name, move);
+    puzzle_fill_positions(puzzle, p.positions, p.position_count, p.name, move);
     return GAME_ACTION_SUCCESS;
   }
   return GAME_ACTION_FAILURE_NOT_EMPTY;
@@ -48,7 +48,7 @@ GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* pi
   }
   int test = binary_test_piece_put_into_puzzle(puzzle_binary, piece_binary);
   if (!test) return GAME_ACTION_FAILURE;
-  puzzle_fill(puzzle, p.positions, p.position_count, p.name, move);
+  puzzle_fill_positions(puzzle, p.positions, p.position_count, p.name, move);
   return GAME_ACTION_SUCCESS;
 }
 
@@ -61,4 +61,40 @@ GameActionResult game_remove_piece_from_puzzle(Puzzle puzzle, char name) {
 
 Bool game_is_end(Puzzle puzzle) {
   return puzzle_count_of_empty(puzzle) == GAME_IS_END_REST_COUNT;
+}
+
+BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece) {
+  BinaryListItem* list = binary_list_item_make_empty();
+  Binary binary_puzzle = binary_from_puzzle(puzzle);
+  for (Coordinate y = 0; y < PUZZLE_Y; y ++) {
+    for (Coordinate x = 0; x < PUZZLE_X; x ++) {
+      Position* move = position_make(x, y);
+      Piece* new_piece = piece_move(piece, move);
+      free(move);
+
+      if (!new_piece) {
+        logger_debug("game_put_piece_all_kinds_into_puzzle loop, [failure] move out of puzzle: %d, %d", x, y);
+        continue;
+      }
+
+      Binary new_piece_binary = binary_from_positions(new_piece->positions, new_piece->position_count, NULL);
+      if (!binary_test_piece_put_into_puzzle(binary_puzzle, new_piece_binary)) {
+        logger_debug("game_put_piece_all_kinds_into_puzzle loop, [failure] put into puzzle: %d, %d", x, y);
+        free(new_piece);
+        continue;
+      }
+
+      logger_debug("game_put_piece_all_kinds_into_puzzle loop, [success] put into puzzle: %d, %d", x, y);
+      if (logger_level_is_debug_ok()) {
+        Puzzle puzzle = puzzle_make();
+        puzzle_fill_positions(puzzle, new_piece->positions, piece->position_count, piece->name, NULL);
+        puzzle_print(puzzle);
+        free(puzzle);
+      }
+
+      binary_list_push_unique(list, new_piece_binary);
+      free(new_piece);
+    }
+  }
+  return binary_count_make(list);
 }

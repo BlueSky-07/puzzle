@@ -203,7 +203,33 @@ Piece* ALL_PIECES[PIECE_COUNT] = {
   &PIECE_F, &PIECE_G, &PIECE_H, &PIECE_I, &PIECE_J,
 };
 
+Piece* piece_make(char name, unsigned int position_count, Position positions[PIECE_MAX_POSITION]) {
+  Piece* piece = malloc(sizeof(Piece));
+  piece->name = name;
+  piece->position_count = position_count;
+  for (int i = 0; i < position_count; i ++) {
+    piece->positions[i].x = positions ? positions[i].x : COORDINATE_INVALID;
+    piece->positions[i].y = positions ? positions[i].y : COORDINATE_INVALID;
+  }
+  return piece;
+}
+
+Piece* piece_make_from_position_list(char name, unsigned int position_count, PositionListItem* list) {
+  if (!list) return NULL;
+  Position positions[PIECE_MAX_POSITION];
+  int i = 0;
+  while (list && list->position) {
+    positions[i].x = list->position->x;
+    positions[i].y = list->position->y;
+    list = list ->next;
+  }
+  return piece_make(name, position_count, positions);
+}
+
 void piece_init_puzzle(Piece* piece) {
+  for (int i = 0; i < (PIECE_X + 1) * (PIECE_Y + 1); i++) {
+    piece->puzzle[i / (PIECE_X + 1)][i % (PIECE_X + 1)] = 0;
+  }
   for (int i = 0; i < piece->position_count; i++) {
     Position p = piece->positions[i];
     piece->puzzle[p.x][p.y] = 1;
@@ -295,7 +321,37 @@ Piece* piece_fix(Piece* piece) {
   return result;
 }
 
+Piece* piece_move(Piece* piece, Position* move) {
+  Piece p = *piece;
+  if (!move || (move->x == 0 && move->y == 0)) return piece_make(p.name, p.position_count, p.positions);
+
+  Piece* result = piece_make(p.name, p.position_count, NULL);
+
+  for (int i = 0; i < p.position_count; i ++) {
+    Position* new_pos = position_move(&p.positions[i], move, POSITION_MOVE_NEW);
+
+    Bool ok = position_is_ok(new_pos);
+    if (ok) {
+      result->positions[i].x = new_pos->x;
+      result->positions[i].y = new_pos->y;
+    }
+    free(new_pos);
+    if (!ok) {
+      free(result);
+      return NULL;
+    }
+  }
+
+  logger_debug("piece_move done:");
+  if (logger_level_is_debug_ok())
+    for (int i = 0; i < result->position_count; i ++) {
+      position_print(&result->positions[i], LOGGER_NEW_LINE);
+    }
+  return result;
+}
+
 void piece_print(Piece* piece) {
+  if (!piece) return;
   piece_init_puzzle(piece);
   Piece p = *piece;
 

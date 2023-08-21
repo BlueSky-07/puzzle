@@ -1,11 +1,54 @@
 {
-  // 使用 IntelliSense 了解相关属性。
-  // 悬停以查看现有属性的描述。
-  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  // https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "production",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/a.out",
+      "args": [],
+      "preLaunchTask": "build",
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [
+        { "name": "LOGGER_LEVEL", "value": "" }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb"
+    },
+    {
       "name": "debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/a.out",
+      "args": [],
+      "preLaunchTask": "build_debug",
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [
+        { "name": "LOGGER_LEVEL", "value": "" }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb"
+    },
+    {
+      "name": "debug:verbose",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/a.out",
+      "args": [],
+      "preLaunchTask": "build_debug",
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [
+        { "name": "LOGGER_LEVEL", "value": "VERBOSE" }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb"
+    },
+    {
+      "name": "debug:debug",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/a.out",
@@ -18,6 +61,6 @@
       ],
       "externalConsole": false,
       "MIMode": "gdb"
-    }
+    },
   ]
 }

@@ -12,7 +12,7 @@
 typedef struct _Piece {
   char name;
   Position positions[PIECE_MAX_POSITION];
-  unsigned position_count;
+  unsigned int position_count;
   unsigned int puzzle[PIECE_X + 1][PIECE_Y + 1];
 } Piece;
 
@@ -39,9 +39,13 @@ typedef int RotateDirection;
 #define ROTATE_DIRECTION_MIRROR_180 -3
 #define ROTATE_DIRECTION_MIRROR_270 -4
 
+Piece* piece_make(char name, unsigned int position_count, Position positions[PIECE_MAX_POSITION]);
+Piece* piece_make_from_position_list(char name, unsigned int position_count, PositionListItem* list);
+
 void piece_init_puzzle(Piece* piece);
 Piece* piece_rotate(Piece* piece, RotateDirection direction);
 Piece* piece_fix(Piece* piece);
+Piece* piece_move(Piece* piece, Position* move);
 void piece_print(Piece* piece);
 
 #endif

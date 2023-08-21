@@ -14,6 +14,10 @@ PositionListItem* position_list_item_make(Position* position) {
   return pl;
 }
 
+PositionListItem* position_list_item_make_empty() {
+  return position_list_item_make(NULL);
+}
+
 PositionCount* position_count_make(PositionListItem* list) {
   PositionCount* pc = malloc(sizeof(PositionCount));
   pc->positions = list;
@@ -33,7 +37,7 @@ Position* position_move(Position* position, Position* move, PositionMoveAction a
   return position_move_by_coordinate(position, move ? move->x : 0, move ? move->y : 0, action);
 }
 
-Position* position_move_by_coordinate(Position* position, CoordinateMove x, CoordinateMove y, PositionMoveAction action) {
+Position* position_move_by_coordinate(Position* position, Coordinate x, Coordinate y, PositionMoveAction action) {
   Position p = *position;
   Position* result = position;
   switch (action) {
@@ -54,7 +58,7 @@ Position* position_move_by_coordinate(Position* position, CoordinateMove x, Coor
   return result;
 }
 
-Coordinate coordinate_move(Coordinate original, CoordinateMove move, Coordinate max) {
+Coordinate coordinate_move(Coordinate original, Coordinate move, Coordinate max) {
   if (move == 0) return original;
   if (move > 0 && original + move > max) return COORDINATE_INVALID;
   else if (move < 0 && -move > original) return COORDINATE_INVALID;
@@ -62,11 +66,11 @@ Coordinate coordinate_move(Coordinate original, CoordinateMove move, Coordinate 
 
 }
 
-Coordinate coordinate_move_x(Coordinate original, CoordinateMove move) {
+Coordinate coordinate_move_x(Coordinate original, Coordinate move) {
   return coordinate_move(original, move, MAX_COORDINATE_X);
 }
 
-Coordinate coordinate_move_y(Coordinate original, CoordinateMove move) {
+Coordinate coordinate_move_y(Coordinate original, Coordinate move) {
   return coordinate_move(original, move, MAX_COORDINATE_Y);
 }
 
@@ -112,17 +116,17 @@ Bool position_is_ok(Position* position) {
   return coordinate_is_ok(p.x, p.y);
 }
 
-void position_print(Position* position) {
+void position_print(Position* position, LoggerNewLine new_line) {
   if (!position) return;
   Position p = *position;
   printf("%d, %d", p.x, p.y);
+  if (new_line) printf("\n");
 }
 
 void position_list_print(PositionListItem* list) {
   if (!list) return;
   while (list && list->position) {
-    position_print(list->position);
-    printf("\n");
+    position_print(list->position, LOGGER_NEW_LINE);
     list = list->next;
   }
 }
