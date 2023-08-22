@@ -2,6 +2,19 @@
 
 char* IO_STORE_ROOT_PATH = "data/";
 
+const char* io_action_result_string(IoActionResult result) {
+  switch (result) {
+    case IO_SUCCESS:
+      return "SUCCESS";
+    case IO_FAILURE:
+      return "FAILURE";
+    case IO_FAILURE_NOT_FOUND:
+      return "FAILURE: NOT FOUND";
+    default:
+      return "UNKNOWN";
+  }
+}
+
 IoActionResult io_write_binary(Binary binary, const char* path) {
   if (!path) return IO_FAILURE_NOT_FOUND;
   FILE* file = fopen(path, "w");

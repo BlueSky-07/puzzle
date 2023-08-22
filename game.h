@@ -32,7 +32,7 @@ typedef struct _GameSolveResult {
 GameSolveListItem* game_solve_list_item_make(char name, BinaryCount* bc);
 GameSolveResult* game_solve_result_make(char name, Binary binary);
 
-void game_solve_list_item_free(GameSolveListItem* list);
+void game_solve_list_free(GameSolveListItem* list);
 void game_solve_result_free(GameSolveResult* result);
 
 const char* game_action_result_string(GameActionResult result);
@@ -58,5 +58,6 @@ GameSolveResult* game_solve_by_date(Date* date);
 GameSolveResult* game_solve_today();
 
 GameSolveListItem* game_read_pieces_data();
+GameSolveListItem* game_make_pieces_data(Puzzle puzzle);
 
 #endif

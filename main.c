@@ -242,10 +242,23 @@ void game_read_pieces_data_test() {
   GameSolveListItem* items = game_read_pieces_data();
   for (int i = 0; i < PIECE_COUNT; i ++) {
     GameSolveListItem item = items[i];
-    logger_info("%c read %d kinds", item.name, item.bc->count);
+    logger_info("%c reads %d kinds", item.name, item.bc->count);
   }
 
-  game_solve_list_item_free(items);
+  game_solve_list_free(items);
+}
+
+void game_make_pieces_data_test() {
+  logger_info("=======================================");
+  logger_info("game_make_pieces_data_test:");
+
+  GameSolveListItem* items = game_make_pieces_data(NULL);
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveListItem item = items[i];
+    logger_info("%c makes %d kinds", item.name, item.bc->count);
+  }
+
+  game_solve_list_free(items);
 }
 
 void io_write_piece_all_kinds_test() {
@@ -370,6 +383,7 @@ int main() {
   // game_piece_put_all_kinds_test();
   // game_piece_rotate_and_put_test();
   // game_read_pieces_data_test();
+  // game_make_pieces_data_test();
   // io_write_piece_all_kinds_test();
   // io_read_and_sort_test();
   // date_test();

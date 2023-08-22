@@ -14,7 +14,7 @@ GameSolveResult* game_solve_result_make(char name, Binary binary) {
   return result;
 }
 
-void game_solve_list_item_free(GameSolveListItem* list) {
+void game_solve_list_free(GameSolveListItem* list) {
   if (!list) return;
   binary_count_free(list->bc);
   free(list);
@@ -237,7 +237,7 @@ GameSolveResult* game_solve_by_date(Date* date) {
   GameSolveListItem* items = game_read_pieces_data();
   GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
   Bool success = game_solve_puzzle(result, puzzle, items, 0);
-  game_solve_list_item_free(items);
+  game_solve_list_free(items);
 
   free(puzzle);
   return success ? result : NULL;
@@ -260,7 +260,13 @@ GameSolveListItem* game_read_pieces_data() {
     strcat(filename, (char[]){piece_name, '\0'});
     strcat(filename, ".piece.txt");
     BinaryListItem* list = binary_list_item_make_empty();
-    io_read_binary_list(filename, list);
+    IoActionResult io_result = io_read_binary_list(filename, list);
+    if (io_result != IO_SUCCESS) {
+      logger_error("read pieces data of %c error: %s, (%d) %s", piece_name, filename, io_result, io_action_result_string(io_result));
+      binary_list_free(list);
+      free(filename);
+      return game_make_pieces_data(NULL);
+    }
 
     if (logger_level_is_debug_ok()) {
       BinaryListItem* ii = list;
@@ -283,6 +289,21 @@ GameSolveListItem* game_read_pieces_data() {
     logger_debug("%c read %d kinds", piece_name, bc->count);
     items[i] = *game_solve_list_item_make(piece_name, bc);
   }
+  logger_success("read pieces data done");
+  free(filename);
 
+  return items;
+}
+
+GameSolveListItem* game_make_pieces_data(Puzzle puzzle) {
+  GameSolveListItem* items = malloc(sizeof(GameSolveListItem) * PIECE_COUNT);
+  Puzzle puzzle_final = puzzle ? puzzle : puzzle_make();
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    Piece* piece = ALL_PIECES[i];
+    BinaryCount* bc = game_put_piece_all_kinds_all_rotate_into_puzzle(puzzle_final, piece);
+    items[i] = *game_solve_list_item_make(piece->name, bc);
+  }
+
+  if (!puzzle) free(puzzle_final);
   return items;
 }
