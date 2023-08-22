@@ -143,6 +143,30 @@ void puzzle_text_print(PuzzleText puzzle_text) {
   printf("P |  0   1   2   3   4   5   6 \n");
 }
 
+char* puzzle_to_string(Puzzle puzzle) {
+  char* puzzle_string = malloc(sizeof(char) * (PUZZLE_STRING_LENGTH + 1));
+  int pos = 0;
+  for (int i = 0; i < PUZZLE_TOTAL; i ++) {
+    if (puzzle[i] != PUZZLE_POSITION_UNAVAILABLE)
+      puzzle_string[pos++] = puzzle[i];
+  }
+  puzzle_string[pos] = '\0';
+  return puzzle_string;
+}
+
+Puzzle puzzle_from_string(char* puzzle_string) {
+  if (!puzzle_string) return NULL;
+  int len = strlen(puzzle_string);
+  if (len != PUZZLE_STRING_LENGTH) return NULL;
+  Puzzle puzzle = puzzle_make();
+  int pos = 0;
+  for (int i = 0; i < PUZZLE_TOTAL; i ++) {
+    if (puzzle[i] != PUZZLE_POSITION_UNAVAILABLE)
+      puzzle[i] = puzzle_string[pos++];
+  }
+  return puzzle;
+}
+
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move) {
   int result = 0;
   for (int i = 0; i < len; i ++) {

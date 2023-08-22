@@ -57,6 +57,10 @@ Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem
 GameSolveResult* game_solve_by_date(Date* date);
 GameSolveResult* game_solve_today();
 
+void game_solve_all_puzzle(Puzzle puzzle, GameSolveListItem items[], unsigned int current);
+void game_solve_all_by_date(Date* date);
+void game_solve_all_today();
+
 GameSolveListItem* game_read_pieces_data();
 GameSolveListItem* game_make_pieces_data(Puzzle puzzle);
 

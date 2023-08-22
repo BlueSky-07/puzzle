@@ -12,6 +12,7 @@
 
 #define PUZZLE_POSITION_UNAVAILABLE 'x'
 #define PUZZLE_POSITION_EMPTY       '0'
+#define PUZZLE_POSITION_DISABLED    '1'
 
 extern Position POSITIONS_UNAVAILABLE[PUZZLE_UNAVAILABLE_COUNT];
 extern Position POSITIONS_MONTH[PUZZLE_MONTH_COUNT];
@@ -37,6 +38,9 @@ void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int
 
 void puzzle_print(Puzzle puzzle);
 void puzzle_text_print(PuzzleText puzzle_text);
+
+char* puzzle_to_string(Puzzle puzzle);
+Puzzle puzzle_from_string(char* puzzle_string);
 
 int puzzle_positions_count_of_empty(Puzzle puzzle, Position positions[], unsigned int len, Position* move);
 int puzzle_positions_count_of_available(Puzzle puzzle, Position positions[], unsigned int len, Position* move);

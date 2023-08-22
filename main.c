@@ -368,6 +368,13 @@ void game_solve_today_test() {
   free(puzzle_text);
 }
 
+void game_solve_all_today_test() {
+  logger_info("=======================================");
+  logger_info("game_solve_all_today_test:");
+
+  game_solve_all_today();
+}
+
 int main() {
   logger_global_set_all_from_env();
   logger_info("start puzzle test");
@@ -387,7 +394,8 @@ int main() {
   // io_write_piece_all_kinds_test();
   // io_read_and_sort_test();
   // date_test();
-  game_solve_today_test();
+  // game_solve_today_test();
+  game_solve_all_today_test();
 
   logger_info("end puzzle test");
 
