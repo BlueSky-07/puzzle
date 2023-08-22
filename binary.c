@@ -204,3 +204,13 @@ Binary binary_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary) {
 Binary binary_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b) {
   return piece_binary_a | piece_binary_b; // same as piece_binary_a + piece_binary_b
 }
+
+int binary_count_compare_asc(const void* a, const void *b) {
+  unsigned int count_a = ((BinaryCount*)a)->count;
+  unsigned int count_b = ((BinaryCount*)b)->count;
+  return count_a > count_b ? 1 : -1;
+}
+
+int binary_count_compare_desc(const void* a, const void *b) {
+  return binary_count_compare_asc(b, a);
+}

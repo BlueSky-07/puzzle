@@ -14,7 +14,6 @@ typedef unsigned int IoActionResult;
 #define IO_FAILURE           1
 #define IO_FAILURE_NOT_FOUND 2
 
-
 IoActionResult io_write_binary(Binary binary, const char* path);
 IoActionResult io_read_binary(const char* path, Binary* binary);
 IoActionResult io_write_binary_list(BinaryListItem* list, const char* path);

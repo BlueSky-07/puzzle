@@ -1,6 +1,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include <stdlib.h>
 #include "bool.h"
 #include "logger.h"
 #include "piece.h"
@@ -16,6 +17,19 @@ typedef unsigned int GameActionResult;
 #define GAME_ACTION_FAILURE_NOT_EMPTY      4
 #define GAME_ACTION_FAILURE_NOT_PUT        5
 
+typedef struct _GameSolveListItem {
+  char name;
+  BinaryCount* bc;
+} GameSolveListItem;
+
+typedef struct _GameSolveResult {
+  char name;
+  Binary binary;
+} GameSolveResult;
+
+GameSolveListItem* game_solve_list_item_make(char name, BinaryCount* bc);
+GameSolveResult* game_solve_result_make(char name, Binary binary);
+
 const char* game_action_result_string(GameActionResult result);
 
 GameActionResult game_put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Position* move);
@@ -27,5 +41,11 @@ Bool game_is_end(Puzzle puzzle);
 BinaryCount* game_rotate_piece_all_kinds_unique(Piece* piece);
 BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
 BinaryCount* game_put_piece_all_kinds_all_rotate_into_puzzle(Puzzle puzzle, Piece* piece);
+
+int game_solve_list_item_compare_asc(const void* a, const void *b);
+int game_solve_list_item_compare_desc(const void* a, const void *b);
+
+void game_solve_list_sort_asc(GameSolveListItem* list, unsigned int count);
+void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count);
 
 #endif

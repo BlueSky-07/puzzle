@@ -56,4 +56,7 @@ Bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary
 Binary binary_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary);
 Binary binary_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b);
 
+int binary_count_compare_asc(const void* a, const void *b);
+int binary_count_compare_desc(const void* a, const void *b);
+
 #endif

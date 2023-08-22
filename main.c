@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "logger.h"
 #include "const.h"
 #include "piece.h"
@@ -6,7 +9,6 @@
 #include "binary.h"
 #include "game.h"
 #include "io.h"
-#include <stdio.h>
 
 void logger_test() {
   logger_info("=======================================");
@@ -244,25 +246,55 @@ void io_write_piece_all_kinds_test() {
   }
 }
 
-void io_read_piece_all_kinds_test() {
+void io_read_and_sort_test() {
   logger_info("=======================================");
-  logger_info("io_read_piece_all_kinds_test:");
+  logger_info("io_read_and_sort_test:");
 
-  BinaryListItem* list = binary_list_item_make_empty();
-  io_read_binary_list("data/A.piece.txt", list);
-  BinaryListItem* i = list;
-  while(i) {
-    Binary binary = i->binary;
-    logger_info("%lu <=> %s", binary, binary_to_string(binary));
-    i = i->next;
-    PositionCount* pc = binary_to_positions(binary);
-    position_list_print(pc->positions);
-    Puzzle piece_into_puzzle = puzzle_make();
-    puzzle_fill_position_count(piece_into_puzzle, pc, 'A', NULL);
-    puzzle_print(piece_into_puzzle);
-    free(pc);
-    free(piece_into_puzzle);
+  GameSolveListItem items[PIECE_COUNT];
+  char* filename = malloc(sizeof(char) * (strlen(IO_STORE_ROOT_PATH) + 13));
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    filename[0] = '\0';
+    char piece_name = ALL_PIECE_NAMES[i];
+    strcpy(filename, IO_STORE_ROOT_PATH);
+    strcat(filename, (char[]){piece_name, '\0'});
+    strcat(filename, ".piece.txt");
+    BinaryListItem* list = binary_list_item_make_empty();
+    io_read_binary_list(filename, list);
+    BinaryListItem* ii = list;
+    while(ii) {
+      break;
+      Binary binary = ii->binary;
+      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      ii = ii->next;
+      PositionCount* pc = binary_to_positions(binary);
+      position_list_print(pc->positions);
+      Puzzle piece_into_puzzle = puzzle_make();
+      puzzle_fill_position_count(piece_into_puzzle, pc, 'A', NULL);
+      puzzle_print(piece_into_puzzle);
+      free(pc);
+      free(piece_into_puzzle);
+    }
+    BinaryCount* bc = binary_count_make(list);
+    logger_info("%c read %d kinds", piece_name, bc->count);
+    items[i] = *game_solve_list_item_make(piece_name, bc);
+    continue;
   }
+
+  game_solve_list_sort_asc(items, PIECE_COUNT);
+  logger_info("asc sorted result:");
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveListItem item = items[i];
+    logger_info("%c read %d kinds", item.name, item.bc->count);
+  }
+
+  game_solve_list_sort_desc(items, PIECE_COUNT);
+  logger_info("desc sorted result:");
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveListItem item = items[i];
+    logger_info("%c read %d kinds", item.name, item.bc->count);
+  }
+
+  free(filename);
 }
 
 int main() {
@@ -278,9 +310,9 @@ int main() {
   // game_test();
   // game_piece_rotate_all_kinds_unique_test();
   // game_piece_put_all_kinds_test();
-  game_piece_rotate_and_put_test();
-  io_write_piece_all_kinds_test();
-  io_read_piece_all_kinds_test();
+  // game_piece_rotate_and_put_test();
+  // io_write_piece_all_kinds_test();
+  io_read_and_sort_test();
 
   logger_info("end puzzle test");
 

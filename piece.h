@@ -28,6 +28,7 @@ extern Piece PIECE_I;
 extern Piece PIECE_J;
 
 extern Piece* ALL_PIECES[PIECE_COUNT];
+extern char ALL_PIECE_NAMES[PIECE_COUNT];
 
 typedef int RotateDirection;
 #define ROTATE_DIRECTION_0          1

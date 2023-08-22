@@ -1,5 +1,19 @@
 #include "game.h"
 
+GameSolveListItem* game_solve_list_item_make(char name, BinaryCount* bc) {
+  GameSolveListItem* result = malloc(sizeof(GameSolveListItem));
+  result->name = name;
+  result->bc = bc;
+  return result;
+}
+
+GameSolveResult* game_solve_result_make(char name, Binary binary) {
+  GameSolveResult* result = malloc(sizeof(GameSolveResult));
+  result->name = name;
+  result->binary = binary;
+  return result;
+}
+
 const char* game_action_result_string(GameActionResult result) {
   switch (result) {
     case GAME_ACTION_SUCCESS:
@@ -124,4 +138,28 @@ BinaryCount* game_put_piece_all_kinds_all_rotate_into_puzzle(Puzzle puzzle, Piec
     i = i->next;
   }
   return binary_count_make(list);
+}
+
+int game_solve_list_item_compare_asc(const void* a, const void *b) {
+  unsigned int count_a = ((GameSolveListItem*)a)->bc->count;
+  unsigned int count_b = ((GameSolveListItem*)b)->bc->count;
+  return count_a > count_b ? 1 : -1;
+}
+
+int game_solve_list_item_compare_desc(const void* a, const void *b) {
+  return game_solve_list_item_compare_asc(b, a);
+}
+
+void game_solve_list_sort_asc(GameSolveListItem* list, unsigned int count) {
+  qsort(
+    list, count, sizeof(GameSolveListItem),
+    game_solve_list_item_compare_asc
+  );
+}
+
+void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count) {
+  qsort(
+    list, count, sizeof(GameSolveListItem),
+    game_solve_list_item_compare_desc
+  );
 }
