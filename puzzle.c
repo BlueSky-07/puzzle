@@ -61,6 +61,37 @@ PuzzleText puzzle_text_make() {
   return puzzle_text;
 }
 
+PuzzleText puzzle_text_make_from_puzzle(Puzzle puzzle) {
+  PuzzleText puzzle_text = puzzle_text_make();
+  puzzle_text_fill(puzzle_text, POSITIONS_MONTH, PUZZLE_MONTH_COUNT, MONTH_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_DATE, PUZZLE_DATE_COUNT, DATE_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_WEEK, PUZZLE_WEEK_COUNT, WEEK_TEXTS, NULL);
+
+  for (int i = 0; i < PUZZLE_MONTH_COUNT; i ++) {
+    Position p = POSITIONS_MONTH[i];
+    unsigned index = p.y * PUZZLE_X + p.x;
+    char v = puzzle[index];
+    if (v != PUZZLE_POSITION_EMPTY)
+      strcpy(&puzzle_text[index * 4], (char[]){'[', v, ']', '\0'});
+  }
+  for (int i = 0; i < PUZZLE_DATE_COUNT; i ++) {
+    Position p = POSITIONS_DATE[i];
+    unsigned index = p.y * PUZZLE_X + p.x;
+    char v = puzzle[index];
+    if (v != PUZZLE_POSITION_EMPTY)
+      strcpy(&puzzle_text[index * 4], (char[]){'[', v, ']', '\0'});
+  }
+  for (int i = 0; i < PUZZLE_WEEK_COUNT; i ++) {
+    Position p = POSITIONS_WEEK[i];
+    unsigned index = p.y * PUZZLE_X + p.x;
+    char v = puzzle[index];
+    if (v != PUZZLE_POSITION_EMPTY)
+      strcpy(&puzzle_text[index * 4], (char[]){'[', v, ']', '\0'});
+  }
+
+  return puzzle_text;
+}
+
 void puzzle_fill_positions(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move) {
   for (int i = 0; i < len; i++) {
     Position* pos = position_move(&positions[i], move, POSITION_MOVE_NEW);

@@ -29,6 +29,8 @@ typedef char* PuzzleText;
 Puzzle puzzle_make();
 PuzzleText puzzle_text_make();
 
+PuzzleText puzzle_text_make_from_puzzle(Puzzle puzzle);
+
 void puzzle_fill_positions(Puzzle puzzle, Position positions[], unsigned int len, char v, Position* move);
 void puzzle_fill_position_count(Puzzle puzzle, PositionCount* pc, char v, Position* move);
 void puzzle_text_fill(PuzzleText puzzle_text, Position positions[], unsigned int len, const char** texts, Position* move);

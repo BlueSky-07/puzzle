@@ -348,7 +348,11 @@ void game_solve_today_test() {
   }
 
   puzzle_print(puzzle);
+  PuzzleText puzzle_text = puzzle_text_make_from_puzzle(puzzle);
+  puzzle_text_print(puzzle_text);
   game_solve_result_free(result);
+  free(puzzle);
+  free(puzzle_text);
 }
 
 int main() {
