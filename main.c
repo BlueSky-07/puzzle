@@ -9,6 +9,7 @@
 #include "binary.h"
 #include "game.h"
 #include "io.h"
+#include "date.h"
 
 void logger_test() {
   logger_info("=======================================");
@@ -26,16 +27,16 @@ void puzzle_data_test() {
   logger_info("puzzle_data_test:");
 
   Puzzle puzzle = puzzle_make();
-  puzzle_fill_positions(puzzle, MONTH, PUZZLE_MONTH_COUNT, '1', NULL);
-  puzzle_fill_positions(puzzle, DATE, PUZZLE_DATE_COUNT, '2', NULL);
-  puzzle_fill_positions(puzzle, WEEK, PUZZLE_WEEK_COUNT, '3', NULL);
+  puzzle_fill_positions(puzzle, POSITIONS_MONTH, PUZZLE_MONTH_COUNT, '1', NULL);
+  puzzle_fill_positions(puzzle, POSITIONS_DATE, PUZZLE_DATE_COUNT, '2', NULL);
+  puzzle_fill_positions(puzzle, POSITIONS_WEEK, PUZZLE_WEEK_COUNT, '3', NULL);
   puzzle_print(puzzle);
   free(puzzle);
 
   PuzzleText puzzle_text = puzzle_text_make();
-  puzzle_text_fill(puzzle_text, MONTH, PUZZLE_MONTH_COUNT, MONTH_TEXTS, NULL);
-  puzzle_text_fill(puzzle_text, DATE, PUZZLE_DATE_COUNT, DATE_TEXTS, NULL);
-  puzzle_text_fill(puzzle_text, WEEK, PUZZLE_WEEK_COUNT, WEEK_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_MONTH, PUZZLE_MONTH_COUNT, MONTH_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_DATE, PUZZLE_DATE_COUNT, DATE_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_WEEK, PUZZLE_WEEK_COUNT, WEEK_TEXTS, NULL);
   puzzle_text_print(puzzle_text);
   free(puzzle_text);
 }
@@ -234,6 +235,19 @@ void game_piece_rotate_and_put_test() {
   }
 }
 
+void game_read_pieces_data_test() {
+  logger_info("=======================================");
+  logger_info("game_read_pieces_data_test:");
+
+  GameSolveListItem* items = game_read_pieces_data();
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveListItem item = items[i];
+    logger_info("%c read %d kinds", item.name, item.bc->count);
+  }
+
+  game_solve_list_item_free(items);
+}
+
 void io_write_piece_all_kinds_test() {
   logger_info("=======================================");
   logger_info("io_write_piece_all_kinds_test:");
@@ -269,9 +283,9 @@ void io_read_and_sort_test() {
       PositionCount* pc = binary_to_positions(binary);
       position_list_print(pc->positions);
       Puzzle piece_into_puzzle = puzzle_make();
-      puzzle_fill_position_count(piece_into_puzzle, pc, 'A', NULL);
+      puzzle_fill_position_count(piece_into_puzzle, pc, piece_name, NULL);
       puzzle_print(piece_into_puzzle);
-      free(pc);
+      position_count_free(pc, TRUE);
       free(piece_into_puzzle);
     }
     BinaryCount* bc = binary_count_make(list);
@@ -297,6 +311,46 @@ void io_read_and_sort_test() {
   free(filename);
 }
 
+void date_test() {
+  logger_info("=======================================");
+  logger_info("date_test:");
+
+  Date* today = date_get_today();
+  Date d = *today;
+  logger_info(
+    "%d %d %d <=> %s %s %s",
+    d.month, d.date, d.week,
+    MONTH_TEXTS[d.month],
+    DATE_TEXTS[d.date],
+    WEEK_TEXTS[d.week]
+  );
+
+  free(today);
+}
+
+void game_solve_today_test() {
+  logger_info("=======================================");
+  logger_info("game_solve_today_test:");
+
+  GameSolveResult* result = game_solve_today();
+  Puzzle puzzle = puzzle_make();
+
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveResult item = result[i];
+    logger_info("%c %lu <=> %s", item.name, item.binary, binary_to_string(item.binary));
+
+    puzzle_fill_position_count(
+      puzzle,
+      binary_to_positions(item.binary),
+      item.name,
+      NULL
+    );
+  }
+
+  puzzle_print(puzzle);
+  game_solve_result_free(result);
+}
+
 int main() {
   logger_global_set_all_from_env();
   logger_info("start puzzle test");
@@ -311,8 +365,11 @@ int main() {
   // game_piece_rotate_all_kinds_unique_test();
   // game_piece_put_all_kinds_test();
   // game_piece_rotate_and_put_test();
+  // game_read_pieces_data_test();
   // io_write_piece_all_kinds_test();
-  io_read_and_sort_test();
+  // io_read_and_sort_test();
+  // date_test();
+  game_solve_today_test();
 
   logger_info("end puzzle test");
 

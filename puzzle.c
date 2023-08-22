@@ -1,17 +1,17 @@
 #include "puzzle.h"
 
-Position UNAVAILABLE[PUZZLE_UNAVAILABLE_COUNT] = {
+Position POSITIONS_UNAVAILABLE[PUZZLE_UNAVAILABLE_COUNT] = {
                                                   {6, 7},
                                                   {6, 6},
   {0, 0}, {1, 0}, {2, 0}, {3, 0},
 };
 
-Position MONTH[PUZZLE_MONTH_COUNT] = {
+Position POSITIONS_MONTH[PUZZLE_MONTH_COUNT] = {
   {0, 7}, {1, 7}, {2, 7}, {3, 7}, {4, 7}, {5, 7},
   {0, 6}, {1, 6}, {2, 6}, {3, 6}, {4, 6}, {5, 6},
 };
 
-Position DATE[PUZZLE_DATE_COUNT] = {
+Position POSITIONS_DATE[PUZZLE_DATE_COUNT] = {
   {0, 5}, {1, 5}, {2, 5}, {3, 5}, {4, 5}, {5, 5}, {6, 5},
   {0, 4}, {1, 4}, {2, 4}, {3, 4}, {4, 4}, {5, 4}, {6, 4},
   {0, 3}, {1, 3}, {2, 3}, {3, 3}, {4, 3}, {5, 3}, {6, 3},
@@ -19,7 +19,7 @@ Position DATE[PUZZLE_DATE_COUNT] = {
   {0, 1}, {1, 1}, {2, 1},
 };
 
-Position WEEK[PUZZLE_WEEK_COUNT] = {
+Position POSITIONS_WEEK[PUZZLE_WEEK_COUNT] = {
                            {3, 1},{4, 1}, {5, 1}, {6, 1},
                                   {4, 0}, {5, 0}, {6, 0},
 };
@@ -49,7 +49,7 @@ const char* WEEK_TEXTS[PUZZLE_WEEK_COUNT] = {
 Puzzle puzzle_make() {
   Puzzle puzzle = malloc(sizeof(unsigned int) * PUZZLE_TOTAL);
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
-  puzzle_fill_positions(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
+  puzzle_fill_positions(puzzle, POSITIONS_UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
   return puzzle;
 }
 
@@ -57,7 +57,7 @@ PuzzleText puzzle_text_make() {
   PuzzleText puzzle_text = malloc(sizeof(char) * PUZZLE_TOTAL * 4);
   memset(puzzle_text, ' ', PUZZLE_TOTAL);
   for (int i = 3; i < PUZZLE_TOTAL * 4; i += 4) puzzle_text[i] = '\0';
-  puzzle_text_fill(puzzle_text, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, UNAVAILABLE_TEXTS, NULL);
+  puzzle_text_fill(puzzle_text, POSITIONS_UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, UNAVAILABLE_TEXTS, NULL);
   return puzzle_text;
 }
 
@@ -177,5 +177,5 @@ PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_nam
 
 void puzzle_clear(Puzzle puzzle) {
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
-  puzzle_fill_positions(puzzle, UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
+  puzzle_fill_positions(puzzle, POSITIONS_UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
 }

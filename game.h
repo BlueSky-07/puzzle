@@ -8,6 +8,8 @@
 #include "puzzle.h"
 #include "position.h"
 #include "binary.h"
+#include "date.h"
+#include "io.h"
 
 typedef unsigned int GameActionResult;
 #define GAME_ACTION_SUCCESS                0
@@ -30,6 +32,9 @@ typedef struct _GameSolveResult {
 GameSolveListItem* game_solve_list_item_make(char name, BinaryCount* bc);
 GameSolveResult* game_solve_result_make(char name, Binary binary);
 
+void game_solve_list_item_free(GameSolveListItem* list);
+void game_solve_result_free(GameSolveResult* result);
+
 const char* game_action_result_string(GameActionResult result);
 
 GameActionResult game_put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Position* move);
@@ -47,5 +52,11 @@ int game_solve_list_item_compare_desc(const void* a, const void *b);
 
 void game_solve_list_sort_asc(GameSolveListItem* list, unsigned int count);
 void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count);
+
+Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
+GameSolveResult* game_solve_by_date(Date* date);
+GameSolveResult* game_solve_today();
+
+GameSolveListItem* game_read_pieces_data();
 
 #endif

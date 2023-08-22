@@ -56,6 +56,24 @@ Bool binary_list_find(BinaryListItem* list, Binary binary) {
   return list->binary == binary;
 }
 
+BinaryListItem* binary_list_filter_piece_by_puzzle(BinaryListItem* list, Binary puzzle_binary) {
+  if (!list) return NULL;
+  BinaryListItem* result = binary_list_item_make_empty();
+  while (list) {
+    if (binary_test_piece_put_into_puzzle(list->binary, puzzle_binary)) {
+      binary_list_push_unique(result, list->binary);
+    }
+    list = list->next;
+  }
+
+  if (result->binary == BINARY_INVALID) {
+    binary_list_free(result);
+    return NULL;
+  }
+
+  return result;
+}
+
 void binary_list_free(BinaryListItem* list) {
   if (list->next)
     binary_list_free(list->next);

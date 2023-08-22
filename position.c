@@ -82,16 +82,6 @@ Bool position_list_push(PositionListItem* list, Position* position) {
   return TRUE;
 }
 
-PositionCount* position_list_find(PositionListItem* list, Position* position) {
-  // todo
-  return NULL;
-}
-
-PositionCount* position_list_find_and_remove(PositionListItem* list, Position* position) {
-  // todo
-  return NULL;
-}
-
 void position_list_free(PositionListItem* list, Bool include_position) {
   if (list->next)
     position_list_free(list->next, include_position);

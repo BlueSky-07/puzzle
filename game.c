@@ -14,6 +14,17 @@ GameSolveResult* game_solve_result_make(char name, Binary binary) {
   return result;
 }
 
+void game_solve_list_item_free(GameSolveListItem* list) {
+  if (!list) return;
+  binary_count_free(list->bc);
+  free(list);
+}
+
+void game_solve_result_free(GameSolveResult* result) {
+  if (!result) return;
+  free(result);
+}
+
 const char* game_action_result_string(GameActionResult result) {
   switch (result) {
     case GAME_ACTION_SUCCESS:
@@ -141,8 +152,10 @@ BinaryCount* game_put_piece_all_kinds_all_rotate_into_puzzle(Puzzle puzzle, Piec
 }
 
 int game_solve_list_item_compare_asc(const void* a, const void *b) {
-  unsigned int count_a = ((GameSolveListItem*)a)->bc->count;
-  unsigned int count_b = ((GameSolveListItem*)b)->bc->count;
+  GameSolveListItem* item_a = (GameSolveListItem*)a;
+  GameSolveListItem* item_b = (GameSolveListItem*)b;
+  unsigned int count_a = item_a->bc->count;
+  unsigned int count_b = item_b->bc->count;
   return count_a > count_b ? 1 : -1;
 }
 
@@ -162,4 +175,114 @@ void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count) {
     list, count, sizeof(GameSolveListItem),
     game_solve_list_item_compare_desc
   );
+}
+
+Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
+  unsigned int rest_count = PIECE_COUNT - current;
+  if (rest_count == 0) {
+    if (logger_level_is_debug_ok()) puzzle_print(puzzle);
+    return TRUE;
+  }
+  if (rest_count > 1) game_solve_list_sort_asc(&items[current], rest_count);
+
+  Binary puzzle_binary = binary_from_puzzle(puzzle);
+  GameSolveListItem game_solve_item = items[current];
+  BinaryCount* piece_bc = game_solve_item.bc;
+  BinaryListItem* piece_filtered = binary_list_filter_piece_by_puzzle(piece_bc->binaries, puzzle_binary);
+  if (!piece_filtered) return FALSE;
+  BinaryListItem* piece_i = piece_filtered;
+  while (piece_i) {
+    Binary piece_binary = piece_i->binary;
+    if (piece_binary != BINARY_INVALID) {
+      PositionCount* piece_pc = binary_to_positions(piece_binary);
+      puzzle_fill_position_count(puzzle, piece_pc, game_solve_item.name, NULL);
+      Bool success = game_solve_puzzle(result, puzzle, items, current + 1);
+
+      if (success) {
+        result[current].name = game_solve_item.name;
+        result[current].binary = piece_binary;
+
+        position_count_free(piece_pc, TRUE);
+        binary_list_free(piece_filtered);
+
+        return TRUE;
+      }
+
+      puzzle_fill_position_count(puzzle, piece_pc, PUZZLE_POSITION_EMPTY, NULL); // revert
+
+      position_count_free(piece_pc, TRUE);
+    }
+    piece_i = piece_i->next;
+  }
+  binary_list_free(piece_filtered);
+
+  return FALSE;
+}
+
+GameSolveResult* game_solve_by_date(Date* date) {
+  Date d = *date;
+  Puzzle puzzle = puzzle_make();
+  puzzle_fill_positions(
+    puzzle,
+    (Position[3]){
+      POSITIONS_DATE[d.date],
+      POSITIONS_MONTH[d.month],
+      POSITIONS_WEEK[d.week],
+    },
+    3,
+    PUZZLE_POSITION_UNAVAILABLE,
+    NULL
+  );
+
+  GameSolveListItem* items = game_read_pieces_data();
+  GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
+  Bool success = game_solve_puzzle(result, puzzle, items, 0);
+  game_solve_list_item_free(items);
+
+  free(puzzle);
+  return success ? result : NULL;
+}
+
+GameSolveResult* game_solve_today() {
+  Date* today = date_get_today();
+  GameSolveResult* result = game_solve_by_date(today);
+  free(today);
+  return result;
+}
+
+GameSolveListItem* game_read_pieces_data() {
+  GameSolveListItem* items = malloc(sizeof(GameSolveListItem) * PIECE_COUNT);
+  char* filename = malloc(sizeof(char) * (strlen(IO_STORE_ROOT_PATH) + 13));
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    filename[0] = '\0';
+    char piece_name = ALL_PIECE_NAMES[i];
+    strcpy(filename, IO_STORE_ROOT_PATH);
+    strcat(filename, (char[]){piece_name, '\0'});
+    strcat(filename, ".piece.txt");
+    BinaryListItem* list = binary_list_item_make_empty();
+    io_read_binary_list(filename, list);
+
+    if (logger_level_is_debug_ok()) {
+      BinaryListItem* ii = list;
+      while(ii) {
+        break; // hide read data;
+        Binary binary = ii->binary;
+        logger_info("%lu <=> %s", binary, binary_to_string(binary));
+        ii = ii->next;
+        PositionCount* pc = binary_to_positions(binary);
+        position_list_print(pc->positions);
+        Puzzle piece_into_puzzle = puzzle_make();
+        puzzle_fill_position_count(piece_into_puzzle, pc, piece_name, NULL);
+        puzzle_print(piece_into_puzzle);
+        position_count_free(pc, TRUE);
+        free(piece_into_puzzle);
+      }
+    }
+
+    BinaryCount* bc = binary_count_make(list);
+    logger_debug("%c read %d kinds", piece_name, bc->count);
+    items[i] = *game_solve_list_item_make(piece_name, bc);
+  }
+
+  return items;
 }

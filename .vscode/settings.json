@@ -22,7 +22,9 @@
     "matrix.h": "c",
     "const.h": "c",
     "bool.h": "c",
-    "calc.h": "c"
+    "calc.h": "c",
+    "date.h": "c",
+    "time.h": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

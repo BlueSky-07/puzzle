@@ -40,8 +40,6 @@ Coordinate coordinate_move_x(Coordinate original, Coordinate move);
 Coordinate coordinate_move_y(Coordinate original, Coordinate move);
 
 Bool position_list_push(PositionListItem* list, Position* position);
-PositionCount* position_list_find(PositionListItem* list, Position* position);
-PositionCount* position_list_find_and_remove(PositionListItem* list, Position* position);
 
 void position_list_free(PositionListItem* list, Bool include_position);
 void position_count_free(PositionCount* pc, Bool include_position);
