@@ -10,6 +10,7 @@
 #include "game.h"
 #include "io.h"
 #include "date.h"
+#include "optimization.h"
 
 void logger_test() {
   logger_info("=======================================");
@@ -375,6 +376,13 @@ void game_solve_all_today_test() {
   game_solve_all_today();
 }
 
+void optimization_data_test() {
+  logger_info("=======================================");
+  logger_info("optimization_data_test:");
+
+  optimization_data_print();
+}
+
 int main() {
   logger_global_set_all_from_env();
   logger_info("start puzzle test");
@@ -395,7 +403,8 @@ int main() {
   // io_read_and_sort_test();
   // date_test();
   // game_solve_today_test();
-  game_solve_all_today_test();
+  // game_solve_all_today_test();
+  optimization_data_test();
 
   logger_info("end puzzle test");
 

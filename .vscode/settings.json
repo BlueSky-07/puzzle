@@ -25,7 +25,13 @@
     "calc.h": "c",
     "date.h": "c",
     "time.h": "c",
-    "optimization.h": "c"
+    "optimization.h": "c",
+    "*.tcc": "c",
+    "compare": "c",
+    "concepts": "c",
+    "cmath": "c",
+    "limits": "c",
+    "new": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }
