@@ -90,13 +90,13 @@ void binary_count_free(BinaryCount* bc) {
 Binary binary_from_position(Position* position, Position* move) {
   Position p = *position;
   Position* pos = position_move(position, move, POSITION_MOVE_NEW);
-  Binary result = 1l << (pos->y * PUZZLE_X + pos->x);
+  Binary result = 1llu << (pos->y * PUZZLE_X + pos->x);
 
   if (logger_level_is_debug_ok()) {
     if (!move || (move->x == 0 && move->y == 0))
-      logger_debug("binary_from_position: %d, %d <=> %lu <=> %s", pos->x, pos->y, result, binary_to_string(result));
+      logger_debug("binary_from_position: %d, %d <=> %llu <=> %s", pos->x, pos->y, result, binary_to_string(result));
     else
-      logger_debug("binary_from_position: %d, %d => %d, %d <=> %lu <=> %s", p.x, p.y, pos->x, pos->y, result, binary_to_string(result));
+      logger_debug("binary_from_position: %d, %d => %d, %d <=> %llu <=> %s", p.x, p.y, pos->x, pos->y, result, binary_to_string(result));
   }
 
   free(pos);
@@ -109,7 +109,7 @@ Binary binary_from_positions(Position positions[], int total, Position* move) {
     result += binary_from_position(&positions[i], move);
 
   if (logger_level_is_debug_ok())
-    logger_debug("binary_from_positions: %lu <=> %s", result, binary_to_string(result));
+    logger_debug("binary_from_positions: %llu <=> %s", result, binary_to_string(result));
 
   return result;
 }
@@ -124,7 +124,7 @@ String binary_to_string(Binary binary) {
   }
   result[len - 1] = '\0';
 
-  // logger_debug("binary_to_string: %lu => %s", binary, result);
+  // logger_debug("binary_to_string: %llu => %s", binary, result);
 
   return result;
 }
@@ -137,7 +137,7 @@ PositionCount* binary_to_positions(Binary binary) {
   PositionListItem* list = position_list_item_make_empty();
 
   if (logger_level_is_debug_ok())
-    logger_debug("binary_to_positions binary: %lu / %s", binary, binary_to_string(binary));
+    logger_debug("binary_to_positions binary: %llu / %s", binary, binary_to_string(binary));
 
   for (int i = 0; i < BINARY_TOTAL; i ++) {
     int v = binary >> i & 1;

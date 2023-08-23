@@ -20,7 +20,7 @@ IoActionResult io_write_binary(Binary binary, const char* path) {
   FILE* file = fopen(path, "w");
   if (!file) return IO_FAILURE_NOT_FOUND;
 
-  fprintf(file, "%lu\n", binary);
+  fprintf(file, "%llu\n", binary);
 
   fclose(file);
   return IO_SUCCESS;
@@ -31,7 +31,7 @@ IoActionResult io_read_binary(const char* path, Binary* binary) {
   FILE* file = fopen(path, "r");
   if (!file) return IO_FAILURE_NOT_FOUND;
 
-  fscanf(file, "%lu\n", binary);
+  fscanf(file, "%llu\n", binary);
 
   return IO_SUCCESS;
 }
@@ -43,7 +43,7 @@ IoActionResult io_write_binary_list(BinaryListItem* list, const char* path) {
 
   BinaryListItem* i = list;
   while (i) {
-    if (i->binary != BINARY_INVALID) fprintf(file, "%lu\n", i->binary);
+    if (i->binary != BINARY_INVALID) fprintf(file, "%llu\n", i->binary);
     i = i->next;
   }
 
@@ -57,7 +57,7 @@ IoActionResult io_read_binary_list(const char* path, BinaryListItem* list) {
   if (!file) return IO_FAILURE_NOT_FOUND;
 
   Binary binary;
-  while (fscanf(file, "%lu\n", &binary) != EOF) {
+  while (fscanf(file, "%llu\n", &binary) != EOF) {
     binary_list_push_unique(list, binary);
   }
 

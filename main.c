@@ -163,7 +163,7 @@ void game_piece_rotate_all_kinds_unique_test() {
     BinaryListItem* ii = bc->binaries;
     while (ii) {
       Binary binary = ii->binary;
-      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      logger_info("%llu <=> %s", binary, binary_to_string(binary));
       PositionCount* pc = binary_to_positions(binary);
       position_list_print(pc->positions);
       free(pc);
@@ -190,7 +190,7 @@ void game_piece_put_all_kinds_test() {
     BinaryListItem* ii = bc->binaries;
     while (ii) {
       Binary binary = ii->binary;
-      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      logger_info("%llu <=> %s", binary, binary_to_string(binary));
       PositionCount* pc = binary_to_positions(binary);
       position_list_print(pc->positions);
       Puzzle piece_into_puzzle = puzzle_make();
@@ -219,7 +219,7 @@ void game_piece_rotate_and_put_test() {
     BinaryListItem* ii = bc->binaries;
     while (ii) {
       Binary binary = ii->binary;
-      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      logger_info("%llu <=> %s", binary, binary_to_string(binary));
       ii = ii->next;
       continue;
       PositionCount* pc = binary_to_positions(binary);
@@ -291,7 +291,7 @@ void io_read_and_sort_test() {
     while(ii) {
       break;
       Binary binary = ii->binary;
-      logger_info("%lu <=> %s", binary, binary_to_string(binary));
+      logger_info("%llu <=> %s", binary, binary_to_string(binary));
       ii = ii->next;
       PositionCount* pc = binary_to_positions(binary);
       position_list_print(pc->positions);
@@ -350,7 +350,7 @@ void game_solve_today_test() {
 
   for (int i = 0; i < PIECE_COUNT; i ++) {
     GameSolveResult item = result[i];
-    logger_info("%c %lu <=> %s", item.name, item.binary, binary_to_string(item.binary));
+    logger_info("%c %llu <=> %s", item.name, item.binary, binary_to_string(item.binary));
 
     puzzle_fill_position_count(
       puzzle,

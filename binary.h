@@ -9,7 +9,7 @@
 #include "position.h"
 #include "puzzle.h"
 
-typedef unsigned long Binary;
+typedef unsigned long long Binary;
 typedef char* String;
 
 typedef struct _BinaryListItem {

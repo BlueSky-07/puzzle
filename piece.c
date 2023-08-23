@@ -235,7 +235,7 @@ Piece* piece_make_from_position_list(char name, unsigned int position_count, Pos
   if (!list) return NULL;
   Position positions[PIECE_MAX_POSITION];
   int i = 0;
-  while (list && list->position) {
+  while (list && list->position && i < PIECE_MAX_POSITION) {
     positions[i].x = list->position->x;
     positions[i].y = list->position->y;
     list = list ->next;

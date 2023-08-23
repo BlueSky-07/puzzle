@@ -332,7 +332,7 @@ GameSolveListItem* game_read_pieces_data() {
       while(ii) {
         break; // hide read data;
         Binary binary = ii->binary;
-        logger_info("%lu <=> %s", binary, binary_to_string(binary));
+        logger_info("%llu <=> %s", binary, binary_to_string(binary));
         ii = ii->next;
         PositionCount* pc = binary_to_positions(binary);
         position_list_print(pc->positions);
