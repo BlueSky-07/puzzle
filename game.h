@@ -10,6 +10,7 @@
 #include "binary.h"
 #include "date.h"
 #include "io.h"
+#include "optimization.h"
 
 typedef unsigned int GameActionResult;
 #define GAME_ACTION_SUCCESS                0
@@ -52,6 +53,7 @@ int game_solve_list_item_compare_desc(const void* a, const void *b);
 
 void game_solve_list_sort_asc(GameSolveListItem* list, unsigned int count);
 void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count);
+GameSolveListItem* game_solve_list_filter_by_puzzle(GameSolveListItem *items, Puzzle puzzle);
 
 Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
 GameSolveResult* game_solve_by_date(Date* date);

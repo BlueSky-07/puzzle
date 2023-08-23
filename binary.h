@@ -31,7 +31,7 @@ Bool binary_list_push_unique(BinaryListItem* list, Binary binary);
 Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition);
 Bool binary_list_find(BinaryListItem* list, Binary binary);
 
-BinaryListItem* binary_list_filter_piece_by_puzzle(BinaryListItem* list, Binary puzzle_binary);
+BinaryListItem* binary_list_filter_pieces_by_puzzle(BinaryListItem* list, Binary puzzle_binary);
 
 void binary_list_free(BinaryListItem* list);
 void binary_count_free(BinaryCount* bc);

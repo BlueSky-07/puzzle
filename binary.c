@@ -56,7 +56,7 @@ Bool binary_list_find(BinaryListItem* list, Binary binary) {
   return list->binary == binary;
 }
 
-BinaryListItem* binary_list_filter_piece_by_puzzle(BinaryListItem* list, Binary puzzle_binary) {
+BinaryListItem* binary_list_filter_pieces_by_puzzle(BinaryListItem* list, Binary puzzle_binary) {
   if (!list) return NULL;
   BinaryListItem* result = binary_list_item_make_empty();
   while (list) {

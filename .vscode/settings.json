@@ -24,7 +24,8 @@
     "bool.h": "c",
     "calc.h": "c",
     "date.h": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "optimization.h": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

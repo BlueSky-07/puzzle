@@ -177,6 +177,21 @@ void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count) {
   );
 }
 
+GameSolveListItem* game_solve_list_filter_by_puzzle(GameSolveListItem *items, Puzzle puzzle) {
+  GameSolveListItem* result = malloc(sizeof(GameSolveListItem) * PIECE_COUNT);
+  Binary puzzle_binary = binary_from_puzzle(puzzle);
+  for (int i = 0; i < PIECE_COUNT; i ++) {
+    GameSolveListItem game_solve_item = items[i];
+    BinaryCount* piece_bc = game_solve_item.bc;
+    BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
+    BinaryCount* piece_bc_filtered = binary_count_make(piece_filtered);
+
+    result[i] = *game_solve_list_item_make(game_solve_item.name, piece_bc_filtered);
+    logger_debug("game_solve_list_filter_by_puzzle: %c %d => %d", game_solve_item.name, piece_bc->count, piece_bc_filtered->count);
+  }
+  return result;
+}
+
 Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
   unsigned int rest_count = PIECE_COUNT - current;
   if (rest_count == 0) {
@@ -188,7 +203,7 @@ Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem
   Binary puzzle_binary = binary_from_puzzle(puzzle);
   GameSolveListItem game_solve_item = items[current];
   BinaryCount* piece_bc = game_solve_item.bc;
-  BinaryListItem* piece_filtered = binary_list_filter_piece_by_puzzle(piece_bc->binaries, puzzle_binary);
+  BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
   if (!piece_filtered) return FALSE;
   BinaryListItem* piece_i = piece_filtered;
   while (piece_i) {
@@ -234,10 +249,14 @@ GameSolveResult* game_solve_by_date(Date* date) {
   );
 
   GameSolveListItem* items = game_read_pieces_data();
-  GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
-  Bool success = game_solve_puzzle(result, puzzle, items, 0);
-
+  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);
   game_solve_list_free(items);
+
+  GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
+
+  Bool success = game_solve_puzzle(result, puzzle, optimized_items, 0);
+
+  game_solve_list_free(optimized_items);
   free(puzzle);
 
   return success ? result : NULL;
@@ -263,7 +282,7 @@ void game_solve_all_puzzle(Puzzle puzzle, GameSolveListItem items[], unsigned in
   Binary puzzle_binary = binary_from_puzzle(puzzle);
   GameSolveListItem game_solve_item = items[current];
   BinaryCount* piece_bc = game_solve_item.bc;
-  BinaryListItem* piece_filtered = binary_list_filter_piece_by_puzzle(piece_bc->binaries, puzzle_binary);
+  BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
   if (!piece_filtered) return;
   BinaryListItem* piece_i = piece_filtered;
   while (piece_i) {
@@ -297,9 +316,12 @@ void game_solve_all_by_date(Date* date) {
   );
 
   GameSolveListItem* items = game_read_pieces_data();
-  game_solve_all_puzzle(puzzle, items, 0);
-
+  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);
   game_solve_list_free(items);
+
+  game_solve_all_puzzle(puzzle, optimized_items, 0);
+
+  game_solve_list_free(optimized_items);
   free(puzzle);
 }
 
