@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include "logger.h"
-#include "puzzle.h"
+#include "texts.h"
 
 typedef struct _Date {
   unsigned int month; // 0 - 11

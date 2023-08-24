@@ -561,3 +561,40 @@ void optimization_data_print() {
   optimization_piece_forbidden_case_print(PIECE_I_FORBIDDEN_CASE, PIECE_I_FORBIDDEN_CASE_COUNT, PIECE_I.position_count, PIECE_I.name);
   optimization_piece_forbidden_case_print(PIECE_J_FORBIDDEN_CASE, PIECE_J_FORBIDDEN_CASE_COUNT, PIECE_J.position_count, PIECE_J.name);
 };
+
+BinaryListItem* optimization_piece_forbidden_any_to_binary_list(Position forbidden_any[][PIECE_MAX_POSITION], unsigned int count, unsigned int piece_position_count) {
+  BinaryListItem* result = binary_list_item_make_empty();
+  for (int i = 0; i < count; i ++) {
+    Binary binary = binary_from_positions(forbidden_any[i], piece_position_count, NULL);
+    binary_list_push(result, binary);
+  }
+  return result;
+}
+
+BinaryListItem* optimization_piece_forbidden_any_binary_list_filter(BinaryListItem* original, char name) {
+  BinaryListItem* list = NULL;
+  switch (name) {
+    case 'A':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_A_FORBIDDEN_ANY, PIECE_A_FORBIDDEN_ANY_COUNT, PIECE_A.position_count);
+      break;
+    case 'C':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_C_FORBIDDEN_ANY, PIECE_C_FORBIDDEN_ANY_COUNT, PIECE_C.position_count);
+      break;
+    case 'D':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_D_FORBIDDEN_ANY, PIECE_D_FORBIDDEN_ANY_COUNT, PIECE_D.position_count);
+      break;
+    case 'E':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_E_FORBIDDEN_ANY, PIECE_E_FORBIDDEN_ANY_COUNT, PIECE_E.position_count);
+      break;
+    case 'G':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_G_FORBIDDEN_ANY, PIECE_G_FORBIDDEN_ANY_COUNT, PIECE_G.position_count);
+      break;
+    case 'H':
+      list = optimization_piece_forbidden_any_to_binary_list(PIECE_H_FORBIDDEN_ANY, PIECE_H_FORBIDDEN_ANY_COUNT, PIECE_H.position_count);
+      break;
+    default:
+      break;
+  }
+  if (list == NULL) return original;
+  return binary_list_find_and_remove_list(original, list);
+}

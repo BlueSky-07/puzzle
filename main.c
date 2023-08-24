@@ -361,6 +361,9 @@ void game_solve_today_test() {
     );
   }
 
+  Date* today = date_get_today();
+  puzzle_fill_date(puzzle, today);
+
   puzzle_print(puzzle);
   PuzzleText puzzle_text = puzzle_text_make_from_puzzle(puzzle);
   puzzle_text_print(puzzle_text);
@@ -402,9 +405,9 @@ int main() {
   // io_write_piece_all_kinds_test();
   // io_read_and_sort_test();
   // date_test();
-  // game_solve_today_test();
+  game_solve_today_test();
   // game_solve_all_today_test();
-  optimization_data_test();
+  // optimization_data_test();
 
   logger_info("end puzzle test");
 

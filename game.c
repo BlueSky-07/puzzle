@@ -183,8 +183,15 @@ GameSolveListItem* game_solve_list_filter_by_puzzle(GameSolveListItem *items, Pu
   for (int i = 0; i < PIECE_COUNT; i ++) {
     GameSolveListItem game_solve_item = items[i];
     BinaryCount* piece_bc = game_solve_item.bc;
-    BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
+    BinaryListItem* optimized_piece_list = optimization_piece_forbidden_any_binary_list_filter(piece_bc->binaries, game_solve_item.name);
+    BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(optimized_piece_list, puzzle_binary);
     BinaryCount* piece_bc_filtered = binary_count_make(piece_filtered);
+
+    if (logger_level_is_success_ok()) {
+      BinaryCount* optimized_piece_bc = binary_count_make(optimized_piece_list);
+      logger_success("game_solve_list_filter_by_puzzle %c: original: %d, optimize: %d, filter_by_puzzle: %d", game_solve_item.name, piece_bc->count, optimized_piece_bc->count, piece_bc_filtered->count);
+      free(optimized_piece_bc);
+    }
 
     result[i] = *game_solve_list_item_make(game_solve_item.name, piece_bc_filtered);
     logger_debug("game_solve_list_filter_by_puzzle: %c %d => %d", game_solve_item.name, piece_bc->count, piece_bc_filtered->count);
@@ -234,19 +241,8 @@ Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem
 }
 
 GameSolveResult* game_solve_by_date(Date* date) {
-  Date d = *date;
   Puzzle puzzle = puzzle_make();
-  puzzle_fill_positions(
-    puzzle,
-    (Position[3]){
-      POSITIONS_DATE[d.date],
-      POSITIONS_MONTH[d.month],
-      POSITIONS_WEEK[d.week],
-    },
-    3,
-    PUZZLE_POSITION_DISABLED,
-    NULL
-  );
+  puzzle_fill_date(puzzle, date);
 
   GameSolveListItem* items = game_read_pieces_data();
   GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);
@@ -301,19 +297,8 @@ void game_solve_all_puzzle(Puzzle puzzle, GameSolveListItem items[], unsigned in
 }
 
 void game_solve_all_by_date(Date* date) {
-  Date d = *date;
   Puzzle puzzle = puzzle_make();
-  puzzle_fill_positions(
-    puzzle,
-    (Position[3]){
-      POSITIONS_DATE[d.date],
-      POSITIONS_MONTH[d.month],
-      POSITIONS_WEEK[d.week],
-    },
-    3,
-    PUZZLE_POSITION_DISABLED,
-    NULL
-  );
+  puzzle_fill_date(puzzle, date);
 
   GameSolveListItem* items = game_read_pieces_data();
   GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);

@@ -31,7 +31,8 @@
     "concepts": "c",
     "cmath": "c",
     "limits": "c",
-    "new": "c"
+    "new": "c",
+    "texts.h": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

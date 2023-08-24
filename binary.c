@@ -42,18 +42,42 @@ Bool binary_list_push_unique(BinaryListItem* list, Binary binary) {
 
 Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition) {
   if (!list) return FALSE;
-  BinaryListItem* i = addition;
-  while (i) {
-    binary_list_push_unique(list, i->binary);
-    i = i->next;
+  while (addition) {
+    binary_list_push_unique(list, addition->binary);
+    addition = addition->next;
   }
   return TRUE;
 }
 
 Bool binary_list_find(BinaryListItem* list, Binary binary) {
   if (!list) return FALSE;
-  while (list->next) list = list->next;
-  return list->binary == binary;
+  while (list) {
+    if (list && list->binary == binary) return TRUE;
+    list = list->next;
+  }
+  return FALSE;
+}
+
+BinaryListItem* binary_list_find_and_remove(BinaryListItem* list, Binary binary) {
+  if (!list) return NULL;
+  BinaryListItem* result = binary_list_item_make_empty();
+  while (list) {
+    if (list->binary != binary)
+      binary_list_push_unique(result, list->binary);
+    list = list->next;
+  }
+  return result;
+}
+
+BinaryListItem* binary_list_find_and_remove_list(BinaryListItem* list, BinaryListItem* subtraction) {
+  if (!list) return NULL;
+  BinaryListItem* result = list;
+  while (subtraction) {
+    BinaryListItem* prev = result;
+    result = binary_list_find_and_remove(result, subtraction->binary);
+    subtraction = subtraction->next;
+  }
+  return result;
 }
 
 BinaryListItem* binary_list_filter_pieces_by_puzzle(BinaryListItem* list, Binary puzzle_binary) {

@@ -30,6 +30,8 @@ Bool binary_list_push(BinaryListItem* list, Binary binary);
 Bool binary_list_push_unique(BinaryListItem* list, Binary binary);
 Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition);
 Bool binary_list_find(BinaryListItem* list, Binary binary);
+BinaryListItem* binary_list_find_and_remove(BinaryListItem* list, Binary binary);
+BinaryListItem* binary_list_find_and_remove_list(BinaryListItem* list, BinaryListItem* subtraction);
 
 BinaryListItem* binary_list_filter_pieces_by_puzzle(BinaryListItem* list, Binary puzzle_binary);
 
