@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "logger.h"
 #include "const.h"
 #include "piece.h"
@@ -376,6 +377,10 @@ void optimization_data_test() {
 
 int main() {
   logger_global_set_all_from_env();
+  time_t start_time = time(NULL);
+  if (logger_level_is_verbose_ok())
+    date_time_print(start_time, LOGGER_NEW_LINE);
+
   logger_info("start puzzle test");
 
   // logger_test();
@@ -398,6 +403,10 @@ int main() {
   // optimization_data_test();
 
   logger_info("end puzzle test");
-
+  if (logger_level_is_verbose_ok()) {
+    time_t end_time = time(NULL);
+    date_time_print(end_time, LOGGER_NEW_LINE);
+    printf("difftime: %.2f seconds\n", difftime(end_time, start_time));
+  }
   return 0;
 }

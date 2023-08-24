@@ -32,7 +32,9 @@
     "cmath": "c",
     "limits": "c",
     "new": "c",
-    "texts.h": "c"
+    "texts.h": "c",
+    "stddef.h": "c",
+    "features.h": "c"
   },
   "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }
