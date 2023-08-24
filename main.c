@@ -347,24 +347,12 @@ void game_solve_today_test() {
   logger_info("game_solve_today_test:");
 
   GameSolveResult* result = game_solve_today();
-  Puzzle puzzle = puzzle_make();
-
-  for (int i = 0; i < PIECE_COUNT; i ++) {
-    GameSolveResult item = result[i];
-    logger_info("%c %llu <=> %s", item.name, item.binary, binary_to_string(item.binary));
-
-    puzzle_fill_position_count(
-      puzzle,
-      binary_to_positions(item.binary),
-      item.name,
-      NULL
-    );
-  }
+  Puzzle puzzle = game_solve_result_to_puzzle(result, PIECE_COUNT);
 
   Date* today = date_get_today();
-  puzzle_fill_date(puzzle, today);
-
+  puzzle_fill_date(puzzle, today, PUZZLE_POSITION_DISABLED);
   puzzle_print(puzzle);
+  puzzle_fill_date(puzzle, today, PUZZLE_POSITION_EMPTY);
   PuzzleText puzzle_text = puzzle_text_make_from_puzzle(puzzle);
   puzzle_text_print(puzzle_text);
   game_solve_result_free(result);

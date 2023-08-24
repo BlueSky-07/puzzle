@@ -89,7 +89,7 @@ void puzzle_fill_position_count(Puzzle puzzle, PositionCount* pc, char v, Positi
   }
 }
 
-void puzzle_fill_date(Puzzle puzzle, Date* date) {
+void puzzle_fill_date(Puzzle puzzle, Date* date, char v) {
   Date d = *date;
   puzzle_fill_positions(
     puzzle,
@@ -99,7 +99,7 @@ void puzzle_fill_date(Puzzle puzzle, Date* date) {
       POSITIONS_WEEK[d.week],
     },
     3,
-    PUZZLE_POSITION_DISABLED,
+    v,
     NULL
   );
 }
