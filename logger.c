@@ -1,6 +1,6 @@
 #include "logger.h"
 
-LoggerIsEnabled _logger_global_is_enabled = LOGGER_ENABLED;
+LoggerIsEnabled _logger_global_is_enabled = LOGGER_DISABLED;
 LoggerLevel _logger_global_level = LOGGER_LEVEL_INFO;
 FILE* _logger_global_stream_out = NULL; // todo
 FILE* _logger_global_stream_err = NULL; // todo
