@@ -5,6 +5,7 @@
 #include "puzzle.h"
 #include "binary.h"
 #include "position.h"
+#include "date.h"
 
 #define PIECE_A_FORBIDDEN_ANY_COUNT 5
 extern Position PIECE_A_FORBIDDEN_ANY[PIECE_A_FORBIDDEN_ANY_COUNT][PIECE_MAX_POSITION];
@@ -41,5 +42,7 @@ void optimization_data_print();
 
 BinaryListItem* optimization_piece_forbidden_any_to_binary_list(Position forbidden_any[][PIECE_MAX_POSITION], unsigned int count, unsigned int piece_position_count);
 BinaryListItem* optimization_piece_forbidden_any_binary_list_filter(BinaryListItem* original, char name);
+BinaryListItem* optimization_piece_forbidden_case_to_binary_list(OptimizationForbiddenCaseItem* forbidden_case, unsigned int count, unsigned int piece_position_count, Date* date);
+BinaryListItem* optimization_piece_forbidden_case_binary_list_filter(BinaryListItem* original, char name, Date* date);
 
 #endif

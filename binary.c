@@ -73,7 +73,6 @@ BinaryListItem* binary_list_find_and_remove_list(BinaryListItem* list, BinaryLis
   if (!list) return NULL;
   BinaryListItem* result = list;
   while (subtraction) {
-    BinaryListItem* prev = result;
     result = binary_list_find_and_remove(result, subtraction->binary);
     subtraction = subtraction->next;
   }

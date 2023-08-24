@@ -177,24 +177,27 @@ void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count) {
   );
 }
 
-GameSolveListItem* game_solve_list_filter_by_puzzle(GameSolveListItem *items, Puzzle puzzle) {
+GameSolveListItem* game_solve_list_filter_by_puzzle_and_date(GameSolveListItem *items, Puzzle puzzle, Date* date) {
   GameSolveListItem* result = malloc(sizeof(GameSolveListItem) * PIECE_COUNT);
   Binary puzzle_binary = binary_from_puzzle(puzzle);
   for (int i = 0; i < PIECE_COUNT; i ++) {
     GameSolveListItem game_solve_item = items[i];
     BinaryCount* piece_bc = game_solve_item.bc;
-    BinaryListItem* optimized_piece_list = optimization_piece_forbidden_any_binary_list_filter(piece_bc->binaries, game_solve_item.name);
-    BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(optimized_piece_list, puzzle_binary);
-    BinaryCount* piece_bc_filtered = binary_count_make(piece_filtered);
+    BinaryListItem* optimized_puzzle_list = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
+    BinaryListItem* optimized_any_piece_list = optimization_piece_forbidden_any_binary_list_filter(optimized_puzzle_list, game_solve_item.name);
+    BinaryListItem* optimized_case_piece_list = optimization_piece_forbidden_case_binary_list_filter(optimized_any_piece_list, game_solve_item.name, date);
+    BinaryCount* piece_bc_filtered = binary_count_make(optimized_case_piece_list);
 
     if (logger_level_is_success_ok()) {
-      BinaryCount* optimized_piece_bc = binary_count_make(optimized_piece_list);
-      logger_success("game_solve_list_filter_by_puzzle %c: original: %d, optimize: %d, filter_by_puzzle: %d", game_solve_item.name, piece_bc->count, optimized_piece_bc->count, piece_bc_filtered->count);
-      free(optimized_piece_bc);
+      BinaryCount* optimized_puzzle_bc = binary_count_make(optimized_puzzle_list);
+      BinaryCount* optimized_any_piece_bc = binary_count_make(optimized_any_piece_list);
+      logger_verbose("game_solve_list_filter_by_puzzle_and_date %c: original: %d, filter_by_puzzle: %d, optimize_any: %d, optimize_case: %d", game_solve_item.name, piece_bc->count, optimized_puzzle_bc->count, optimized_any_piece_bc->count, piece_bc_filtered->count);
+      free(optimized_any_piece_bc);
+      free(optimized_puzzle_bc);
     }
 
     result[i] = *game_solve_list_item_make(game_solve_item.name, piece_bc_filtered);
-    logger_debug("game_solve_list_filter_by_puzzle: %c %d => %d", game_solve_item.name, piece_bc->count, piece_bc_filtered->count);
+    logger_debug("game_solve_list_filter_by_puzzle_and_date: %c %d => %d", game_solve_item.name, piece_bc->count, piece_bc_filtered->count);
   }
   return result;
 }
@@ -203,7 +206,7 @@ Puzzle game_solve_result_to_puzzle(GameSolveResult* list, unsigned int count) {
   Puzzle puzzle = puzzle_make();
   for (int i = 0; i < count; i ++) {
     GameSolveResult item = list[i];
-    logger_verbose("game_solve_result_to_puzzle %c: %llu <=> %s", item.name, item.binary, binary_to_string(item.binary));
+    logger_debug("game_solve_result_to_puzzle %c: %llu <=> %s", item.name, item.binary, binary_to_string(item.binary));
 
     puzzle_fill_position_count(
       puzzle,
@@ -261,7 +264,7 @@ GameSolveResult* game_solve_by_date(Date* date) {
   puzzle_fill_date(puzzle, date, PUZZLE_POSITION_DISABLED);
 
   GameSolveListItem* items = game_read_pieces_data();
-  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);
+  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle_and_date(items, puzzle, date);
   game_solve_list_free(items);
 
   GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
@@ -317,7 +320,7 @@ void game_solve_all_by_date(Date* date) {
   puzzle_fill_date(puzzle, date, PUZZLE_POSITION_DISABLED);
 
   GameSolveListItem* items = game_read_pieces_data();
-  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle(items, puzzle);
+  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle_and_date(items, puzzle, date);
   game_solve_list_free(items);
 
   game_solve_all_puzzle(puzzle, optimized_items, 0);
@@ -344,7 +347,7 @@ GameSolveListItem* game_read_pieces_data() {
     BinaryListItem* list = binary_list_item_make_empty();
     IoActionResult io_result = io_read_binary_list(filename, list);
     if (io_result != IO_SUCCESS) {
-      logger_error("read pieces data of %c error: %s, (%d) %s", piece_name, filename, io_result, io_action_result_string(io_result));
+      logger_error("game_read_pieces_data, %c error: %s, (%d) %s", piece_name, filename, io_result, io_action_result_string(io_result));
       binary_list_free(list);
       free(filename);
       return game_make_pieces_data(NULL);
@@ -368,10 +371,10 @@ GameSolveListItem* game_read_pieces_data() {
     }
 
     BinaryCount* bc = binary_count_make(list);
-    logger_debug("%c read %d kinds", piece_name, bc->count);
+    logger_debug("game_read_pieces_data: %c read %d kinds", piece_name, bc->count);
     items[i] = *game_solve_list_item_make(piece_name, bc);
   }
-  logger_success("read pieces data done");
+  logger_success("game_read_pieces_data done");
   free(filename);
 
   return items;

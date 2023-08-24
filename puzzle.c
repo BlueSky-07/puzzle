@@ -94,8 +94,8 @@ void puzzle_fill_date(Puzzle puzzle, Date* date, char v) {
   puzzle_fill_positions(
     puzzle,
     (Position[3]){
-      POSITIONS_DATE[d.date],
       POSITIONS_MONTH[d.month],
+      POSITIONS_DATE[d.date],
       POSITIONS_WEEK[d.week],
     },
     3,
@@ -226,4 +226,36 @@ PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_nam
 void puzzle_clear(Puzzle puzzle) {
   memset(puzzle, PUZZLE_POSITION_EMPTY, PUZZLE_TOTAL);
   puzzle_fill_positions(puzzle, POSITIONS_UNAVAILABLE, PUZZLE_UNAVAILABLE_COUNT, PUZZLE_POSITION_UNAVAILABLE, NULL);
+}
+
+PuzzlePositionInfo* puzzle_position_info_make(Position* position) {
+  if (!position) return NULL;
+  PuzzlePositionInfo* result = malloc(sizeof(PuzzlePositionInfo));
+  Position p = *position;
+  for (int i = 0; i < PUZZLE_MONTH_COUNT; i ++) {
+    Position ii = POSITIONS_MONTH[i];
+    if (p.x == ii.x && p.y == ii.y) {
+      result->kind = PUZZLE_POSITION_KIND_MONTH;
+      result->index = i;
+      return result;
+    }
+  }
+  for (int i = 0; i < PUZZLE_DATE_COUNT; i ++) {
+    Position ii = POSITIONS_DATE[i];
+    if (p.x == ii.x && p.y == ii.y) {
+      result->kind = PUZZLE_POSITION_KIND_DATE;
+      result->index = i;
+      return result;
+    }
+  }
+  for (int i = 0; i < PUZZLE_WEEK_COUNT; i ++) {
+    Position ii = POSITIONS_WEEK[i];
+    if (p.x == ii.x && p.y == ii.y) {
+      result->kind = PUZZLE_POSITION_KIND_WEEK;
+      result->index = i;
+      return result;
+    }
+  }
+  free(result);
+  return NULL;
 }

@@ -572,6 +572,7 @@ BinaryListItem* optimization_piece_forbidden_any_to_binary_list(Position forbidd
 }
 
 BinaryListItem* optimization_piece_forbidden_any_binary_list_filter(BinaryListItem* original, char name) {
+  if (!original) return original;
   BinaryListItem* list = NULL;
   switch (name) {
     case 'A':
@@ -596,5 +597,49 @@ BinaryListItem* optimization_piece_forbidden_any_binary_list_filter(BinaryListIt
       break;
   }
   if (list == NULL) return original;
+  return binary_list_find_and_remove_list(original, list);
+}
+
+BinaryListItem* optimization_piece_forbidden_case_to_binary_list(OptimizationForbiddenCaseItem* forbidden_case, unsigned int count, unsigned int piece_position_count, Date* date) {
+  if (!date) return NULL;
+  BinaryListItem* list = binary_list_item_make_empty();
+  for (int i = 0; i < count; i ++) {
+    OptimizationForbiddenCaseItem item = forbidden_case[i];
+    PuzzlePositionInfo* info = puzzle_position_info_make(item.condition);
+    if (
+         (info->kind == PUZZLE_POSITION_KIND_MONTH && info->index != date->month)
+      || (info->kind == PUZZLE_POSITION_KIND_DATE && info->index != date->date)
+      || (info->kind == PUZZLE_POSITION_KIND_WEEK && info->index != date->week)
+    ) {
+      binary_list_push_unique(list, binary_from_positions(item.positions, piece_position_count, NULL));
+    }
+  }
+  return list;
+}
+
+BinaryListItem* optimization_piece_forbidden_case_binary_list_filter(BinaryListItem* original, char name, Date* date) {
+  if (!original || !date) return original;
+
+  BinaryListItem* list = NULL;
+  switch (name) {
+    case 'C':
+      list = optimization_piece_forbidden_case_to_binary_list(PIECE_C_FORBIDDEN_CASE, PIECE_C_FORBIDDEN_CASE_COUNT, PIECE_C.position_count, date);
+      break;
+    case 'F':
+      list = optimization_piece_forbidden_case_to_binary_list(PIECE_F_FORBIDDEN_CASE, PIECE_F_FORBIDDEN_CASE_COUNT, PIECE_F.position_count, date);
+      break;
+    case 'G':
+      list = optimization_piece_forbidden_case_to_binary_list(PIECE_G_FORBIDDEN_CASE, PIECE_G_FORBIDDEN_CASE_COUNT, PIECE_G.position_count, date);
+      break;
+    case 'I':
+      list = optimization_piece_forbidden_case_to_binary_list(PIECE_I_FORBIDDEN_CASE, PIECE_I_FORBIDDEN_CASE_COUNT, PIECE_I.position_count, date);
+      break;
+    case 'J':
+      list = optimization_piece_forbidden_case_to_binary_list(PIECE_J_FORBIDDEN_CASE, PIECE_J_FORBIDDEN_CASE_COUNT, PIECE_J.position_count, date);
+      break;
+    default:
+      break;
+  }
+
   return binary_list_find_and_remove_list(original, list);
 }

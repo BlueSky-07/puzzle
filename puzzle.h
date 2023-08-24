@@ -49,4 +49,16 @@ PositionCount* puzzle_find_and_remove(Puzzle puzzle, char name);
 PositionCount* puzzle_find_and_fill(Puzzle puzzle, char find_name, char fill_name);
 void puzzle_clear(Puzzle puzzle);
 
+typedef unsigned int PuzzlePositionKind;
+#define PUZZLE_POSITION_KIND_MONTH  1
+#define PUZZLE_POSITION_KIND_DATE   2
+#define PUZZLE_POSITION_KIND_WEEK   3
+
+typedef struct _PuzzlePositionInfo {
+  PuzzlePositionKind kind;
+  unsigned int index;
+} PuzzlePositionInfo;
+
+PuzzlePositionInfo* puzzle_position_info_make(Position* position);
+
 #endif

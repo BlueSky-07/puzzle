@@ -393,8 +393,8 @@ int main() {
   // io_write_piece_all_kinds_test();
   // io_read_and_sort_test();
   // date_test();
-  game_solve_today_test();
-  // game_solve_all_today_test();
+  // game_solve_today_test();
+  game_solve_all_today_test();
   // optimization_data_test();
 
   logger_info("end puzzle test");
