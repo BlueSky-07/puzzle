@@ -218,15 +218,23 @@ Puzzle game_solve_result_to_puzzle(GameSolveResult* list, unsigned int count) {
   return puzzle;
 }
 
-Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
+Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current) {
   unsigned int rest_count = PIECE_COUNT - current;
   if (rest_count == 0) {
-    if (logger_level_is_debug_ok()) puzzle_print(puzzle);
+    if (mode == GAME_SOLVE_MODE_ALL) {
+      Puzzle puzzle = game_solve_result_to_puzzle(result, PIECE_COUNT);
+      char* puzzle_string = puzzle_to_string(puzzle);
+      printf("%s\n", puzzle_string);
+      free(puzzle_string);
+      if (logger_level_is_verbose_ok()) puzzle_print(puzzle);
+      free(puzzle);
+    }
     return TRUE;
   }
   if (current == 0) game_solve_list_sort_asc(&items[current], rest_count);
 
-  Binary puzzle_binary = binary_from_puzzle(puzzle);
+  Bool final_result = FALSE;
+
   GameSolveListItem game_solve_item = items[current];
   BinaryCount* piece_bc = game_solve_item.bc;
   BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
@@ -235,31 +243,28 @@ Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem
   while (piece_i) {
     Binary piece_binary = piece_i->binary;
     if (piece_binary != BINARY_INVALID) {
-      PositionCount* piece_pc = binary_to_positions(piece_binary);
-      puzzle_fill_position_count(puzzle, piece_pc, game_solve_item.name, NULL);
-      Bool success = game_solve_puzzle(result, puzzle, items, current + 1);
+      result[current].name = game_solve_item.name;
+      result[current].binary = piece_binary;
+      Binary puzzle_put_piece_binary = binary_piece_put_into_puzzle(puzzle_binary, piece_binary);
+      Bool success = game_solve_puzzle_binary(mode, result, puzzle_put_piece_binary, items, current + 1);
 
       if (success) {
-        result[current].name = game_solve_item.name;
-        result[current].binary = piece_binary;
-
-        position_count_free(piece_pc, TRUE);
-        binary_list_free(piece_filtered);
-
-        return TRUE;
+        final_result = success;
+        if (mode == GAME_SOLVE_MODE_ONE) break;
       }
-
-      puzzle_fill_position_count(puzzle, piece_pc, PUZZLE_POSITION_EMPTY, NULL); // revert
-      position_count_free(piece_pc, TRUE);
     }
     piece_i = piece_i->next;
   }
   binary_list_free(piece_filtered);
 
-  return FALSE;
+  return final_result;
 }
 
-GameSolveResult* game_solve_by_date(Date* date) {
+Bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
+  return game_solve_puzzle_binary(mode, result, binary_from_puzzle(puzzle), items, current);
+}
+
+GameSolveResult* game_solve_by_date(GameSolveMode mode, Date* date) {
   Puzzle puzzle = puzzle_make();
   puzzle_fill_date(puzzle, date, PUZZLE_POSITION_DISABLED);
 
@@ -269,7 +274,7 @@ GameSolveResult* game_solve_by_date(Date* date) {
 
   GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
 
-  Bool success = game_solve_puzzle(result, puzzle, optimized_items, 0);
+  Bool success = game_solve_puzzle(mode, result, puzzle, optimized_items, 0);
 
   game_solve_list_free(optimized_items);
   free(puzzle);
@@ -277,62 +282,11 @@ GameSolveResult* game_solve_by_date(Date* date) {
   return success ? result : NULL;
 }
 
-GameSolveResult* game_solve_today() {
+GameSolveResult* game_solve_today(GameSolveMode mode) {
   Date* today = date_get_today();
-  GameSolveResult* result = game_solve_by_date(today);
+  GameSolveResult* result = game_solve_by_date(mode, today);
   free(today);
   return result;
-}
-
-void game_solve_all_puzzle(Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
-  unsigned int rest_count = PIECE_COUNT - current;
-  if (rest_count == 0) {
-    char* puzzle_string = puzzle_to_string(puzzle);
-    printf("%s\n", puzzle_string);
-    if (logger_level_is_verbose_ok()) puzzle_print(puzzle_from_string(puzzle_string));
-    return;
-  }
-  if (current == 0) game_solve_list_sort_asc(&items[current], rest_count);
-
-  Binary puzzle_binary = binary_from_puzzle(puzzle);
-  GameSolveListItem game_solve_item = items[current];
-  BinaryCount* piece_bc = game_solve_item.bc;
-  BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
-  if (!piece_filtered) return;
-  BinaryListItem* piece_i = piece_filtered;
-  while (piece_i) {
-    Binary piece_binary = piece_i->binary;
-    if (piece_binary != BINARY_INVALID) {
-      PositionCount* piece_pc = binary_to_positions(piece_binary);
-      puzzle_fill_position_count(puzzle, piece_pc, game_solve_item.name, NULL);
-      game_solve_all_puzzle(puzzle, items, current + 1);
-
-      puzzle_fill_position_count(puzzle, piece_pc, PUZZLE_POSITION_EMPTY, NULL); // revert
-      position_count_free(piece_pc, TRUE);
-    }
-    piece_i = piece_i->next;
-  }
-  binary_list_free(piece_filtered);
-}
-
-void game_solve_all_by_date(Date* date) {
-  Puzzle puzzle = puzzle_make();
-  puzzle_fill_date(puzzle, date, PUZZLE_POSITION_DISABLED);
-
-  GameSolveListItem* items = game_read_pieces_data();
-  GameSolveListItem* optimized_items = game_solve_list_filter_by_puzzle_and_date(items, puzzle, date);
-  game_solve_list_free(items);
-
-  game_solve_all_puzzle(puzzle, optimized_items, 0);
-
-  game_solve_list_free(optimized_items);
-  free(puzzle);
-}
-
-void game_solve_all_today() {
-  Date* today = date_get_today();
-  game_solve_all_by_date(today);
-  free(today);
 }
 
 GameSolveListItem* game_read_pieces_data() {

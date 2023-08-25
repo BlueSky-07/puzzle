@@ -347,7 +347,7 @@ void game_solve_today_test() {
   logger_info("=======================================");
   logger_info("game_solve_today_test:");
 
-  GameSolveResult* result = game_solve_today();
+  GameSolveResult* result = game_solve_today(GAME_SOLVE_MODE_ONE);
   Puzzle puzzle = game_solve_result_to_puzzle(result, PIECE_COUNT);
 
   Date* today = date_get_today();
@@ -365,7 +365,7 @@ void game_solve_all_today_test() {
   logger_info("=======================================");
   logger_info("game_solve_all_today_test:");
 
-  game_solve_all_today();
+  game_solve_today(GAME_SOLVE_MODE_ALL);
 }
 
 void optimization_data_test() {

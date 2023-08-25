@@ -56,13 +56,14 @@ void game_solve_list_sort_desc(GameSolveListItem* list, unsigned int count);
 GameSolveListItem* game_solve_list_filter_by_puzzle_and_date(GameSolveListItem *items, Puzzle puzzle, Date* date);
 Puzzle game_solve_result_to_puzzle(GameSolveResult* list, unsigned int count);
 
-Bool game_solve_puzzle(GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
-GameSolveResult* game_solve_by_date(Date* date);
-GameSolveResult* game_solve_today();
+typedef unsigned int GameSolveMode;
+#define GAME_SOLVE_MODE_ONE   1
+#define GAME_SOLVE_MODE_ALL   2
 
-void game_solve_all_puzzle(Puzzle puzzle, GameSolveListItem items[], unsigned int current);
-void game_solve_all_by_date(Date* date);
-void game_solve_all_today();
+Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current);
+Bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
+GameSolveResult* game_solve_by_date(GameSolveMode mode, Date* date);
+GameSolveResult* game_solve_today(GameSolveMode mode);
 
 GameSolveListItem* game_read_pieces_data();
 GameSolveListItem* game_make_pieces_data(Puzzle puzzle);
