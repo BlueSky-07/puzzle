@@ -170,13 +170,13 @@ Position PIECE_H_FORBIDDEN_ANY[PIECE_H_FORBIDDEN_ANY_COUNT][PIECE_MAX_POSITION] 
 
 
 OptimizationForbiddenCaseItem PIECE_C_FORBIDDEN_CASE[PIECE_C_FORBIDDEN_CASE_COUNT] = {
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {5, 7}, {5, 6}, {5, 5}, {5, 4}, {6, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {2, 1}, {3, 1}, {4, 1}, {5, 1}, {5, 0},
@@ -185,73 +185,73 @@ OptimizationForbiddenCaseItem PIECE_C_FORBIDDEN_CASE[PIECE_C_FORBIDDEN_CASE_COUN
 };
 
 OptimizationForbiddenCaseItem PIECE_F_FORBIDDEN_CASE[PIECE_F_FORBIDDEN_CASE_COUNT] = {
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 5}, {0, 6}, {1, 6}, {1, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 6}, {1, 6}, {1, 7}, {2, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {3, 7}, {4, 7}, {4, 6}, {5, 6},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {4, 7}, {4, 6}, {5, 6}, {5, 5},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {5, 5}, {5, 4}, {6, 4}, {6, 3},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {4, 5}, {5, 5}, {5, 4}, {6, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 3}, {0, 2}, {1, 2}, {1, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 2}, {1, 2}, {1, 1}, {2, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 2}, {4, 1}, {5, 1}, {5, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 1}, {5, 1}, {5, 0}, {6, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 0}, // Sat
     {
       {4, 0}, {5, 0}, {5, 1}, {6, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 0}, // Sat
     {
       {5, 0}, {5, 1}, {6, 1}, {6, 2},
@@ -260,67 +260,67 @@ OptimizationForbiddenCaseItem PIECE_F_FORBIDDEN_CASE[PIECE_F_FORBIDDEN_CASE_COUN
 };
 
 OptimizationForbiddenCaseItem PIECE_G_FORBIDDEN_CASE[PIECE_G_FORBIDDEN_CASE_COUNT] = {
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 5}, {0, 6}, {1, 6}, {1, 7}, {0, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 6}, {1, 6}, {1, 7}, {2, 7}, {3, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {3, 7}, {4, 7}, {4, 6}, {5, 6}, {2, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {4, 7}, {4, 6}, {5, 6}, {5, 5}, {5, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {5, 5}, {5, 4}, {6, 4}, {6, 3}, {5, 6},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {4, 5}, {5, 5}, {5, 4}, {6, 4}, {3, 5},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 3}, {0, 2}, {1, 2}, {1, 1}, {0, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 2}, {1, 2}, {1, 1}, {2, 1}, {3, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 2}, {4, 1}, {5, 1}, {5, 0}, {4, 3},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 1}, {5, 1}, {5, 0}, {6, 0}, {3, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 0}, // Sat
     {
       {5, 0}, {5, 1}, {6, 1}, {6, 2}, {6, 3},
@@ -329,73 +329,73 @@ OptimizationForbiddenCaseItem PIECE_G_FORBIDDEN_CASE[PIECE_G_FORBIDDEN_CASE_COUN
 };
 
 OptimizationForbiddenCaseItem PIECE_I_FORBIDDEN_CASE[PIECE_I_FORBIDDEN_CASE_COUNT] = {
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 5}, {0, 6}, {1, 5}, {1, 6}, {1, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 7}, // Jan
     {
       {0, 6}, {1, 6}, {2, 6}, {1, 7}, {2, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {3, 6}, {4, 6}, {5, 6}, {3, 7}, {4, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 7}, // Jun
     {
       {4, 7}, {4, 6}, {4, 5}, {5, 6}, {5, 5},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {5, 5}, {5, 4}, {5, 3}, {6, 4}, {6, 3},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 5}, // 7
     {
       {4, 5}, {5, 5}, {4, 4}, {5, 4}, {6, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 2}, {1, 2}, {2, 2}, {1, 1}, {2, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 1}, // 29
     {
       {0, 3}, {0, 2}, {1, 3}, {1, 2}, {1, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 2}, {4, 1}, {5, 2}, {5, 1}, {5, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 0}, // Thu
     {
       {4, 1}, {5, 1}, {6, 1}, {5, 0}, {6, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 0}, // Sat
     {
       {4, 1}, {5, 1}, {6, 1}, {5, 0}, {4, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 0}, // Sat
     {
       {6, 2}, {6, 1}, {5, 2}, {5, 1}, {5, 0},
@@ -404,115 +404,115 @@ OptimizationForbiddenCaseItem PIECE_I_FORBIDDEN_CASE[PIECE_I_FORBIDDEN_CASE_COUN
 };
 
 OptimizationForbiddenCaseItem PIECE_J_FORBIDDEN_CASE[PIECE_J_FORBIDDEN_CASE_COUNT] = {
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 6}, // Jul
     {
       {0, 5}, {1, 5}, {1, 6}, {1, 7}, {0, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){1, 7}, // Feb
     {
       {0, 7}, {0, 6}, {1, 6}, {2, 6}, {2, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){2, 7}, // Mar
     {
       {1, 7}, {1, 6}, {2, 6}, {3, 6}, {3, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){3, 7}, // Apr
     {
       {2, 7}, {2, 6}, {3, 6}, {4, 6}, {4, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 7}, // May
     {
       {3, 7}, {3, 6}, {4, 6}, {5, 6}, {5, 7},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 6}, // Dec
     {
       {5, 7}, {4, 7}, {4, 6}, {4, 5}, {5, 5},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 4}, // 14
     {
       {6, 5}, {5, 5}, {5, 4}, {5, 3}, {6, 3},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 3}, // 21
     {
       {6, 4}, {5, 4}, {5, 3}, {5, 2}, {6, 2},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 2}, // 28
     {
       {6, 3}, {5, 3}, {5, 2}, {5, 1}, {6, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){2, 1}, // 31
     {
       {1, 1}, {1, 2}, {2, 2}, {3, 2}, {3, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){1, 1}, // 30
     {
       {0, 1}, {0, 2}, {1, 2}, {2, 2}, {2, 1},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 2}, // 22
     {
       {0, 1}, {1, 1}, {1, 2}, {1, 3}, {0, 3},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 3}, // 15
     {
       {0, 2}, {1, 2}, {1, 3}, {1, 4}, {0, 4},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 4}, // 8
     {
       {0, 3}, {1, 3}, {1, 4}, {1, 5}, {0, 5},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){0, 5}, // 1
     {
       {0, 4}, {1, 4}, {1, 5}, {1, 6}, {0, 6},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){6, 1}, // Wed
     {
       {6, 2}, {5, 2}, {5, 1}, {5, 0}, {6, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){5, 0}, // Fri
     {
       {4, 0}, {4, 1}, {5, 1}, {6, 1}, {6, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){4, 1}, // Mon
     {
       {4, 2}, {5, 2}, {5, 1}, {5, 0}, {4, 0},
     },
   },
-  (OptimizationForbiddenCaseItem){
+  {
     &(Position){3, 1}, // Sun
     {
       {2, 1}, {2, 2}, {3, 2}, {4, 2}, {4, 1},
