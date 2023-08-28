@@ -3,17 +3,17 @@ PUZZLE
 ### QuickStart
 
 1. `make build` or `make build_debug` to include debug info
-2. `LOGGER=true LOGGER_LEVEL=verbose ./a.out`
+2. `LOGGER=true LOGGER_LEVEL=verbose ./a.out {days}`
 
 ### Wasm on Node.js
 
 0. modify environment variables in `emcc.pre.js`
 1. `make build_js` or `make build_debug_js` to include debug info
-2. `node a.js`
+2. `node a.js {days}`
 
 ### Wasm on Web
 
-0. modify environment variables in `emcc.pre.js`
+0. modify environment variables and arguments in `emcc.pre.js`
 1. `make build_html` or `make build_debug_html` to include debug info
 2. use browser to open `a.html`, open console to view output
 
@@ -21,6 +21,10 @@ PUZZLE
 
 1. `LOGGER`: toggle logger output, value: `on`/`true` to open, `off`/`false` to close; default: `false`
 2. `LOGGER_LEVEL`: switch logger output level, value: `error`/`success`/`info`/`verbose`/`debug`; default: `info`
+
+### Arguments
+
+an integer, positive number means days after, negative number means days before; default: 0, means today
 
 ### Development Dependencies
 

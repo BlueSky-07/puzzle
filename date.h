@@ -14,6 +14,7 @@ typedef struct _Date {
 
 Date* date_make(unsigned int month, unsigned int date, unsigned int week);
 Date* date_get_today();
+Date* date_get_today_next(int days);
 
 void date_time_print(time_t t, LoggerNewLine new_line);
 void date_current_time_print(LoggerNewLine new_line);

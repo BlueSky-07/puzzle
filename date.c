@@ -9,7 +9,12 @@ Date* date_make(unsigned int month, unsigned int date, unsigned int week) {
 }
 
 Date* date_get_today() {
+  return date_get_today_next(0);
+}
+
+Date* date_get_today_next(int days) {
   time_t currentTime = time(NULL);
+  currentTime += days * 24 * 60 * 60;
   struct tm *localTime = localtime(&currentTime);
 
   logger_debug(

@@ -368,6 +368,13 @@ void game_solve_all_today_test() {
   game_solve_today(GAME_SOLVE_MODE_ALL);
 }
 
+void game_solve_all_by_date_test(int days) {
+  logger_info("=======================================");
+  logger_info("game_solve_all_by_date_test:");
+
+  game_solve_by_date(GAME_SOLVE_MODE_ALL, date_get_today_next(days));
+}
+
 void optimization_data_test() {
   logger_info("=======================================");
   logger_info("optimization_data_test:");
@@ -375,13 +382,16 @@ void optimization_data_test() {
   optimization_data_print();
 }
 
-int main() {
+int main(int argc, char* argv[]) {
   logger_global_set_all_from_env();
   time_t start_time = time(NULL);
   if (logger_level_is_verbose_ok())
     date_time_print(start_time, LOGGER_NEW_LINE);
 
   logger_info("start puzzle test");
+
+  int days = argc < 2 ? 0 : atoi(argv[1]);
+  logger_info("days: %d", days);
 
   // logger_test();
   // puzzle_data_test();
@@ -399,7 +409,8 @@ int main() {
   // io_read_and_sort_test();
   // date_test();
   // game_solve_today_test();
-  game_solve_all_today_test();
+  // game_solve_all_today_test();
+  game_solve_all_by_date_test(days);
   // optimization_data_test();
 
   logger_info("end puzzle test");
