@@ -11,7 +11,8 @@ void logger_global_set_level(LoggerLevel level) {
 
 char* _string_lowercase(char* string) {
   int len = strlen(string);
-  char* result = malloc(sizeof(char) * len);
+  char* result = malloc(sizeof(char) * (len + 1));
+  result[len] = '\0';
 
   for (int i = 0; i < len; i++) result[i] = tolower(string[i]);
   return result;
