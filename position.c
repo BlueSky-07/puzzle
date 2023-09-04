@@ -74,15 +74,15 @@ Coordinate coordinate_move_y(Coordinate original, Coordinate move) {
   return coordinate_move(original, move, MAX_COORDINATE_Y);
 }
 
-Bool position_list_push(PositionListItem* list, Position* position) {
-  if (!list) return FALSE;
+bool position_list_push(PositionListItem* list, Position* position) {
+  if (!list) return false;
   while (list->next) list = list->next;
   if (!list->position) list->position = position;
   else list->next = position_list_item_make(position);
-  return TRUE;
+  return true;
 }
 
-void position_list_free(PositionListItem* list, Bool include_position) {
+void position_list_free(PositionListItem* list, bool include_position) {
   if (list->next)
     position_list_free(list->next, include_position);
 
@@ -90,18 +90,18 @@ void position_list_free(PositionListItem* list, Bool include_position) {
   free(list);
 }
 
-void position_count_free(PositionCount* pc, Bool include_position) {
+void position_count_free(PositionCount* pc, bool include_position) {
   if (!pc) return;
   position_list_free(pc->positions, include_position);
   free(pc);
 }
 
-Bool coordinate_is_ok(Coordinate x, Coordinate y) {
+bool coordinate_is_ok(Coordinate x, Coordinate y) {
   return x >= 0 && x < MAX_COORDINATE_X
       && y >= 0 && y < MAX_COORDINATE_Y;
 }
 
-Bool position_is_ok(Position* position) {
+bool position_is_ok(Position* position) {
   Position p = *position;
   return coordinate_is_ok(p.x, p.y);
 }

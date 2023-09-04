@@ -47,8 +47,8 @@ const char* game_action_result_string(GameActionResult result) {
 GameActionResult game_put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Position* move) {
   Piece p = *piece;
   PositionCount* pc = puzzle_find(puzzle, p.name);
-  Bool found = pc->count > 0;
-  position_count_free(pc, TRUE);
+  bool found = pc->count > 0;
+  position_count_free(pc, true);
   if (found)
     return GAME_ACTION_FAILURE_HAS_PUT;
   if (puzzle_positions_count_of_available(puzzle, p.positions, p.position_count, move) != p.position_count)
@@ -79,12 +79,12 @@ GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* pi
 
 GameActionResult game_remove_piece_from_puzzle(Puzzle puzzle, char name) {
   PositionCount* pc = puzzle_find_and_remove(puzzle, name);
-  Bool success = pc->count > 0;
-  position_count_free(pc, TRUE);
+  bool success = pc->count > 0;
+  position_count_free(pc, true);
   return success ? GAME_ACTION_SUCCESS : GAME_ACTION_FAILURE_NOT_PUT;
 }
 
-Bool game_is_end(Puzzle puzzle) {
+bool game_is_end(Puzzle puzzle) {
   return puzzle_count_of_empty(puzzle) == GAME_IS_END_REST_COUNT;
 }
 
@@ -218,7 +218,7 @@ Puzzle game_solve_result_to_puzzle(GameSolveResult* list, unsigned int count) {
   return puzzle;
 }
 
-Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current) {
+bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current) {
   unsigned int rest_count = PIECE_COUNT - current;
   if (rest_count == 0) {
     if (mode == GAME_SOLVE_MODE_ALL) {
@@ -229,16 +229,16 @@ Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binar
       if (logger_level_is_verbose_ok()) puzzle_print(puzzle);
       free(puzzle);
     }
-    return TRUE;
+    return true;
   }
   if (current == 0) game_solve_list_sort_asc(&items[current], rest_count);
 
-  Bool final_result = FALSE;
+  bool final_result = false;
 
   GameSolveListItem game_solve_item = items[current];
   BinaryCount* piece_bc = game_solve_item.bc;
   BinaryListItem* piece_filtered = binary_list_filter_pieces_by_puzzle(piece_bc->binaries, puzzle_binary);
-  if (!piece_filtered) return FALSE;
+  if (!piece_filtered) return false;
   BinaryListItem* piece_i = piece_filtered;
   while (piece_i) {
     Binary piece_binary = piece_i->binary;
@@ -246,7 +246,7 @@ Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binar
       result[current].name = game_solve_item.name;
       result[current].binary = piece_binary;
       Binary puzzle_put_piece_binary = binary_piece_put_into_puzzle(puzzle_binary, piece_binary);
-      Bool success = game_solve_puzzle_binary(mode, result, puzzle_put_piece_binary, items, current + 1);
+      bool success = game_solve_puzzle_binary(mode, result, puzzle_put_piece_binary, items, current + 1);
 
       if (success) {
         final_result = success;
@@ -260,7 +260,7 @@ Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binar
   return final_result;
 }
 
-Bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
+bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current) {
   return game_solve_puzzle_binary(mode, result, binary_from_puzzle(puzzle), items, current);
 }
 
@@ -274,7 +274,7 @@ GameSolveResult* game_solve_by_date(GameSolveMode mode, Date* date) {
 
   GameSolveResult* result = malloc(sizeof(GameSolveResult) * PIECE_COUNT);
 
-  Bool success = game_solve_puzzle(mode, result, puzzle, optimized_items, 0);
+  bool success = game_solve_puzzle(mode, result, puzzle, optimized_items, 0);
 
   game_solve_list_free(optimized_items);
   free(puzzle);
@@ -319,7 +319,7 @@ GameSolveListItem* game_read_pieces_data() {
         Puzzle piece_into_puzzle = puzzle_make();
         puzzle_fill_position_count(piece_into_puzzle, pc, piece_name, NULL);
         puzzle_print(piece_into_puzzle);
-        position_count_free(pc, TRUE);
+        position_count_free(pc, true);
         free(piece_into_puzzle);
       }
     }

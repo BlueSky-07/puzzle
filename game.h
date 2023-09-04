@@ -2,7 +2,7 @@
 #define _GAME_H_
 
 #include <stdlib.h>
-#include "bool.h"
+#include <stdbool.h>
 #include "logger.h"
 #include "piece.h"
 #include "puzzle.h"
@@ -42,7 +42,7 @@ GameActionResult game_put_piece_into_puzzle(Puzzle puzzle, Piece* piece, Positio
 GameActionResult game_remove_piece_from_puzzle(Puzzle puzzle, char name);
 GameActionResult game_put_piece_into_puzzle_binary_mode(Puzzle puzzle, Piece* piece, Position* move);
 
-Bool game_is_end(Puzzle puzzle);
+bool game_is_end(Puzzle puzzle);
 
 BinaryCount* game_rotate_piece_all_kinds_unique(Piece* piece);
 BinaryCount* game_put_piece_all_kinds_into_puzzle(Puzzle puzzle, Piece* piece);
@@ -60,8 +60,8 @@ typedef unsigned int GameSolveMode;
 #define GAME_SOLVE_MODE_ONE   1
 #define GAME_SOLVE_MODE_ALL   2
 
-Bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current);
-Bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
+bool game_solve_puzzle_binary(GameSolveMode mode, GameSolveResult* result, Binary puzzle_binary, GameSolveListItem items[], unsigned int current);
+bool game_solve_puzzle(GameSolveMode mode, GameSolveResult* result, Puzzle puzzle, GameSolveListItem items[], unsigned int current);
 GameSolveResult* game_solve_by_date(GameSolveMode mode, Date* date);
 GameSolveResult* game_solve_today(GameSolveMode mode);
 

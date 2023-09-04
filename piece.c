@@ -348,7 +348,7 @@ Piece* piece_move(Piece* piece, Position* move) {
   for (int i = 0; i < p.position_count; i ++) {
     Position* new_pos = position_move(&p.positions[i], move, POSITION_MOVE_NEW);
 
-    Bool ok = position_is_ok(new_pos);
+    bool ok = position_is_ok(new_pos);
     if (ok) {
       result->positions[i].x = new_pos->x;
       result->positions[i].y = new_pos->y;

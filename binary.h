@@ -3,9 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "logger.h"
 #include "const.h"
-#include "bool.h"
 #include "position.h"
 #include "puzzle.h"
 
@@ -26,10 +26,10 @@ BinaryListItem* binary_list_item_make(Binary binary);
 BinaryListItem* binary_list_item_make_empty();
 BinaryCount* binary_count_make(BinaryListItem* list);
 
-Bool binary_list_push(BinaryListItem* list, Binary binary);
-Bool binary_list_push_unique(BinaryListItem* list, Binary binary);
-Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition);
-Bool binary_list_find(BinaryListItem* list, Binary binary);
+bool binary_list_push(BinaryListItem* list, Binary binary);
+bool binary_list_push_unique(BinaryListItem* list, Binary binary);
+bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition);
+bool binary_list_find(BinaryListItem* list, Binary binary);
 BinaryListItem* binary_list_find_and_remove(BinaryListItem* list, Binary binary);
 BinaryListItem* binary_list_find_and_remove_list(BinaryListItem* list, BinaryListItem* subtraction);
 
@@ -55,8 +55,8 @@ PositionCount* binary_string_to_positions(String string);
 
 Binary binary_reverse(Binary binary);
 
-Bool binary_test_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary);
-Bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b);
+bool binary_test_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary);
+bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b);
 Binary binary_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary);
 Binary binary_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b);
 

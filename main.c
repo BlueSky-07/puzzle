@@ -300,7 +300,7 @@ void io_read_and_sort_test() {
       Puzzle piece_into_puzzle = puzzle_make();
       puzzle_fill_position_count(piece_into_puzzle, pc, piece_name, NULL);
       puzzle_print(piece_into_puzzle);
-      position_count_free(pc, TRUE);
+      position_count_free(pc, true);
       free(piece_into_puzzle);
     }
     BinaryCount* bc = binary_count_make(list);

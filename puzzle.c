@@ -196,7 +196,7 @@ PositionCount* puzzle_find(Puzzle puzzle, char name) {
   for (int y = 0; y < PUZZLE_Y; y++) {
     for (int x = 0; x < PUZZLE_X; x++) {
       char c = puzzle[y * PUZZLE_X + x];
-      Bool found = c == name;
+      bool found = c == name;
       if (found) {
         logger_debug("puzzle_find, loop: %d, %d = %c => %d", x, y, c, found);
         position_list_push(list, position_make(x, y));

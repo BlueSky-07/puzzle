@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "const.h"
 #include "texts.h"
-#include "bool.h"
 #include "logger.h"
 #include "position.h"
 #include "piece.h"

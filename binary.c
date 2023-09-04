@@ -23,39 +23,39 @@ BinaryCount* binary_count_make(BinaryListItem* list) {
   return bc;
 }
 
-Bool binary_list_push(BinaryListItem* list, Binary binary) {
-  if (!list) return FALSE;
+bool binary_list_push(BinaryListItem* list, Binary binary) {
+  if (!list) return false;
   while (list->next) list = list->next;
   if (list->binary == BINARY_INVALID) list->binary = binary;
   else list->next = binary_list_item_make(binary);
-  return TRUE;
+  return true;
 }
 
-Bool binary_list_push_unique(BinaryListItem* list, Binary binary) {
-  if (!list) return FALSE;
+bool binary_list_push_unique(BinaryListItem* list, Binary binary) {
+  if (!list) return false;
   while (list->next && list->binary != binary) list = list->next;
-  if (list->binary == binary) return FALSE;
+  if (list->binary == binary) return false;
   if (list->binary == BINARY_INVALID) list->binary = binary;
   else list->next = binary_list_item_make(binary);
-  return TRUE;
+  return true;
 }
 
-Bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition) {
-  if (!list) return FALSE;
+bool binary_list_push_list_unique(BinaryListItem* list, BinaryListItem* addition) {
+  if (!list) return false;
   while (addition) {
     binary_list_push_unique(list, addition->binary);
     addition = addition->next;
   }
-  return TRUE;
+  return true;
 }
 
-Bool binary_list_find(BinaryListItem* list, Binary binary) {
-  if (!list) return FALSE;
+bool binary_list_find(BinaryListItem* list, Binary binary) {
+  if (!list) return false;
   while (list) {
-    if (list && list->binary == binary) return TRUE;
+    if (list && list->binary == binary) return true;
     list = list->next;
   }
-  return FALSE;
+  return false;
 }
 
 BinaryListItem* binary_list_find_and_remove(BinaryListItem* list, Binary binary) {
@@ -230,11 +230,11 @@ Binary binary_reverse(Binary binary) {
   return ~binary;
 }
 
-Bool binary_test_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary) {
+bool binary_test_piece_put_into_puzzle(Binary puzzle_binary, Binary piece_binary) {
   return (binary_reverse(puzzle_binary) & piece_binary) == piece_binary;
 }
 
-Bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b) {
+bool binary_test_piece_put_with_piece(Binary piece_binary_a, Binary piece_binary_b) {
   return (piece_binary_a | piece_binary_b) == (piece_binary_a + piece_binary_b);
 }
 

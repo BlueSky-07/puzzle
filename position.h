@@ -2,7 +2,7 @@
 #define _POSITION_H_
 
 #include <stdlib.h>
-#include "bool.h"
+#include <stdbool.h>
 #include "const.h"
 #include "logger.h"
 
@@ -39,13 +39,13 @@ Coordinate coordinate_move(Coordinate original, Coordinate move, Coordinate max)
 Coordinate coordinate_move_x(Coordinate original, Coordinate move);
 Coordinate coordinate_move_y(Coordinate original, Coordinate move);
 
-Bool position_list_push(PositionListItem* list, Position* position);
+bool position_list_push(PositionListItem* list, Position* position);
 
-void position_list_free(PositionListItem* list, Bool include_position);
-void position_count_free(PositionCount* pc, Bool include_position);
+void position_list_free(PositionListItem* list, bool include_position);
+void position_count_free(PositionCount* pc, bool include_position);
 
-Bool coordinate_is_ok(Coordinate x, Coordinate y);
-Bool position_is_ok(Position* position);
+bool coordinate_is_ok(Coordinate x, Coordinate y);
+bool position_is_ok(Position* position);
 
 void position_print(Position* position, LoggerNewLine new_line);
 void position_list_print(PositionListItem* list);
