@@ -22,7 +22,6 @@
     "matrix.h": "c",
     "const.h": "c",
     "bool.h": "c",
-    "calc.h": "c",
     "date.h": "c",
     "time.h": "c",
     "optimization.h": "c",

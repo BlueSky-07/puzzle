@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "const.h"
 #include "logger.h"
-#include "calc.h"
 #include "position.h"
 #include "matrix.h"
 
